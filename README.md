@@ -49,3 +49,8 @@ ng version
 If it prints Angular CLI information, you’re good to go.
 
 with a angular projekt initialized you can go ng serve in visual studio code's command line and it should launch on a local port 
+
+Git in visual studio code
+
+download git https://git-scm.com/install/windows
+and then its all good in the source controll on the right icon is 2 lnes with 3 dots looks like a repo with 2 branches
