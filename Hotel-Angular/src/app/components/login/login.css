@@ -1,0 +1,47 @@
+.login-wrapper {
+  height: 100vh;               /* full viewport height */
+  display: flex;
+  justify-content: center;     /* horizontal center */
+  align-items: center;         /* vertical center */
+  background-color: #f5f5f5;  /* optional background */
+}
+
+.login-card {
+  width: 30%;
+  height: auto;
+  padding: 20px;
+  border: 1px solid #000000;
+  border-radius: 15px;
+  background-color: #ffffff;
+  box-shadow: none;            /* remove material shadow for simpler look */
+}
+
+h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-weight: 400;
+}
+
+
+
+.full-width {
+  width: 100%;
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end; /* align button to the right */
+  background-color: transparent; /* optional: remove any unwanted bg */
+}
+
+.button-container button {
+  width: auto;          /* make button width fit text */
+  padding: 8px 20px;    /* optional: adjust spacing around text */
+  background-color: #4EA9E9;
+  color: #ffffff;
+  border-radius: 5%;
+}
+
+h2 {
+    text-align: center;
+}
