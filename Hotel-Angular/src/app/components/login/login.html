@@ -4,12 +4,15 @@
 
     <form (ngSubmit)="onSubmit()">
 
+      <div>
       <mat-form-field appearance="fill" class="full-width">
         <mat-label>Brugernavn</mat-label>
         <input matInput type="text" [(ngModel)]="username" name="username">
         <mat-error *ngIf="usernameError">Need username</mat-error>
       </mat-form-field>
+      </div>
 
+      <div>
       <mat-form-field appearance="fill" class="full-width">
         <mat-label>Kodeord</mat-label>
         <input matInput [type]="hidePassword ? 'password' : 'text'" [(ngModel)]="password" name="password">
@@ -18,6 +21,7 @@
         </button>
         <mat-error *ngIf="passwordError">Need password</mat-error>
       </mat-form-field>
+      </div>
 
       <div class="button-container">
         <button mat-raised-button color="primary" type="submit">Log ind</button>
