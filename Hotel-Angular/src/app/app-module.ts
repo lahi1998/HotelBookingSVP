@@ -19,6 +19,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { provideHttpClient } from '@angular/common/http';
 import { AdminNav } from './components/admin/admin-nav/admin-nav';
 import { StaffNav } from './components/staff/staff-nav/staff-nav';
+import { Booking } from './components/booking/booking';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { StaffNav } from './components/staff/staff-nav/staff-nav';
     StaffCheckInOut,
     StaffCleaning,
     AdminNav,
-    StaffNav
+    StaffNav,
+    Booking
   ],
   imports: [
     BrowserModule,
