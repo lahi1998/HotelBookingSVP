@@ -63,7 +63,6 @@ const routes: Routes = [
       { path: 'booking', component: StaffBooking },
       { path: 'check-in-out', component: StaffCheckInOut },
       { path: 'cleaning', component: StaffCleaning },
-      { path: 'nav', component: StaffNav },
     ],
   },
 
