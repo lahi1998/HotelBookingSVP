@@ -20,12 +20,11 @@ h2 {
   margin-top: 0;
   margin-bottom: 20px;
   font-weight: 400;
+  text-align: center;
 }
 
-
-
 .full-width {
-  width: 100%;
+  width: 60%;
 }
 
 .button-container {
@@ -42,6 +41,3 @@ h2 {
   border-radius: 5%;
 }
 
-h2 {
-    text-align: center;
-}
