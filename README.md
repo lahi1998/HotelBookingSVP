@@ -54,3 +54,9 @@ Git in visual studio code
 
 download git https://git-scm.com/install/windows
 and then its all good in the source controll on the right icon is 2 lnes with 3 dots looks like a repo with 2 branches
+
+visual studio code spørg nok om email og user 
+
+git config --global user.email "you@example.com"
+
+git config --global user.name "Your Name"
