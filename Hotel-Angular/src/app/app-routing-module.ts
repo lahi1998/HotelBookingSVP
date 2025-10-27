@@ -4,7 +4,10 @@ import { Login } from './components/login/login';
 import { AdminRoom } from './components/admin/admin-room/admin-room';
 import { AdminRoomType } from './components/admin/admin-room-type/admin-room-type';
 import { AdminWorker } from './components/admin/admin-worker/admin-worker';
-import { AdminNav } from './components/admin/admin-nav/admin-nav';
+import { StaffBooking } from './components/staff/staff-booking/staff-booking';
+import { StaffCheckInOut } from './components/staff/staff-check-in-out/staff-check-in-out';
+import { StaffCleaning } from './components/staff/staff-cleaning/staff-cleaning';
+import { StaffNav } from './components/staff/staff-nav/staff-nav';
 
 // --- Simple AuthService ---
 @Injectable({ providedIn: 'root' })
@@ -49,7 +52,6 @@ const routes: Routes = [
       { path: 'room', component: AdminRoom },
       { path: 'room-type', component: AdminRoomType },
       { path: 'worker', component: AdminWorker },
-      { path: 'nav', component: AdminNav },
     ],
   },
 
@@ -58,6 +60,10 @@ const routes: Routes = [
     path: 'staff',
     canActivateChild: [AuthGuard],
     children: [
+      { path: 'booking', component: StaffBooking },
+      { path: 'check-in-out', component: StaffCheckInOut },
+      { path: 'cleaning', component: StaffCleaning },
+      { path: 'nav', component: StaffNav },
     ],
   },
 
