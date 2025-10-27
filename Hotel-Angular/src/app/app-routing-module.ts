@@ -7,7 +7,6 @@ const routes: Routes = [
   {
     path: 'Components',
     children: [
-
     ],
   },
   // Add a default route for unauthenticated users (can be an empty component)
