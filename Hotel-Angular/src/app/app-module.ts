@@ -20,6 +20,8 @@ import { provideHttpClient } from '@angular/common/http';
 import { AdminNav } from './components/admin/admin-nav/admin-nav';
 import { StaffNav } from './components/staff/staff-nav/staff-nav';
 import { Booking } from './components/booking/booking';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -44,6 +46,9 @@ import { Booking } from './components/booking/booking';
     MatFormFieldModule,
     MatCardModule,
     MatIconModule,
+    MatTableModule,
+    MatPaginator,
+    MatPaginatorModule
     
   ],
   providers: [
