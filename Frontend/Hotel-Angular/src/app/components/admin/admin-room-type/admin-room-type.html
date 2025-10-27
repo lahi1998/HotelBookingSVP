@@ -1,0 +1,51 @@
+<app-admin-nav></app-admin-nav>
+
+<div class="table-wrapper left">
+    <h2>Værelses typer</h2>
+    <div class="table-border">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+            <!-- Id Column -->
+            <ng-container matColumnDef="id">
+                <th style="border-radius: 15px 0px 0px 0px;" mat-header-cell *matHeaderCellDef> Id </th>
+                <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+            </ng-container>
+
+            <!-- Type Column -->
+            <ng-container matColumnDef="type">
+                <th mat-header-cell *matHeaderCellDef> Type </th>
+                <td mat-cell *matCellDef="let element"> {{element.Type}} </td>
+            </ng-container>
+
+            <!-- Pris Column -->
+            <ng-container matColumnDef="pris">
+                <th mat-header-cell *matHeaderCellDef> Pris </th>
+                <td mat-cell *matCellDef="let element"> {{element.pris}} </td>
+            </ng-container>
+
+            <!-- Actions Column -->
+            <ng-container matColumnDef="buttons">
+                <th style="border-radius: 0px 15px 0px 0px;" mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element">
+                    <button class="edit">Rediger</button>
+                    <button class="delete">Slet</button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+            aria-label="Select page of periodic elements">
+        </mat-paginator>
+    </div>
+</div>
+
+<div class="Create-type-box right">
+    <label for="roomName">Navn</label>
+    <input id="roomName" type="text">
+    <label for="roomPris">Pris</label>
+    <input id="roomPris" type="text">
+    <button class="create" type="button" style="align-self:flex-end; margin-top:12px;">Opret</button>
+</div>
