@@ -41,3 +41,14 @@ h2 {
   border-radius: 5%;
 }
 
+@media screen and (max-width: 480px) {
+.login-card {
+    width: 90%;
+  }
+}
+
+@media screen and (max-width: 900px) and (min-width: 481px) {
+.login-card {
+    width: 50%;
+  }
+}
