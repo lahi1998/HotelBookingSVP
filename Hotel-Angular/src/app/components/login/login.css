@@ -1,54 +1,90 @@
 .login-wrapper {
-  height: 100vh;               /* full viewport height */
+  height: 100vh;
   display: flex;
-  justify-content: center;     /* horizontal center */
-  align-items: center;         /* vertical center */
-  background-color: #f5f5f5;  /* optional background */
+  justify-content: center;
+  align-items: center;
+  background-color: #f5f5f5;
 }
 
 .login-card {
   width: 30%;
-  height: auto;
   padding: 20px;
-  border: 1px solid #000000;
+  border: 1px solid #000;
   border-radius: 15px;
-  background-color: #ffffff;
-  box-shadow: none;            /* remove material shadow for simpler look */
+  background-color: #fff;
+  box-shadow: none;
 }
 
 h2 {
-  margin-top: 0;
-  margin-bottom: 20px;
+  margin: 0 0 20px 0;
   font-weight: 400;
   text-align: center;
 }
 
-.full-width {
-  width: 60%;
+/* Row with inputs and image */
+.form-row {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  align-items: flex-start;
 }
 
-.button-container {
+.inputs-column {
+  flex: 1;
+  min-width: 220px;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.img-box {
+  flex: 1;
   display: flex;
-  justify-content: flex-end; /* align button to the right */
-  background-color: transparent; /* optional: remove any unwanted bg */
+  justify-content: center;
+  align-items: center;
+  min-width: 150px;
+}
+
+.img-box img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+/* Login button */
+.button-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .button-container button {
-  width: auto;          /* make button width fit text */
-  padding: 8px 20px;    /* optional: adjust spacing around text */
+  padding: 8px 20px;
   background-color: #4EA9E9;
-  color: #ffffff;
+  color: #fff;
   border-radius: 5%;
 }
 
-@media screen and (max-width: 480px) {
-.login-card {
-    width: 90%;
+/* Responsive */
+@media screen and (max-width: 900px) {
+  .login-card {
+    width: 50%;
+  }
+
+    .img-box {
+    display: none;
   }
 }
 
-@media screen and (max-width: 900px) and (min-width: 481px) {
-.login-card {
-    width: 50%;
+@media screen and (max-width: 480px) {
+  .login-card {
+    width: 90%;
+  }
+
+  .form-row {
+    flex-direction: column;
+    align-items: center;
   }
 }
