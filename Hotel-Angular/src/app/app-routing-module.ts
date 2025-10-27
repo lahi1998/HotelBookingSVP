@@ -7,7 +7,6 @@ import { AdminWorker } from './components/admin/admin-worker/admin-worker';
 import { StaffBooking } from './components/staff/staff-booking/staff-booking';
 import { StaffCheckInOut } from './components/staff/staff-check-in-out/staff-check-in-out';
 import { StaffCleaning } from './components/staff/staff-cleaning/staff-cleaning';
-import { StaffNav } from './components/staff/staff-nav/staff-nav';
 
 // --- Simple AuthService ---
 @Injectable({ providedIn: 'root' })
