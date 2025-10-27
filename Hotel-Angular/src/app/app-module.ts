@@ -17,7 +17,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { provideHttpClient } from '@angular/common/http';
-import { AdminNav } from './admin/admin-nav/admin-nav';
+import { AdminNav } from './components/admin/admin-nav/admin-nav';
 import { StaffNav } from './components/staff/staff-nav/staff-nav';
 
 @NgModule({
