@@ -3,6 +3,10 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { room } from '../../../interfaces/room';
 import { ImageData } from '../../../interfaces/image-data';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Observer } from 'rxjs';
+import { AdminService } from '../../../services/admin-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-room',
@@ -14,10 +18,16 @@ export class AdminRoom implements AfterViewInit {
   displayedColumns: string[] = ['number', 'floor', 'type', 'bedCount', 'buttons'];
   filterValue: string = '';
   dataSource = new MatTableDataSource<room>(DATA);
-
+  roomForm!: FormGroup;
   // Image handling properties
   images: ImageData[] = [];
   currentImageIndex = 0;
+
+  constructor(
+    private fb: FormBuilder,
+    private adminService: AdminService,
+    private router: Router
+  ) { }
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -28,6 +38,35 @@ export class AdminRoom implements AfterViewInit {
   applyFilter() {
     this.dataSource.filter = this.filterValue.trim().toLowerCase();
   }
+
+
+  onSubmit(): void {
+    if (this.roomForm.invalid) return;
+
+    const { } = this.roomForm.value;
+
+    const observer: Observer<room> = {
+      next: (response) => {
+        console.log('Login successful', response);
+        alert('Login successful!');
+        this.router.navigate(['/Components/mainContent']);
+      },
+      error: (error) => {
+        console.error('Login error', error);
+        alert('Invalid credentials.');
+      },
+      complete: () => { },
+    };
+
+    this.adminService.postRoom().subscribe(observer);
+  }
+
+
+
+
+
+
+
 
   /* image carousel and upload logik */
   async onFilesSelected(event: Event) {
