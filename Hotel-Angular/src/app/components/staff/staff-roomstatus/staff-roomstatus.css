@@ -4,24 +4,24 @@ h2 {
     margin: 20px 0;
     font-weight: 400;
     text-align: center;
+    
 }
 
 .container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;
-    /* keeps them together */
+    justify-content: center; /* centers children horizontally */
     align-items: flex-start;
     gap: 5%;
-    /* space between table and form */
     padding: 2% 5%;
 }
 
 /* Table wrapper */
 .table-wrapper {
     flex: 1 1 60%;
-    min-width: 300px;
-    max-width: 700px;
+    max-width: 60%;
+    margin: 0 auto; /* ensure wrapper is centered */
+    display: block;
 }
 
 .table-border {
@@ -29,10 +29,6 @@ h2 {
     border-radius: 15px;
     overflow-x: auto;
     /* prevents horizontal overflow */
-}
-
-th {
-    background-color: #D9D9D9 !important;
 }
 
 button {
@@ -53,4 +49,23 @@ button {
 
 .delete {
     background-color: #FF4646;
+}
+
+input,
+select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 70%;
+}
+
+th {
+    background-color: #D9D9D9 !important;
+    border-right: 1px solid black;
+}
+
+td {
+    border-right: 1px solid black;
+    border-bottom: 1px solid black !important;
 }
