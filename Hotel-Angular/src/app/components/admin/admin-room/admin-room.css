@@ -55,8 +55,17 @@ button {
     background-color: #FF4646;
 }
 
-/* Create-type-box (form) */
-.Create-type-box {
+/* Create-room-box (form) */
+.create-container {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    border: solid 1px black;
+    border-radius: 15px;
+    padding: 15px;
+}
+
+.Create-room-inputs {
     flex: 1 1 35%;
     min-width: 280px;
     max-width: 400px;
@@ -64,8 +73,6 @@ button {
     flex-direction: column;
     gap: 8px;
     padding: 15px;
-    border: solid 1px black;
-    border-radius: 15px;
     margin-top: 3.5%;
 }
 
@@ -84,7 +91,17 @@ select {
     margin-top: 12px;
 }
 
+
 /* Image carousel and upload */
+
+.image-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 15px;
+    margin-top: 3.5%;
+}
 
 .carousel {
     display: flex;
@@ -100,8 +117,8 @@ select {
 }
 
 .imgprew {
-    max-width: 220px;
-    max-height: 160px;
+    max-width: 264px;
+    max-height: 192px;
     object-fit: contain;
     border: 1px solid #ccc;
     border-radius: 6px;
@@ -111,6 +128,23 @@ select {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.thumbnails {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding: 5px;
+}
+
+.imgControlBtn {
+    padding: 6px 12px;
+    font-size: 18px;
+    border: none;
+    border-radius: 4px;
+    background-color: #4EA9E9;
+    color: white;
+    cursor: pointer;
 }
 
 /* Responsive behavior */
@@ -140,5 +174,35 @@ select {
     button {
         font-size: 14px;
         padding: 4px 8px;
+    }
+
+        .create-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 30px; /* add more vertical spacing between sections */
+    }
+
+    .Create-room-inputs {
+        width: 100%;
+        max-width: 500px;
+        align-items: center;
+        margin-top: 0;
+    }
+
+    .Create-room-inputs input,
+    .Create-room-inputs select {
+        width: 100%;
+    }
+
+    .image-upload {
+        width: 100% !important;
+        max-width: 500px;
+        align-items: center;
+        margin-top: 0;
+    }
+
+    .imgprew {
+        max-width: 70%;
+        height: auto;
     }
 }

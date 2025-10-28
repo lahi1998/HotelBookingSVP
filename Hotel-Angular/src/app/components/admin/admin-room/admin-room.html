@@ -1,6 +1,6 @@
 <app-admin-nav></app-admin-nav>
 <div class="container">
-    <div class="table-wrapper left">
+    <div class="table-wrapper ">
         <h2>Værelser</h2>
         <div class="table-border">
             <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
@@ -47,22 +47,29 @@
         </div>
     </div>
 
-    <div class="Create-type-box right">
-        <label for="roomNumber">Nummer</label>
-        <input id="roomNumber" type="text">
-        <label for="roomFloor">Etage</label>
-        <input id="roomFloor" type="text">
-        <label for="roomType">Værelses type</label>
-        <input id="roomType" type="text">
-        <label for="roomBedCount">Antal senge</label>
-        <input id="roomBedCount" type="text">
+    
+    <div class="create-container">
+        <div class="Create-room-inputs" style="flex:1;">
+            <label for="roomNumber">Nummer</label>
+            <input id="roomNumber" type="text">
+            <label for="roomFloor">Etage</label>
+            <input id="roomFloor" type="text">
+            <label for="roomType">Værelses type</label>
+            <input id="roomType" type="text">
+            <label for="roomBedCount">Antal senge</label>
+            <input id="roomBedCount" type="text">
 
-        <div class="image-upload">
-            <div class="carousel" *ngIf="images.length > 0" >
+            <button class="create" type="button">Opret</button>
+        </div>
+
+        <div class="image-upload" style="width:320px; flex-shrink:0;">
+            <div class="carousel" *ngIf="images.length > 0">
                 <div class="carousel-main">
-                    <button type="button" (click)="prevImage()" [disabled]="images.length <= 1">‹</button>
+                    <button class="imgControlBtn" type="button" (click)="prevImage()"
+                        [disabled]="images.length <= 1">‹</button>
                     <img class="imgprew" [src]="images[currentImageIndex]?.dataUrl" alt="Preview">
-                    <button type="button" (click)="nextImage()" [disabled]="images.length <= 1">›</button>
+                    <button class="imgControlBtn" type="button" (click)="nextImage()"
+                        [disabled]="images.length <= 1">›</button>
                 </div>
 
                 <div class="carousel-controls">
@@ -70,7 +77,7 @@
                     <button type="button" (click)="deleteCurrentImage()" class="delete">Slet</button>
                 </div>
 
-                <div class="thumbnails" style="display:flex; gap:6px; overflow-x:auto;">
+                <div class="thumbnails">
                     <img *ngFor="let img of images; let i = index" [src]="img.dataUrl" (click)="selectImage(i)"
                         [style.border]="i === currentImageIndex ? '2px solid #3f51b5' : '1px solid #ddd'"
                         style="width:56px; height:44px; object-fit:cover; cursor:pointer; border-radius:4px;">
@@ -80,8 +87,6 @@
             <label for="roomImages">Billeder</label>
             <input id="roomImages" type="file" accept="image/*" (change)="onFilesSelected($event)" multiple>
         </div>
-
-        <button class="create" type="button" style="align-self:flex-end; margin-top:12px;">Opret</button>
     </div>
 
 </div>

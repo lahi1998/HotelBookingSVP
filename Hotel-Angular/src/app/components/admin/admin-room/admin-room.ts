@@ -28,13 +28,6 @@ export class AdminRoom implements AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
-
-
-
-
-
-
-
   /* image carousel and upload logik */
   async onFilesSelected(event: Event) {
     const input = event.target as HTMLInputElement;
