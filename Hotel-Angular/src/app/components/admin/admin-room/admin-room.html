@@ -9,7 +9,7 @@
 
                 <!-- number Column -->
                 <ng-container matColumnDef="number">
-                    <th style="border-radius: 15px 0px 0px 0px;" mat-header-cell *matHeaderCellDef> Nummer </th>
+                    <th mat-header-cell *matHeaderCellDef> Nummer </th>
                     <td mat-cell *matCellDef="let room"> {{room.number}} </td>
                 </ng-container>
 
@@ -33,8 +33,8 @@
 
                 <!-- Actions Column -->
                 <ng-container matColumnDef="buttons">
-                    <th style="border-radius: 0px 15px 0px 0px;" mat-header-cell *matHeaderCellDef></th>
-                    <td mat-cell *matCellDef="let room">
+                    <th style="border-right: none;" mat-header-cell *matHeaderCellDef></th>
+                    <td style="border-right: none;" mat-cell *matCellDef="let room">
                         <button class="edit">Rediger</button>
                         <button class="delete">Slet</button>
                     </td>

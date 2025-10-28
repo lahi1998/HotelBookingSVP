@@ -8,7 +8,7 @@
 
                 <!-- Id Column -->
                 <ng-container matColumnDef="id">
-                    <th style="border-radius: 15px 0px 0px 0px;" mat-header-cell *matHeaderCellDef> Id </th>
+                    <th mat-header-cell *matHeaderCellDef> Id </th>
                     <td mat-cell *matCellDef="let roomtype"> {{roomtype.id}} </td>
                 </ng-container>
 
@@ -26,8 +26,8 @@
 
                 <!-- Actions Column -->
                 <ng-container matColumnDef="buttons">
-                    <th style="border-radius: 0px 15px 0px 0px;" mat-header-cell *matHeaderCellDef></th>
-                    <td mat-cell *matCellDef="let roomtype">
+                    <th style="border-right: none;" mat-header-cell *matHeaderCellDef></th>
+                    <td style="border-right: none;" *matCellDef="let roomtype">
                         <button class="edit">Rediger</button>
                         <button class="delete">Slet</button>
                     </td>

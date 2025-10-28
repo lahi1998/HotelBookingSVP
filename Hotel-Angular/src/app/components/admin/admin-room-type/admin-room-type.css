@@ -30,6 +30,12 @@ h2 {
 
 th {
     background-color: #D9D9D9 !important;
+    border-right: 1px solid black;
+}
+
+td {
+    border-right: 1px solid black;
+    border-bottom: 1px solid black !important;
 }
 
 button {
