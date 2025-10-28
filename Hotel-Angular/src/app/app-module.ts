@@ -3,22 +3,22 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
 import { Login } from './components/login/login';
-import { AdminRoom } from './components/admin/admin-room/admin-room';
-import { AdminRoomType } from './components/admin/admin-room-type/admin-room-type';
-import { AdminWorker } from './components/admin/admin-worker/admin-worker';
-import { StaffBooking } from './components/staff/staff-booking/staff-booking';
-import { StaffCheckInOut } from './components/staff/staff-check-in-out/staff-check-in-out';
-import { StaffCleaning } from './components/staff/staff-cleaning/staff-cleaning';
+import { AdminRoom } from './components/admin/adminRoom/adminRoom';
+import { AdminRoomType } from './components/admin/adminRoomType/adminRoomType';
+import { AdminWorker } from './components/admin/adminWorker/adminWorker';
+import { StaffBooking } from './components/staff/staffBooking/staffBooking';
+import { StaffCheckInOut } from './components/staff/staffCheckInOut/staffCheckInOut';
+import { StaffCleaning } from './components/staff/staffCleaning/staffCleaning';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { provideHttpClient } from '@angular/common/http';
-import { AdminNav } from './components/admin/admin-nav/admin-nav';
-import { StaffNav } from './components/staff/staff-nav/staff-nav';
+import { AdminNav } from './components/admin/adminNav/adminNav';
+import { StaffNav } from './components/staff/staffNav/staffNav';
 import { Booking } from './components/booking/booking';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { StaffRoomstatus } from './components/staff/staff-roomstatus/staff-roomstatus';
+import { StaffRoomstatus } from './components/staff/staffRoomstatus/staffRoomstatus';
 
 @NgModule({
   declarations: [
