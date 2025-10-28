@@ -7,6 +7,9 @@ import { AdminWorker } from './components/admin/admin-worker/admin-worker';
 import { StaffBooking } from './components/staff/staff-booking/staff-booking';
 import { StaffCheckInOut } from './components/staff/staff-check-in-out/staff-check-in-out';
 import { StaffCleaning } from './components/staff/staff-cleaning/staff-cleaning';
+import { StaffService } from './services/staff-service';
+import { StaffRoomstatus } from './components/staff/staff-roomstatus/staff-roomstatus';
+import { StaffNav } from './components/staff/staff-nav/staff-nav';
 
 // --- Simple AuthService ---
 @Injectable({ providedIn: 'root' })
@@ -62,6 +65,8 @@ const routes: Routes = [
       { path: 'booking', component: StaffBooking },
       { path: 'check-in-out', component: StaffCheckInOut },
       { path: 'cleaning', component: StaffCleaning },
+      { path: 'room-status', component: StaffRoomstatus },
+      { path: 'nav', component: StaffNav },
     ],
   },
 

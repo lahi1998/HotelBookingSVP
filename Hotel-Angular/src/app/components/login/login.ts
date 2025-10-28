@@ -1,54 +1,55 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observer } from 'rxjs'
+import { Observer } from 'rxjs';
 import { LoginService } from '../../services/login-service';
 import { LoginInterface } from '../../interfaces/login-interface';
-
 
 @Component({
   selector: 'app-login',
   standalone: false,
   templateUrl: './login.html',
-  styleUrl: './login.css',
+  styleUrls: ['./login.css'],
 })
-export class Login {
-  username: string = '';
-  password: string = '';
-  hidePassword: boolean = true;
+export class Login implements OnInit {
+  loginForm!: FormGroup;
+  hidePassword = true;
 
-  usernameError: boolean = false;
-  passwordError: boolean = false;
+  constructor(
+    private fb: FormBuilder,
+    private loginService: LoginService,
+    private router: Router
+  ) { }
 
-  constructor(private loginService: LoginService, private router: Router) { }
+  ngOnInit(): void {
+    this.loginForm = this.fb.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required],
+    });
+  }
 
-  togglePassword() {
+  togglePassword(): void {
     this.hidePassword = !this.hidePassword;
   }
 
-  onSubmit() {
-    // Reset error flags
-    this.usernameError = !this.username.trim();
-    this.passwordError = !this.password.trim();
+  onSubmit(): void {
+    if (this.loginForm.invalid) return;
 
-    if (this.usernameError || this.passwordError) {
-      return; // Stop submission if any field is empty
-    }
-
-    const self = this;
+    const { username, password } = this.loginForm.value;
 
     const observer: Observer<LoginInterface> = {
-      next(response: LoginInterface) {
+      next: (response) => {
         console.log('Login successful', response);
         alert('Login successful!');
-        self.router.navigate(['/Components/mainContent']);
+        this.router.navigate(['/Components/mainContent']);
       },
-      error(error) {
+      error: (error) => {
         console.error('Login error', error);
         alert('Invalid credentials.');
       },
-      complete() { }
+      complete: () => { },
     };
 
-    this.loginService.postLogin(this.username, this.password).subscribe(observer);
+    this.loginService.postLogin(username, password).subscribe(observer);
   }
 }

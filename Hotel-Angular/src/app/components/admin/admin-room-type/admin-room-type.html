@@ -2,6 +2,7 @@
 <div class="container">
     <div class="table-wrapper left">
         <h2>Værelses typer</h2>
+        <input style="width: auto; margin: 5px;" matInput [(ngModel)]="filterValue" (ngModelChange)="applyFilter()" placeholder="Søg" />
         <div class="table-border">
             <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
@@ -13,14 +14,14 @@
 
                 <!-- Type Column -->
                 <ng-container matColumnDef="type">
-                    <th mat-header-cell *matHeaderCellDef> Type </th>
-                    <td mat-cell *matCellDef="let roomtype"> {{roomtype.Type}} </td>
+                    <th mat-header-cell *matHeaderCellDef> Værelses type </th>
+                    <td mat-cell *matCellDef="let roomtype"> {{roomtype.type}} </td>
                 </ng-container>
 
                 <!-- Pris Column -->
                 <ng-container matColumnDef="pris">
                     <th mat-header-cell *matHeaderCellDef> Pris </th>
-                    <td mat-cell *matCellDef="let roomtype"> {{roomtype.pris}} </td>
+                    <td mat-cell *matCellDef="let roomtype"> {{roomtype.price}} </td>
                 </ng-container>
 
                 <!-- Actions Column -->

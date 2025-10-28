@@ -1,6 +1,5 @@
 import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
 import { Login } from './components/login/login';
@@ -10,18 +9,16 @@ import { AdminWorker } from './components/admin/admin-worker/admin-worker';
 import { StaffBooking } from './components/staff/staff-booking/staff-booking';
 import { StaffCheckInOut } from './components/staff/staff-check-in-out/staff-check-in-out';
 import { StaffCleaning } from './components/staff/staff-cleaning/staff-cleaning';
-import { FormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
 import { provideHttpClient } from '@angular/common/http';
 import { AdminNav } from './components/admin/admin-nav/admin-nav';
 import { StaffNav } from './components/staff/staff-nav/staff-nav';
 import { Booking } from './components/booking/booking';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { StaffRoomstatus } from './components/staff/staff-roomstatus/staff-roomstatus';
 
 @NgModule({
   declarations: [
@@ -35,20 +32,19 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
     StaffCleaning,
     AdminNav,
     StaffNav,
-    Booking
+    Booking,
+    StaffRoomstatus
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    MatInputModule,
     MatButtonModule,
-    MatFormFieldModule,
     MatCardModule,
-    MatIconModule,
     MatTableModule,
     MatPaginator,
-    MatPaginatorModule
+    MatPaginatorModule,
+    ReactiveFormsModule
     
   ],
   providers: [
