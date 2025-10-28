@@ -1,9 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hotel-Hyggely-API", "Hotel-Hyggely-API\Hotel-Hyggely-API.csproj", "{C5DCC8EF-B385-4921-BC0E-3341F21ECE39}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{D7D25679-3EE3-4BC6-840A-13FA5C097D57}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{4AE7EA70-DB40-42D0-AE85-D8DF47D58794}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{51C46849-637D-4E5C-BB09-1621FFB2AD9B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{C5DCC8EF-B385-4921-BC0E-3341F21ECE39}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5DCC8EF-B385-4921-BC0E-3341F21ECE39}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C5DCC8EF-B385-4921-BC0E-3341F21ECE39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7D25679-3EE3-4BC6-840A-13FA5C097D57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7D25679-3EE3-4BC6-840A-13FA5C097D57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7D25679-3EE3-4BC6-840A-13FA5C097D57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7D25679-3EE3-4BC6-840A-13FA5C097D57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AE7EA70-DB40-42D0-AE85-D8DF47D58794}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AE7EA70-DB40-42D0-AE85-D8DF47D58794}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AE7EA70-DB40-42D0-AE85-D8DF47D58794}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AE7EA70-DB40-42D0-AE85-D8DF47D58794}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51C46849-637D-4E5C-BB09-1621FFB2AD9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51C46849-637D-4E5C-BB09-1621FFB2AD9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51C46849-637D-4E5C-BB09-1621FFB2AD9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51C46849-637D-4E5C-BB09-1621FFB2AD9B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
