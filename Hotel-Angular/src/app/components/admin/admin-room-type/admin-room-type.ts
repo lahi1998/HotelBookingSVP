@@ -22,10 +22,10 @@ export class AdminRoomType implements AfterViewInit {
 
 // --- Mock data ---
 const DATA: roomType[] = [
-  { id: 1, Type: 'Enkelt', pris: 150},
-  { id: 2, Type: 'Double', pris: 250},
-  { id: 3, Type: 'Konge', pris: 350},
-  { id: 4, Type: 'Dronning', pris: 450},
-  { id: 5, Type: 'Enkelt hav', pris: 250},
-  { id: 6, Type: 'Double hav', pris: 350}
+  { id: 1, type: 'Enkelt', price: 150},
+  { id: 2, type: 'Double', price: 250},
+  { id: 3, type: 'Konge', price: 350},
+  { id: 4, type: 'Dronning', price: 450},
+  { id: 5, type: 'Enkelt hav', price: 250},
+  { id: 6, type: 'Double hav', price: 350}
 ];

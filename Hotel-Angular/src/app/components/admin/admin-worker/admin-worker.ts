@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { worker } from '../../../interfaces/worker';
@@ -9,7 +9,7 @@ import { worker } from '../../../interfaces/worker';
   templateUrl: './admin-worker.html',
   styleUrl: './admin-worker.css',
 })
-export class AdminWorker {
+export class AdminWorker implements AfterViewInit{
   roles: string[] = ['Receptionist', 'Rengøring'];
   displayedColumns: string[] = ['role', 'username', 'fullname', 'buttons'];
   dataSource = new MatTableDataSource<worker>(DATA);
