@@ -1,35 +1,52 @@
 <div class="booking-container">
-    <form (ngSubmit)="onSubmit()">
+    <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
         <div class="contact-info-container">
             <label>Fulde navn</label>
-            <input required type="text" [(ngModel)]="fullName" name="fullName">
+            <input required type="text" formControlName="fullName">
             <label>Email</label>
-            <input required type="text" [(ngModel)]="email" name="email">
+            <input required type="text" formControlName="email">
             <label>Telefon nummer</label>
-            <input required type="text" [(ngModel)]="phoneNumber" name="phoneNumber">
+            <input required type="text" formControlName="phoneNumber">
             <label>Antal personer</label>
-            <input required type="number" [(ngModel)]="personAmount" name="personAmount">
+            <input required type="number" formControlName="personCount">
             <label>Ønsker og bemærkninger</label>
-            <textarea rows="10" type="text" [(ngModel)]="comment" name="comment"></textarea>
+            <textarea rows="10" type="text" formControlName="comment"></textarea>
         </div>
-        <div class="room-picker-container">
-            <div class="room-info-container">
-                <label>Fra</label>
-                <input required type="date" [(ngModel)]="fromDate" name="fromDate">
+        <div>
+            <div class="room-picker-container">
+                <div class="room-info-container">
+                    <label>Fra</label>
+                    <input required type="date" formControlName="fromDate">
 
-                <label>Til</label>
-                <input required type="date" [(ngModel)]="toDate" name="toDate">
-                <label>Værelsestype</label>
-                <input required type="text" [(ngModel)]="roomType" name="roomType">
+                    <label>Til</label>
+                    <input required type="date" formControlName="toDate">
+                    <label>Værelsestype</label>
+                    <input required type="text" formControlName="roomType">
+                </div>
+                <div max-width="200px" max-height="200px">
+                    <img src="assets/logo.png"
+                        style="min-width:200px; max-width: 200px; min-height:200px; max-height: 200px;">
+                </div>
+
             </div>
-            <div max-width="200px" max-height="200px">
-                <img src="assets/logo.png"
-                    style="min-width:200px; max-width: 200px; min-height:200px; max-height: 200px;">
+            <div class="booking-details-container">
+                <div class="booked-rooms-outer-container">
+                    Værelser
+                    <div class="booked-rooms-container">
+                        @for (room of rooms; track room){
+                        <span>{{room}}</span>
+                        }
+                        @empty{
+
+
+                        }
+                    </div>
+                </div>
+                <div class="price-container">
+                    Samlet pris:
+                    <button>Book !</button>
+                </div>
             </div>
-
-        </div>
-        <div class="booking-details-container">
-
         </div>
     </form>
 </div>

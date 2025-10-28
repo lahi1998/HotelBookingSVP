@@ -1,10 +1,15 @@
-form{
+*{
+    box-sizing: border-box;
+}
+
+form {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
 }
-.contact-info-container{
+
+.contact-info-container {
     display: flex;
     flex-direction: column;
     border: 1px solid black;
@@ -12,15 +17,76 @@ form{
     padding: 20px;
     margin: 10px;
 }
-.room-info-container{
+
+.room-info-container {
     display: flex;
     flex-direction: column;
     border: 1px solid black;
     border-radius: 15px;
     padding: 20px;
     margin: 10px;
+    min-width: 60%;
 }
-.room-picker-container{
-    display:flex;
+
+.room-picker-container {
+    display: flex;
     flex-direction: row;
+}
+
+input {
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.2s ease;
+}
+
+input:focus {
+    outline: none;
+    border-color: #4ea9e9;
+}
+
+.booked-rooms-container {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    border-radius: 15px;
+    padding: 20px;
+    
+    /* margin: 10px; */
+}
+
+.booking-details-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: end;
+    margin: 10px;
+}
+
+.price-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.booked-rooms-outer-container {
+    border: 1px solid black;
+    border-radius: 15px;
+    padding: 20px;
+    min-width: 60%;
+}
+
+@media screen and (max-width: 900px) {
+
+    form,
+    .room-picker-container,
+    .booking-details-container {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    .booked-rooms-outer-container {
+        width: 100%;
+    }
 }

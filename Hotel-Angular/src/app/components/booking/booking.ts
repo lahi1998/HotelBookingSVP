@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { BookingService } from '../../services/booking-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-booking',
@@ -6,15 +9,28 @@ import { Component } from '@angular/core';
   templateUrl: './booking.html',
   styleUrl: './booking.css',
 })
-export class Booking {
-fullName: String = "";
-email: String = "";
-phoneNumber: String = "";
-personAmount: number = 1;
-comment: String = "";
-fromDate: Date = new Date();
-toDate: Date = new Date();
-roomType: String = "";
+export class Booking implements OnInit {
+  bookingForm!: FormGroup;
+  rooms: String[] =  ["a", "a"];
+
+  constructor(
+    private fb: FormBuilder,
+    private loginService: BookingService,
+    private router: Router
+  ) { }
+
+ngOnInit(): void {
+    this.bookingForm = this.fb.group({
+      fullName: ['', Validators.required],
+      email: ['', Validators.required],
+      phoneNumber: ['', Validators.required],
+      personCount: [2, Validators.required],
+      comment: ['', Validators.required],
+      fromDate: ['', Validators.required],
+      toDate: ['', Validators.required],
+      roomType: ['', Validators.required],
+    });
+  }
 
 onSubmit(){
 
