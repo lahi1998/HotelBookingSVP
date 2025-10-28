@@ -47,13 +47,13 @@ export class AdminRoom implements AfterViewInit {
 
     const observer: Observer<room> = {
       next: (response) => {
-        console.log('Login successful', response);
-        alert('Login successful!');
+        console.log('Create successful.', response);
+        alert('Create successful!');
         this.router.navigate(['/Components/mainContent']);
       },
       error: (error) => {
-        console.error('Login error', error);
-        alert('Invalid credentials.');
+        console.error('Create error.', error);
+        alert('Create error!');
       },
       complete: () => { },
     };
