@@ -17,6 +17,10 @@ button {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+button:hover {
+  background-color: #2e8cd6;
+}
+
 
 /* Responsive */
 @media screen and (max-width: 480px) {
