@@ -12,12 +12,16 @@ import { worker } from '../../../interfaces/worker';
 export class AdminWorker implements AfterViewInit{
   roles: string[] = ['Receptionist', 'Rengøring'];
   displayedColumns: string[] = ['role', 'username', 'fullname', 'buttons'];
+  filterValue: string = '';
   dataSource = new MatTableDataSource<worker>(DATA);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+  }
+    applyFilter() {
+    this.dataSource.filter = this.filterValue.trim().toLowerCase();
   }
 }
 

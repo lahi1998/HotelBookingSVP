@@ -22,6 +22,7 @@ import { StaffNav } from './components/staff/staff-nav/staff-nav';
 import { Booking } from './components/booking/booking';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { StaffRoomstatus } from './components/staff/staff-roomstatus/staff-roomstatus';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
     StaffCleaning,
     AdminNav,
     StaffNav,
-    Booking
+    Booking,
+    StaffRoomstatus
   ],
   imports: [
     BrowserModule,

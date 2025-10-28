@@ -2,6 +2,8 @@
 <div class="container">
     <div class="table-wrapper ">
         <h2>Værelser</h2>
+        <input style="width: auto; margin: 5px;" matInput [(ngModel)]="filterValue" (ngModelChange)="applyFilter()"
+            placeholder="Søg" />
         <div class="table-border">
             <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
@@ -47,7 +49,7 @@
         </div>
     </div>
 
-    
+
     <div class="create-container">
         <div class="Create-room-inputs" style="flex:1;">
             <label for="roomNumber">Nummer</label>

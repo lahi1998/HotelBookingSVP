@@ -16,8 +16,9 @@ interface ImageData {
 })
 export class AdminRoom implements AfterViewInit {
   displayedColumns: string[] = ['number', 'floor', 'type', 'bedCount', 'buttons'];
+  filterValue: string = '';
   dataSource = new MatTableDataSource<room>(DATA);
-  
+
   // Image handling properties
   images: ImageData[] = [];
   currentImageIndex = 0;
@@ -26,6 +27,10 @@ export class AdminRoom implements AfterViewInit {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+  }
+
+  applyFilter() {
+    this.dataSource.filter = this.filterValue.trim().toLowerCase();
   }
 
   /* image carousel and upload logik */
@@ -76,10 +81,10 @@ export class AdminRoom implements AfterViewInit {
 
 // --- Mock data ---
 const DATA: room[] = [
-  { number: 1, floor: 1, type: 'Enkelt', bedCount: 1},
-  { number: 2, floor: 2, type: 'Double', bedCount: 2},
-  { number: 3, floor: 1, type: 'Enkelt', bedCount: 1},
-  { number: 4, floor: 2, type: 'Double', bedCount: 2},
-  { number: 5, floor: 2, type: 'Konge', bedCount: 1},
-  { number: 6, floor: 2, type: 'Dronning', bedCount: 1}
+  { number: 1, floor: 1, type: 'Enkelt', bedCount: 1 },
+  { number: 2, floor: 2, type: 'Double', bedCount: 2 },
+  { number: 3, floor: 1, type: 'Enkelt', bedCount: 1 },
+  { number: 4, floor: 2, type: 'Double', bedCount: 2 },
+  { number: 5, floor: 2, type: 'Konge', bedCount: 1 },
+  { number: 6, floor: 2, type: 'Dronning', bedCount: 1 }
 ];
