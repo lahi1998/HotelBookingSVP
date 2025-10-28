@@ -1,0 +1,26 @@
+form{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+.contact-info-container{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 10px;
+}
+.room-info-container{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 10px;
+}
+.room-picker-container{
+    display:flex;
+    flex-direction: row;
+}

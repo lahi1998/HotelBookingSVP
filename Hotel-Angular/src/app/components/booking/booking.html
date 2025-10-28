@@ -1,1 +1,35 @@
-<p>booking works!</p>
+<div class="booking-container">
+    <form (ngSubmit)="onSubmit()">
+        <div class="contact-info-container">
+            <label>Fulde navn</label>
+            <input required type="text" [(ngModel)]="fullName" name="fullName">
+            <label>Email</label>
+            <input required type="text" [(ngModel)]="email" name="email">
+            <label>Telefon nummer</label>
+            <input required type="text" [(ngModel)]="phoneNumber" name="phoneNumber">
+            <label>Antal personer</label>
+            <input required type="number" [(ngModel)]="personAmount" name="personAmount">
+            <label>Ønsker og bemærkninger</label>
+            <textarea rows="10" type="text" [(ngModel)]="comment" name="comment"></textarea>
+        </div>
+        <div class="room-picker-container">
+            <div class="room-info-container">
+                <label>Fra</label>
+                <input required type="date" [(ngModel)]="fromDate" name="fromDate">
+
+                <label>Til</label>
+                <input required type="date" [(ngModel)]="toDate" name="toDate">
+                <label>Værelsestype</label>
+                <input required type="text" [(ngModel)]="roomType" name="roomType">
+            </div>
+            <div max-width="200px" max-height="200px">
+                <img src="assets/logo.png"
+                    style="min-width:200px; max-width: 200px; min-height:200px; max-height: 200px;">
+            </div>
+
+        </div>
+        <div class="booking-details-container">
+
+        </div>
+    </form>
+</div>

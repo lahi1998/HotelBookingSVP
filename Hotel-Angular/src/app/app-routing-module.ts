@@ -7,6 +7,7 @@ import { AdminWorker } from './components/admin/admin-worker/admin-worker';
 import { StaffBooking } from './components/staff/staff-booking/staff-booking';
 import { StaffCheckInOut } from './components/staff/staff-check-in-out/staff-check-in-out';
 import { StaffCleaning } from './components/staff/staff-cleaning/staff-cleaning';
+import { Booking } from './components/booking/booking'
 import { StaffService } from './services/staff-service';
 import { StaffRoomstatus } from './components/staff/staff-roomstatus/staff-roomstatus';
 import { StaffNav } from './components/staff/staff-nav/staff-nav';
@@ -45,6 +46,7 @@ export class AuthGuard implements CanActivateChild {
 // --- Routes ---
 const routes: Routes = [
   { path: 'login', component: Login },
+  { path: 'booking', component: Booking },
 
   // --- Admin child group ---
   {
