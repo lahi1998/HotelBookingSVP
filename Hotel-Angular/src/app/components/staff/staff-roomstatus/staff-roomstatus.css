@@ -4,24 +4,24 @@ h2 {
     margin: 20px 0;
     font-weight: 400;
     text-align: center;
+    
 }
 
 .container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;
-    /* keeps them together */
+    justify-content: center; /* centers children horizontally */
     align-items: flex-start;
     gap: 5%;
-    /* space between table and form */
     padding: 2% 5%;
 }
 
 /* Table wrapper */
 .table-wrapper {
     flex: 1 1 60%;
-    min-width: 300px;
-    max-width: 700px;
+    max-width: 60%;
+    margin: 0 auto; /* ensure wrapper is centered */
+    display: block;
 }
 
 .table-border {
