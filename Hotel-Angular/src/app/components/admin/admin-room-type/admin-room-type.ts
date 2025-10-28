@@ -2,7 +2,7 @@ import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { roomType } from '../../../interfaces/room-type';
-import { FormsModule } from '@angular/forms';
+
 
 @Component({
   selector: 'app-admin-room-type',

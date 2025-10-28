@@ -2,39 +2,48 @@
   <mat-card class="login-card">
     <h2>Login</h2>
 
-    <form (ngSubmit)="onSubmit()">
-
-      <!-- Row with inputs on the left and image on the right -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
       <div class="form-row">
-        <!-- Inputs column -->
+        <!-- Inputs (left) -->
         <div class="inputs-column">
-          <mat-form-field appearance="fill" class="full-width">
-            <mat-label>Brugernavn</mat-label>
-            <input matInput type="text" [(ngModel)]="username" name="username">
-            <mat-error *ngIf="usernameError">Need username</mat-error>
-          </mat-form-field>
+          <label class="form-group">
+            <span class="label">Brugernavn</span>
+            <input type="text" formControlName="username" placeholder="Indtast brugernavn" autocomplete="username"
+              class="input" />
+            <div class="error"
+              *ngIf="loginForm.get('username')?.invalid && (loginForm.get('username')?.touched || loginForm.get('username')?.dirty)">
+              Brugernavn er påkrævet
+            </div>
+          </label>
 
-          <mat-form-field appearance="fill" class="full-width">
-            <mat-label>Kodeord</mat-label>
-            <input matInput [type]="hidePassword ? 'password' : 'text'" [(ngModel)]="password" name="password">
-            <button type="button" mat-icon-button matSuffix (click)="togglePassword()">
-              <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          <label class="form-group">
+            <span class="label">Adgangskode</span>
+            <div class="password-wrapper">
+              <input [type]="hidePassword ? 'password' : 'text'" formControlName="password"
+                placeholder="Indtast adgangskode" autocomplete="current-password" class="input" />
+              <button type="button" class="toggle-btn" (click)="togglePassword()" [attr.aria-pressed]="!hidePassword"
+                [attr.aria-label]="hidePassword ? 'Vis adgangskode' : 'Skjul adgangskode'">
+                {{ hidePassword ? 'Vis' : 'Skjul' }}
+              </button>
+            </div>
+            <div class="error"
+              *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.touched || loginForm.get('password')?.dirty)">
+              Adgangskode er påkrævet
+            </div>
+          </label>
+
+          <div class="button-container">
+            <button class="login-button" type="submit" [disabled]="loginForm.invalid">
+              Log ind
             </button>
-            <mat-error *ngIf="passwordError">Need password</mat-error>
-          </mat-form-field>
+          </div>
         </div>
 
-        <!-- Image column -->
+        <!-- Logo (right) -->
         <div class="img-box">
-          <img src="/assets/logo.png" alt="Logo">
+          <img src="/assets/logo.png" alt="Logo" />
         </div>
       </div>
-
-      <!-- Login button -->
-      <div class="button-container">
-        <button mat-raised-button color="primary" type="submit">Log ind</button>
-      </div>
-
     </form>
   </mat-card>
 </div>
