@@ -2,11 +2,7 @@ import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { room } from '../../../interfaces/room';
-
-interface ImageData {
-  file: File;
-  dataUrl: string;
-}
+import { ImageData } from '../../../interfaces/image-data';
 
 @Component({
   selector: 'app-admin-room',
