@@ -21,7 +21,7 @@ export class LoginService {
         tap((response: any) => {
           if (response.jwtToken) {
             // Store the JWT token in session storage (temp solution not safe todo)
-            sessionStorage.setItem('jwtToken', response.jwtToken);
+            sessionStorage.setItem('jwtToken', response.Token);
           }
         })
       );

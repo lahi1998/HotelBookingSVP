@@ -19,6 +19,7 @@ export class AdminRoom implements AfterViewInit {
   filterValue: string = '';
   dataSource = new MatTableDataSource<room>(DATA);
   roomForm!: FormGroup;
+
   // Image handling properties
   images: ImageData[] = [];
   currentImageIndex = 0;
@@ -58,7 +59,10 @@ export class AdminRoom implements AfterViewInit {
       next: (response) => {
         console.log('Create successful.', response);
         alert('Create successful!');
-        this.router.navigate(['/Components/mainContent']);
+
+      // Upload the images AFTER room creation
+      this.uploadRoomImages(number, floor);
+
       },
       error: (error) => {
         console.error('Create error.', error);
@@ -69,13 +73,6 @@ export class AdminRoom implements AfterViewInit {
 
     this.adminService.postRoom(number, floor, roomType, bedAmount).subscribe(observer);
   }
-
-
-
-
-
-
-
 
   /* image carousel and upload logik */
   async onFilesSelected(event: Event) {
@@ -121,6 +118,30 @@ export class AdminRoom implements AfterViewInit {
       this.currentImageIndex = Math.max(0, this.images.length - 1);
     }
   }
+
+  uploadRoomImages(number: string, floor: string) {
+  if (this.images.length === 0) return;
+
+  const formData = new FormData();
+  formData.append('number', number);
+  formData.append('floor', floor);
+
+  this.images.forEach((image) => {
+    formData.append('images', image.file);
+  });
+
+  this.adminService.uploadRoomImages(formData).subscribe({
+    next: () => {
+      console.log('Images uploaded successfully');
+      alert('Room images uploaded and saved!');
+    },
+    error: (err) => {
+      console.error('Image upload failed:', err);
+      alert('Image upload failed!');
+    },
+  });
+}
+
 }
 
 // --- Mock data ---
