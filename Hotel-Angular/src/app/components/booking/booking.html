@@ -1,1 +1,62 @@
-<p>booking works!</p>
+<div class="booking-container">
+    <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
+        <div class="contact-info-container">
+            <label>Fulde navn</label>
+            <input required type="text" formControlName="fullName">
+            <label>Email</label>
+            <input required type="text" formControlName="email">
+            <label>Telefon nummer</label>
+            <input required type="text" formControlName="phoneNumber">
+            <label>Antal personer</label>
+            <input required type="number" formControlName="personCount">
+            <label>Ønsker og bemærkninger</label>
+            <textarea rows="10" type="text" formControlName="comment"></textarea>
+        </div>
+        <div style="max-width: 100%;">
+            <div class="room-picker-container">
+                <div class="room-info-container">
+                    <label>Fra</label>
+                    <input required type="date" formControlName="fromDate">
+
+                    <label>Til</label>
+                    <input required type="date" formControlName="toDate">
+                    <label>Værelsestype</label>
+                    <input required type="text" formControlName="roomType">
+                </div>
+
+
+                <div class="carousel" *ngIf="images.length > 0">
+                    <div class="carousel-main">
+                        <button class="imgControlBtn" type="button" (click)="prevImage()"
+                            [disabled]="images.length <= 1">‹</button>
+                        <img class="imgprew" [src]="images[currentImageIndex]?.dataUrl" alt="Preview">
+                        <button class="imgControlBtn" type="button" (click)="nextImage()"
+                            [disabled]="images.length <= 1">›</button>
+                    </div>
+                    <div class="thumbnails">
+                        <img *ngFor="let img of images; let i = index" [src]="img.dataUrl"
+                            [style.border]="i === currentImageIndex ? '2px solid #3f51b5' : '1px solid #ddd'">
+                    </div>
+                </div>
+            </div>
+            <div class="booking-details-container">
+                <div class="booked-rooms-outer-container">
+                    Værelser
+                    <div class="booked-rooms-container">
+                        @for (room of rooms; track room){
+                        <span>{{room}}</span>
+                        }
+                        @empty{
+
+
+                        }
+                    </div>
+                </div>
+                <div class="price-container">
+                    Samlet pris:
+                    <button class="bg-blue">Book !</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
