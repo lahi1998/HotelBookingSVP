@@ -38,6 +38,8 @@ export class AdminRoom implements AfterViewInit {
       roomType: ['', Validators.required],
       bedamount: ['', Validators.required],
     });
+
+    this.getRooms();
   }
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;

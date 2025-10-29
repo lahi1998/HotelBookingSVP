@@ -32,7 +32,6 @@ export class AdminWorker implements AfterViewInit{
     this.workerForm = this.fb.group({
       fullName: ['', Validators.required],
       role: ['', Validators.required],
-      roomType: ['', Validators.required],
       bedamount: ['', Validators.required],
     });
   }
@@ -43,6 +42,8 @@ export class AdminWorker implements AfterViewInit{
     applyFilter() {
     this.dataSource.filter = this.filterValue.trim().toLowerCase();
   }
+
+    onSubmit(): void {}
 
     DeleteRow(id: number) {
   

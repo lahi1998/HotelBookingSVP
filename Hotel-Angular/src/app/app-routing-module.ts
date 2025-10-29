@@ -9,6 +9,7 @@ import { StaffCheckInOut } from './components/staff/staffCheckInOut/staffCheckIn
 import { StaffCleaning } from './components/staff/staffCleaning/staffCleaning';
 import { StaffRoomstatus } from './components/staff/staffRoomstatus/staffRoomstatus';
 import { StaffNav } from './components/staff/staffNav/staffNav';
+import { Booking } from './components/booking/booking';
 
 // --- Simple AuthService ---
 @Injectable({ providedIn: 'root' })
@@ -16,16 +17,20 @@ export class AuthService {
   private loggedIn = true; // change to false to test guard
 
   isAuthenticated(): boolean {
-    return this.loggedIn;
+    const storedKey = sessionStorage.getItem('authKey');
+    if (!storedKey) return false;
+    const token = sessionStorage.getItem(storedKey);
+    return !!token;
   }
 
-  login() {
-    this.loggedIn = true;
+  logout(): void {
+    const storedKey = sessionStorage.getItem('authKey');
+    if (storedKey) {
+      sessionStorage.removeItem(storedKey);
+      sessionStorage.removeItem('authKey');
+    }
   }
 
-  logout() {
-    this.loggedIn = false;
-  }
 }
 
 // --- AuthGuard using AuthService ---
@@ -44,6 +49,7 @@ export class AuthGuard implements CanActivateChild {
 // --- Routes ---
 const routes: Routes = [
   { path: 'login', component: Login },
+  { path: 'booking', component: Booking },
 
   // --- Admin child group ---
   {
@@ -68,9 +74,8 @@ const routes: Routes = [
       { path: 'nav', component: StaffNav },
     ],
   },
-
   // --- Default redirects ---
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', redirectTo: 'booking', pathMatch: 'full' },
   { path: '**', redirectTo: 'login' },
 ];
 
