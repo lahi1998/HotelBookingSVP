@@ -5,7 +5,7 @@ import { staffDto } from '../../../interfaces/staffDto';
 import { Observer } from 'rxjs';
 import { Router } from '@angular/router';
 import { AdminService } from '../../../services/adminService';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CreateStaffRequest } from '../../../interfaces/createStaffRequest';
 
 @Component({
@@ -36,7 +36,23 @@ export class AdminWorker implements AfterViewInit {
       password: ['', Validators.required],
       passwordConfirm: ['', Validators.required],
       fullName: ['', Validators.required],
-    });
+    },
+      { validators: this.passwordsMatchValidator }
+    );
+  }
+
+  passwordsMatchValidator(control: AbstractControl) {
+    const password = control.get('password')?.value;
+    const confirm = control.get('passwordConfirm')?.value;
+    if (password && confirm && password !== confirm) {
+      control.get('passwordConfirm')?.setErrors({ mismatch: true });
+    } else {
+      // only clear mismatch error (not required)
+      if (control.get('passwordConfirm')?.hasError('mismatch')) {
+        control.get('passwordConfirm')?.setErrors(null);
+      }
+    }
+    return null;
   }
 
   ngAfterViewInit() {
@@ -54,12 +70,6 @@ export class AdminWorker implements AfterViewInit {
         password: this.workerForm.value.password,
         fullName: this.workerForm.value.fullName,
       };
-
-      if (this.workerForm.value.password !== this.workerForm.value.passwordConfirm) {
-        this.workerForm.get('passwordConfirm')?.setErrors({ mismatch: true });
-      } else {
-        this.workerForm.get('passwordConfirm')?.setErrors(null);
-      }
 
       const observer: Observer<CreateStaffRequest> = {
         next: (response) => {

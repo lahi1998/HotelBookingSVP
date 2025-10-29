@@ -14,7 +14,7 @@ import { StaffNav } from './components/staff/staffNav/staffNav';
 // --- Simple AuthService ---
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  loggedIn = true; // change to false to test guard
+  loggedIn = false; // change to false to test guard
 
   isAuthenticated(): boolean {
     if (this.loggedIn = true) {return true;}
@@ -77,7 +77,7 @@ const routes: Routes = [
   },
   // --- Default redirects ---
   { path: '', redirectTo: 'booking', pathMatch: 'full' },
-  { path: '**', redirectTo: 'booking' },
+  { path: '**', redirectTo: 'login' },
 ];
 
 @NgModule({
