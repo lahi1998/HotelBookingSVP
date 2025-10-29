@@ -11,9 +11,9 @@ import { CreateRoomRequest } from '../interfaces/createRoomRequest';
 })
 export class AdminService {
   /* Api endpoints */
-  url: string = "https://localhost:8443/api/rooms"; 
-  url2: string = "https://localhost:8443/api/roomImages"; 
-  url3: string = "https://localhost:8443/api/staff"; 
+  url: string = "https://hotel-hyggely.dk/api/rooms"; 
+  url2: string = "https://hotel-hyggely.dk/api/roomImages"; 
+  url3: string = "https://hotel-hyggely.dk/api/staff"; 
 
   constructor(private httpClient: HttpClient) { }
 

@@ -7,7 +7,7 @@ import { LoginInterface } from '../interfaces/loginInterface';
   providedIn: 'root'
 })
 export class LoginService {
-  url: string = "https://localhost:8443/api/auth/login"; // API endpoint
+  url: string = "https://hotel-hyggely.dk/api/auth/login"; // API endpoint
 
   constructor(private httpClient: HttpClient) { }
 

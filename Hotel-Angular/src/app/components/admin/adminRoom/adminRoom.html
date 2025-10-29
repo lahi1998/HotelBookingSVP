@@ -54,7 +54,7 @@
         <div [formGroup]="roomForm" (ngSubmit)="onSubmit()" class="Create-room-inputs" style="flex:1;">
             <label>Nummer</label>
             <div class="form-group">
-                <input type="number" formControlName="number" placeholder="Indtast nummer" autocomplete="number" />
+                <input type="number" formControlName="number" placeholder="Indtast nummer" autocomplete="off" />
                 <div class="error"
                     *ngIf="roomForm.get('number')?.invalid && (roomForm.get('number')?.touched || roomForm.get('number')?.dirty)">
                     Nummer er påkrævet
@@ -62,7 +62,7 @@
             </div>
             <label>Etage</label>
             <div class="form-group">
-                <input type="number" formControlName="floor" placeholder="Indtast etage" autocomplete="floor" />
+                <input type="number" formControlName="floor" placeholder="Indtast etage" autocomplete="off" />
                 <div class="error"
                     *ngIf="roomForm.get('floor')?.invalid && (roomForm.get('floor')?.touched || roomForm.get('floor')?.dirty)">
                     Etage er påkrævet
@@ -70,7 +70,7 @@
             </div>
             <label>Værelses type #ikke færdig skal laves om til drop down</label>
             <div class="form-group">
-                <input type="text" formControlName="number" placeholder="Indtast Nummer" autocomplete="number" />
+                <input type="text" formControlName="number" placeholder="Indtast Nummer" autocomplete="off" />
                 <div class="error"
                     *ngIf="roomForm.get('number')?.invalid && (roomForm.get('number')?.touched || roomForm.get('number')?.dirty)">
                     Værelses type er påkrævet
@@ -78,7 +78,7 @@
             </div>
             <label>Antal senge</label>
             <div class="form-group">
-                <input type="text" formControlName="number" placeholder="Indtast Nummer" autocomplete="number" />
+                <input type="text" formControlName="number" placeholder="Indtast Nummer" autocomplete="off" />
                 <div class="error"
                     *ngIf="roomForm.get('number')?.invalid && (roomForm.get('number')?.touched || roomForm.get('number')?.dirty)">
                     Antal senge er påkrævet

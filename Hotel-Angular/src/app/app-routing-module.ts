@@ -14,9 +14,10 @@ import { Booking } from './components/booking/booking';
 // --- Simple AuthService ---
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private loggedIn = true; // change to false to test guard
+  loggedIn = true; // change to false to test guard
 
   isAuthenticated(): boolean {
+    if (this.loggedIn = true) {return true;}
     const storedKey = sessionStorage.getItem('authKey');
     if (!storedKey) return false;
     const token = sessionStorage.getItem(storedKey);
