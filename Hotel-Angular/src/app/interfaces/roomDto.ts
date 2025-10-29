@@ -1,4 +1,4 @@
-export interface room {
+export interface roomDto {
 id: number;
 roomType: number;
 lastCleaned: string;

@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { room } from '../../../interfaces/room';
+import { room } from '../../../interfaces/roomDto';
 import { RoomStatus } from '../../../interfaces/room-status';
 
 @Component({

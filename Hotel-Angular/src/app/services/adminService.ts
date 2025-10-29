@@ -1,8 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
-import { room } from '../interfaces/room';
-import { worker } from '../interfaces/worker';
+import { roomDto } from '../interfaces/roomDto';
+import { staffDto } from '../interfaces/staffDto';
+import { CreateStaffRequest } from '../interfaces/createStaffRequest';
+import { CreateRoomRequest } from '../interfaces/createRoomRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -16,11 +18,10 @@ export class AdminService {
   constructor(private httpClient: HttpClient) { }
 
   /* room methods */
-  postRoom(number: number, floor: number, roomType: number, bedAmount: number): Observable<room> {
-    const roomData = { number, floor, roomType, bedAmount };
+  postRoom(newRoom: CreateRoomRequest): Observable<CreateRoomRequest> {
 
     // Send a POST request to the API for room creation
-    return this.httpClient.post<room>(`${this.url}`, roomData)
+    return this.httpClient.post<CreateRoomRequest>(`${this.url}`, newRoom)
   }
 
   uploadRoomImages(formData: FormData) {
@@ -29,28 +30,27 @@ export class AdminService {
     return this.httpClient.post(`${this.url2}`, formData);
   }
 
-  getRooms(): Observable<room[]> {
-    return this.httpClient.get<room[]>(this.url).pipe(
-      tap((rooms: room[]) => {
+  getRooms(): Observable<roomDto[]> {
+    return this.httpClient.get<roomDto[]>(this.url).pipe(
+      tap((rooms: roomDto[]) => {
         console.log('Fetched rooms:', rooms);
       })
     );
   }
 
-  deleteRoom(id: number): Observable<room> {
-    return this.httpClient.delete<room>(`${this.url}/${id}`);
+  deleteRoom(id: number): Observable<any> {
+    return this.httpClient.delete<any>(`${this.url}/${id}`);
   }
 
   /* worker methods */
-  postWorker(number: number, floor: number, roomType: number, bedAmount: number): Observable<room> {
-    const roomData = { number, floor, roomType, bedAmount };
+  postWorker(newWorker: CreateStaffRequest): Observable<CreateStaffRequest> {
 
     // Send a POST request to the API for room creation
-    return this.httpClient.post<room>(`${this.url}`, roomData)
+    return this.httpClient.post<CreateStaffRequest>(`${this.url}`, newWorker)
   }
 
-  deleteWorker(id: number): Observable<worker> {
-    return this.httpClient.delete<worker>(`${this.url3}/${id}`);
+  deleteWorker(id: number): Observable<any> {
+    return this.httpClient.delete<any>(`${this.url3}/${id}`);
   }
 
 }

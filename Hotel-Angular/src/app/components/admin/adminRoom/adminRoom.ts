@@ -1,12 +1,13 @@
 import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { room } from '../../../interfaces/room';
+import { roomDto } from '../../../interfaces/roomDto';
 import { ImageData } from '../../../interfaces/imageData';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observer } from 'rxjs';
 import { AdminService } from '../../../services/adminService';
 import { Router } from '@angular/router';
+import { CreateRoomRequest } from '../../../interfaces/createRoomRequest';
 
 @Component({
   selector: 'app-adminRoom',
@@ -17,8 +18,8 @@ import { Router } from '@angular/router';
 export class AdminRoom implements AfterViewInit {
   displayedColumns: string[] = ['number', 'floor', 'roomType', 'bedAmount', 'buttons'];
   filterValue: string = '';
-  DATA: room[] = [];
-  dataSource = new MatTableDataSource<room>(this.DATA);
+  DATA: roomDto[] = [];
+  dataSource = new MatTableDataSource<roomDto>(this.DATA);
   roomForm!: FormGroup;
 
   // Image handling properties
@@ -54,29 +55,36 @@ export class AdminRoom implements AfterViewInit {
 
 
   onSubmit(): void {
-    if (this.roomForm.invalid) return;
+    if (this.roomForm.valid) {
+      const newRoom: CreateRoomRequest = {
+        roomType: this.roomForm.value.roomType,
+        lastCleaned: new Date().toISOString(),
+        number: this.roomForm.value.number,
+        floor: this.roomForm.value.floor,
+        bedAmount: this.roomForm.value.bedamount,
+      };
 
-    const { number, floor, roomType, bedAmount } = this.roomForm.value;
 
-    const observer: Observer<room> = {
-      next: (response) => {
-        console.log('Create successful.', response);
-        alert('Create successful!');
+      const observer: Observer<CreateRoomRequest> = {
+        next: (response) => {
+          console.log('Create successful.', response);
+          alert('Create successful!');
 
-        // Upload the images AFTER room creation
-        this.uploadRoomImages(number, floor);
+          // Upload the images AFTER room creation
+          this.uploadRoomImages(this.roomForm.value.number, this.roomForm.value.floor);
 
-      },
-      error: (error) => {
-        console.error('Create error.', error);
-        alert('Create error!');
-      },
-      complete: () => {
-        // optional cleanup or navigation
-      },
-    };
+        },
+        error: (error) => {
+          console.error('Create error.', error);
+          alert('Create error!');
+        },
+        complete: () => {
+          // optional cleanup or navigation
+        },
+      };
 
-    this.adminService.postRoom(number, floor, roomType, bedAmount).subscribe(observer);
+      this.adminService.postRoom(newRoom).subscribe(observer);
+    }
   }
 
   /* image carousel and upload logik */
@@ -153,7 +161,7 @@ export class AdminRoom implements AfterViewInit {
   }
 
   getRooms() {
-    const observer: Observer<room[]> = {
+    const observer: Observer<roomDto[]> = {
       next: (rooms) => {
         this.DATA = Array.isArray(rooms) ? rooms : [];
         this.dataSource.data = this.DATA;
@@ -174,7 +182,7 @@ export class AdminRoom implements AfterViewInit {
 
   DeleteRow(id: number) {
 
-        const observer: Observer<room> = {
+    const observer: Observer<roomDto> = {
       next: (response) => {
         console.log('Delete successful.', response);
         alert('Delete successful!');
