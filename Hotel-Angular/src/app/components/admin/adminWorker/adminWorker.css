@@ -50,12 +50,21 @@ button {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+
 .edit {
     background-color: #4EA9E9;
 }
 
+.edit:hover {
+  background-color: #2e8cd6;
+}
+
 .delete {
     background-color: #FF4646;
+}
+
+.delete:hover {
+    background-color: #e93d3d;
 }
 
 /* Create-worker (form) */
@@ -85,6 +94,10 @@ select {
     background-color: #4EA9E9;
     align-self: flex-end;
     margin-top: 12px;
+}
+
+.create:hover {
+  background-color: #2e8cd6;
 }
 
 /* Responsive behavior */

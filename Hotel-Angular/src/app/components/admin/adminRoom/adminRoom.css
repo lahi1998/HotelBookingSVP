@@ -57,8 +57,16 @@ button {
     background-color: #4EA9E9;
 }
 
+.edit:hover {
+  background-color: #2e8cd6;
+}
+
 .delete {
     background-color: #FF4646;
+}
+
+.delete:hover {
+    background-color: #e93d3d;
 }
 
 /* Create-room-box (form) */
@@ -97,6 +105,15 @@ select {
     margin-top: 12px;
 }
 
+.create:hover {
+  background-color: #2e8cd6;
+}
+
+.error {
+  color: #d9534f;
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
 
 /* Image carousel and upload */
 

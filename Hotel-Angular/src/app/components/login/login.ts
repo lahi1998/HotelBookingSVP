@@ -41,7 +41,6 @@ export class Login implements OnInit {
       next: (response) => {
         console.log('Login successful', response);
         alert('Login successful!');
-        this.router.navigate(['/Components/mainContent']);
       },
       error: (error) => {
         console.error('Login error', error);

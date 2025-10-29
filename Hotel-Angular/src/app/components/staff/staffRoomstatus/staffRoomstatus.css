@@ -43,14 +43,6 @@ button {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.edit {
-    background-color: #4EA9E9;
-}
-
-.delete {
-    background-color: #FF4646;
-}
-
 input,
 select {
     padding: 8px;

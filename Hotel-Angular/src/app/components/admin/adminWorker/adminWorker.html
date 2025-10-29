@@ -29,7 +29,7 @@
                     <th style="border-right: none;" mat-header-cell *matHeaderCellDef></th>
                     <td style="border-right: none;" mat-cell *matCellDef="let worker">
                         <button class="edit">Rediger</button>
-                        <button class="delete">Slet</button>
+                        <button class="delete" (click)="DeleteRow(worker.id)">Slet</button>
                     </td>
                 </ng-container>
 
@@ -42,7 +42,19 @@
         </div>
     </div>
 
-    <div class="Create-worker right">
+    <div [formGroup]="workerForm" (ngSubmit)="onSubmit()" class="Create-worker right">
+
+            <label>Nummer</label>
+            <div class="form-group">
+                <input type="number" formControlName="number" placeholder="Indtast nummer" autocomplete="number" />
+                <div class="error"
+                    *ngIf="workerForm.get('number')?.invalid && (workerForm.get('number')?.touched || workerForm.get('number')?.dirty)">
+                    Nummer er påkrævet
+                </div>
+            </div>
+
+            <button class="create" type="button">Opret</button>
+
         <label for="fullname">Fulde navn</label>
         <input id="fullname" type="text">
         <label for="role">Role</label>
