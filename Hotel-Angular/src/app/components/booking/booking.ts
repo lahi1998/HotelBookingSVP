@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BookingService } from '../../services/booking-service';
+import { BookingService } from '../../services/bookingService';
 import { Router } from '@angular/router';
 
 //Move this to its own  interface file
