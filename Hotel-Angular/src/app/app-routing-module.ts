@@ -18,16 +18,20 @@ export class AuthService {
   private loggedIn = true; // change to false to test guard
 
   isAuthenticated(): boolean {
-    return this.loggedIn;
+    const storedKey = sessionStorage.getItem('authKey');
+    if (!storedKey) return false;
+    const token = sessionStorage.getItem(storedKey);
+    return !!token;
   }
 
-  login() {
-    this.loggedIn = true;
+  logout(): void {
+    const storedKey = sessionStorage.getItem('authKey');
+    if (storedKey) {
+      sessionStorage.removeItem(storedKey);
+      sessionStorage.removeItem('authKey');
+    }
   }
 
-  logout() {
-    this.loggedIn = false;
-  }
 }
 
 // --- AuthGuard using AuthService ---
@@ -71,7 +75,6 @@ const routes: Routes = [
       { path: 'nav', component: StaffNav },
     ],
   },
-
   // --- Default redirects ---
   { path: '', redirectTo: 'booking', pathMatch: 'full' },
   { path: '**', redirectTo: 'booking' },

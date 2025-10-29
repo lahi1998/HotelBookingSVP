@@ -71,3 +71,9 @@ $tf/
 *.tlog
 *.vspscc
 *.vssscc
+
+# App settings
+appsettings.json
+appsettings.Development.json
+/Hotel-Hyggely-API/Hotel-Hyggely-API/appsettings.json
+/Hotel-Hyggely-API/Hotel-Hyggely-API/appsettings.Development.json

@@ -1,0 +1,129 @@
+/* admin table room type */
+
+h2 {
+    margin: 20px 0;
+    font-weight: 400;
+    text-align: center;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start; /* keeps them together */
+    align-items: flex-start;
+    gap: 5%; /* space between table and form */
+    padding: 2% 5%;
+}
+
+/* Table wrapper */
+.table-wrapper {
+    flex: 1 1 60%;
+    min-width: 300px;
+    max-width: 700px;
+}
+
+.table-border {
+    border: solid 1px black;
+    border-radius: 15px;
+    overflow-x: auto; /* prevents horizontal overflow */
+}
+
+th {
+    background-color: #D9D9D9 !important;
+    border-right: 1px solid black;
+}
+
+td {
+    border-right: 1px solid black;
+    border-bottom: 1px solid black !important;
+}
+
+button {
+    margin: 10px 5px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+.edit {
+    background-color: #4EA9E9;
+}
+
+.edit:hover {
+  background-color: #2e8cd6;
+}
+
+.delete {
+    background-color: #FF4646;
+}
+
+.delete:hover {
+    background-color: #e93d3d;
+}
+
+/* Create-worker (form) */
+.Create-worker {
+    flex: 1 1 35%;
+    min-width: 280px;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 15px;
+    border: solid 1px black;
+    border-radius: 15px;
+    margin-top: 3.5%;
+}
+
+input,
+select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 70%;
+}
+
+.create {
+    background-color: #4EA9E9;
+    align-self: flex-end;
+    margin-top: 12px;
+}
+
+.create:hover {
+  background-color: #2e8cd6;
+}
+
+/* Responsive behavior */
+@media screen and (max-width: 900px) {
+    .container {
+        flex-direction: column;
+        gap: 20px; /* smaller vertical spacing */
+        padding: 2%;
+    }
+
+    .table-wrapper,
+    .Create-type-box {
+        flex: 1 1 100%;
+        max-width: none;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    th,
+    td {
+        font-size: 12px;
+        padding: 4px;
+    }
+
+    button {
+        font-size: 14px;
+        padding: 4px 8px;
+    }
+}
