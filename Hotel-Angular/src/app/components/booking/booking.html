@@ -12,7 +12,7 @@
             <label>Ønsker og bemærkninger</label>
             <textarea rows="10" type="text" formControlName="comment"></textarea>
         </div>
-        <div>
+        <div style="max-width: 100%;">
             <div class="room-picker-container">
                 <div class="room-info-container">
                     <label>Fra</label>
@@ -23,11 +23,21 @@
                     <label>Værelsestype</label>
                     <input required type="text" formControlName="roomType">
                 </div>
-                <div max-width="200px" max-height="200px">
-                    <img src="assets/logo.png"
-                        style="min-width:200px; max-width: 200px; min-height:200px; max-height: 200px;">
-                </div>
 
+
+                <div class="carousel" *ngIf="images.length > 0">
+                    <div class="carousel-main">
+                        <button class="imgControlBtn" type="button" (click)="prevImage()"
+                            [disabled]="images.length <= 1">‹</button>
+                        <img class="imgprew" [src]="images[currentImageIndex]?.dataUrl" alt="Preview">
+                        <button class="imgControlBtn" type="button" (click)="nextImage()"
+                            [disabled]="images.length <= 1">›</button>
+                    </div>
+                    <div class="thumbnails">
+                        <img *ngFor="let img of images; let i = index" [src]="img.dataUrl"
+                            [style.border]="i === currentImageIndex ? '2px solid #3f51b5' : '1px solid #ddd'">
+                    </div>
+                </div>
             </div>
             <div class="booking-details-container">
                 <div class="booked-rooms-outer-container">
@@ -44,7 +54,7 @@
                 </div>
                 <div class="price-container">
                     Samlet pris:
-                    <button>Book !</button>
+                    <button class="bg-blue">Book !</button>
                 </div>
             </div>
         </div>
