@@ -2,6 +2,10 @@ import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { worker } from '../../../interfaces/worker';
+import { Observer } from 'rxjs';
+import { Router } from '@angular/router';
+import { AdminService } from '../../../services/adminService';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-adminWorker',
@@ -14,8 +18,24 @@ export class AdminWorker implements AfterViewInit{
   displayedColumns: string[] = ['role', 'username', 'fullname', 'buttons'];
   filterValue: string = '';
   dataSource = new MatTableDataSource<worker>(DATA);
+  workerForm!: FormGroup;
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+    @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+    constructor(
+    private fb: FormBuilder,
+    private adminService: AdminService,
+    private router: Router
+  ) { }
+
+    ngOnInit() {
+    this.workerForm = this.fb.group({
+      fullName: ['', Validators.required],
+      role: ['', Validators.required],
+      roomType: ['', Validators.required],
+      bedamount: ['', Validators.required],
+    });
+  }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -23,6 +43,25 @@ export class AdminWorker implements AfterViewInit{
     applyFilter() {
     this.dataSource.filter = this.filterValue.trim().toLowerCase();
   }
+
+    DeleteRow(id: number) {
+  
+          const observer: Observer<worker> = {
+        next: (response) => {
+          console.log('Delete successful.', response);
+          alert('Delete successful!');
+        },
+        error: (error) => {
+          console.error('Delete error.', error);
+          alert('Delete error!');
+        },
+        complete: () => {
+          // optional cleanup or navigation
+        },
+      };
+  
+      this.adminService.deleteWorker(id).subscribe(observer);
+    }
 }
 
 // --- Mock data ---

@@ -17,7 +17,8 @@ import { Router } from '@angular/router';
 export class AdminRoom implements AfterViewInit {
   displayedColumns: string[] = ['number', 'floor', 'roomType', 'bedAmount', 'buttons'];
   filterValue: string = '';
-  dataSource = new MatTableDataSource<room>(DATA);
+  DATA: room[] = [];
+  dataSource = new MatTableDataSource<room>(this.DATA);
   roomForm!: FormGroup;
 
   // Image handling properties
@@ -30,7 +31,7 @@ export class AdminRoom implements AfterViewInit {
     private router: Router
   ) { }
 
-    ngOnInit() {
+  ngOnInit() {
     this.roomForm = this.fb.group({
       number: ['', Validators.required],
       floor: ['', Validators.required],
@@ -53,22 +54,24 @@ export class AdminRoom implements AfterViewInit {
   onSubmit(): void {
     if (this.roomForm.invalid) return;
 
-    const {number, floor, roomType, bedAmount} = this.roomForm.value;
+    const { number, floor, roomType, bedAmount } = this.roomForm.value;
 
     const observer: Observer<room> = {
       next: (response) => {
         console.log('Create successful.', response);
         alert('Create successful!');
 
-      // Upload the images AFTER room creation
-      this.uploadRoomImages(number, floor);
+        // Upload the images AFTER room creation
+        this.uploadRoomImages(number, floor);
 
       },
       error: (error) => {
         console.error('Create error.', error);
         alert('Create error!');
       },
-      complete: () => { },
+      complete: () => {
+        // optional cleanup or navigation
+      },
     };
 
     this.adminService.postRoom(number, floor, roomType, bedAmount).subscribe(observer);
@@ -120,33 +123,70 @@ export class AdminRoom implements AfterViewInit {
   }
 
   uploadRoomImages(number: string, floor: string) {
-  if (this.images.length === 0) return;
+    if (this.images.length === 0) return;
 
-  const formData = new FormData();
-  formData.append('number', number);
-  formData.append('floor', floor);
+    const formData = new FormData();
+    formData.append('number', number);
+    formData.append('floor', floor);
 
-  this.images.forEach((image) => {
-    formData.append('images', image.file);
-  });
+    this.images.forEach((image) => {
+      formData.append('images', image.file);
+    });
 
-  this.adminService.uploadRoomImages(formData).subscribe({
-    next: () => {
-      console.log('Images uploaded successfully');
-      alert('Room images uploaded and saved!');
-    },
-    error: (err) => {
-      console.error('Image upload failed:', err);
-      alert('Image upload failed!');
-    },
-  });
+    const observer: Observer<any> = {
+      next: () => {
+        console.log('Images uploaded successfully');
+        alert('Room images uploaded and saved!');
+      },
+      error: (err) => {
+        console.error('Image upload failed:', err);
+        alert('Image upload failed!');
+      },
+      complete: () => {
+        // optional cleanup or navigation
+      },
+    };
+
+    this.adminService.uploadRoomImages(formData).subscribe(observer);
+  }
+
+  getRooms() {
+    const observer: Observer<room[]> = {
+      next: (rooms) => {
+        this.DATA = Array.isArray(rooms) ? rooms : [];
+        this.dataSource.data = this.DATA;
+        console.log('Rooms fetched successfully', rooms);
+        alert('Rooms fetched!');
+      },
+      error: (err) => {
+        console.error('Rooms fetch failed:', err);
+        alert('Rooms fetch failed!');
+      },
+      complete: () => {
+        // optional cleanup or navigation
+      },
+    };
+
+    this.adminService.getRooms().subscribe(observer);
+  }
+
+  DeleteRow(id: number) {
+
+        const observer: Observer<room> = {
+      next: (response) => {
+        console.log('Delete successful.', response);
+        alert('Delete successful!');
+      },
+      error: (error) => {
+        console.error('Delete error.', error);
+        alert('Delete error!');
+      },
+      complete: () => {
+        // optional cleanup or navigation
+      },
+    };
+
+    this.adminService.deleteRoom(id).subscribe(observer);
+  }
+
 }
-
-}
-
-// --- Mock data ---
-const DATA: room[] = [
-  { number: 101, floor: 1, roomType: 1, bedAmount: 1, lastCleaned: new Date(), roomStatus: true },
-  { number: 102, floor: 1, roomType: 1, bedAmount: 2, lastCleaned: new Date(), roomStatus: false },
-  { number: 201, floor: 2, roomType: 2, bedAmount: 3, lastCleaned: new Date(), roomStatus: true },  
-];

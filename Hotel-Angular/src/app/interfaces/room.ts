@@ -1,8 +1,8 @@
 export interface room {
+id: number;
+roomType: number;
+lastCleaned: string;
 number: number;
 floor: number;
-roomType: number;
 bedAmount: number;
-lastCleaned: Date;
-roomStatus: boolean;
 }
