@@ -2,11 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { LoginInterface } from '../interfaces/loginInterface';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
+  private jwtHelper = new JwtHelperService();
+
   url: string = "https://hotel-hyggely.dk/api/auth/login"; // API endpoint
 
   constructor(private httpClient: HttpClient) { }
@@ -36,5 +39,25 @@ export class LoginService {
       result += chars.charAt(Math.floor(Math.random() * chars.length));
     }
     return result;
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem('token');
+  }
+
+  getRole(): string | null {
+    const token = this.getToken();
+    if (!token) return null;
+
+    const decodedToken = this.jwtHelper.decodeToken(token);
+    return decodedToken?.role || null;
+  }
+
+  isAdmin(): boolean {
+    return this.getRole() === 'admin';
+  }
+
+  isStaff(): boolean {
+    return this.getRole() === 'staff';
   }
 }

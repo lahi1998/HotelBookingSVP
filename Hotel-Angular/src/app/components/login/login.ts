@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router,  } from '@angular/router';
 import { Observer } from 'rxjs';
 import { LoginService } from '../../services/loginService';
 import { LoginInterface } from '../../interfaces/loginInterface';
+
 
 @Component({
   selector: 'app-login',
@@ -40,15 +41,24 @@ export class Login implements OnInit {
     const observer: Observer<LoginInterface> = {
       next: (response) => {
         console.log('Login successful', response);
-        alert('Login successful!');
+        const role = this.loginService.getRole();
+        
+          if (role === 'admin') {
+            this.router.navigate(['/admin']);
+          } else if (role === 'staff') {
+            this.router.navigate(['/staff']);
+          }
       },
       error: (error) => {
         console.error('Login error', error);
         alert('Invalid credentials.');
       },
-      complete: () => { },
+      complete: () => { 
+
+      },
     };
 
     this.loginService.postLogin(username, password).subscribe(observer);
   }
+
 }
