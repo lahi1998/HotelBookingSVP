@@ -1,15 +1,16 @@
 import { NgModule, Injectable } from '@angular/core';
 import { RouterModule, Routes, CanActivateChild, ActivatedRouteSnapshot, RouterStateSnapshot, Router, UrlTree } from '@angular/router';
 import { Login } from './components/login/login';
-import { AdminRoom } from './components/admin/adminRoom/adminRoom';
-import { AdminRoomType } from './components/admin/adminRoomType/adminRoomType';
-import { AdminWorker } from './components/admin/adminWorker/adminWorker';
-import { StaffBooking } from './components/staff/staffBooking/staffBooking';
-import { StaffCheckInOut } from './components/staff/staffCheckInOut/staffCheckInOut';
-import { StaffCleaning } from './components/staff/staffCleaning/staffCleaning';
-import { StaffRoomstatus } from './components/staff/staffRoomstatus/staffRoomstatus';
-import { StaffNav } from './components/staff/staffNav/staffNav';
-import { Booking } from './components/booking/booking';
+import { AdminRoom } from './components/admin/admin-room/admin-room';
+import { AdminRoomType } from './components/admin/admin-room-type/admin-room-type';
+import { AdminWorker } from './components/admin/admin-worker/admin-worker';
+import { StaffBooking } from './components/staff/staff-booking/staff-booking';
+import { StaffCheckInOut } from './components/staff/staff-check-in-out/staff-check-in-out';
+import { StaffCleaning } from './components/staff/staff-cleaning/staff-cleaning';
+import { Booking } from './components/booking/booking'
+import { StaffService } from './services/staff-service';
+import { StaffRoomstatus } from './components/staff/staff-roomstatus/staff-roomstatus';
+import { StaffNav } from './components/staff/staff-nav/staff-nav';
 
 // --- Simple AuthService ---
 @Injectable({ providedIn: 'root' })
@@ -77,7 +78,7 @@ const routes: Routes = [
   },
   // --- Default redirects ---
   { path: '', redirectTo: 'booking', pathMatch: 'full' },
-  { path: '**', redirectTo: 'login' },
+  { path: '**', redirectTo: 'booking' },
 ];
 
 @NgModule({
