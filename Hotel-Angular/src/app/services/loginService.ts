@@ -7,8 +7,7 @@ import { LoginInterface } from '../interfaces/loginInterface';
   providedIn: 'root'
 })
 export class LoginService {
-  url: string = "https://localhost:8443/api/auth";
-  endpointLogin: string = "login"; // API endpoint
+  url: string = "https://localhost:8443/api/auth/login"; // API endpoint
 
   constructor(private httpClient: HttpClient) { }
 
@@ -16,7 +15,7 @@ export class LoginService {
     const loginData = { username, password };
 
     // Send a POST request to the API for login
-    return this.httpClient.post<LoginInterface>(`${this.url}/${this.endpointLogin}`, loginData)
+    return this.httpClient.post<LoginInterface>(`${this.url}`, loginData)
       .pipe(
         // Handle the response and store the JWT token in session or local storage
         tap((response: any) => {

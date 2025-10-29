@@ -51,15 +51,39 @@
 
 
     <div class="create-container">
-        <div class="Create-room-inputs" style="flex:1;">
-            <label for="roomNumber">Nummer</label>
-            <input id="roomNumber" type="text">
-            <label for="roomFloor">Etage</label>
-            <input id="roomFloor" type="text">
-            <label for="roomType">Værelses type</label>
-            <input id="roomType" type="text">
-            <label for="roomBedCount">Antal senge</label>
-            <input id="roomBedCount" type="text">
+        <div [formGroup]="roomForm" (ngSubmit)="onSubmit()" class="Create-room-inputs" style="flex:1;">
+            <label>Nummer</label>
+            <div class="form-group">
+                <input type="number" formControlName="number" placeholder="Indtast nummer" autocomplete="number" />
+                <div class="error"
+                    *ngIf="roomForm.get('number')?.invalid && (roomForm.get('number')?.touched || roomForm.get('number')?.dirty)">
+                    Nummer er påkrævet
+                </div>
+            </div>
+            <label>Etage</label>
+            <div class="form-group">
+                <input type="number" formControlName="floor" placeholder="Indtast etage" autocomplete="floor" />
+                <div class="error"
+                    *ngIf="roomForm.get('floor')?.invalid && (roomForm.get('floor')?.touched || roomForm.get('floor')?.dirty)">
+                    Etage er påkrævet
+                </div>
+            </div>
+            <label>Værelses type</label>
+            <div class="form-group">
+                <input type="text" formControlName="number" placeholder="Indtast Nummer" autocomplete="number" />
+                <div class="error"
+                    *ngIf="roomForm.get('number')?.invalid && (roomForm.get('number')?.touched || roomForm.get('number')?.dirty)">
+                    Værelses type er påkrævet
+                </div>
+            </div>
+            <label>Antal senge</label>
+            <div class="form-group">
+                <input type="text" formControlName="number" placeholder="Indtast Nummer" autocomplete="number" />
+                <div class="error"
+                    *ngIf="roomForm.get('number')?.invalid && (roomForm.get('number')?.touched || roomForm.get('number')?.dirty)">
+                    Antal senge er påkrævet
+                </div>
+            </div>
 
             <button class="create" type="button">Opret</button>
         </div>
@@ -90,5 +114,4 @@
             <input id="roomImages" type="file" accept="image/*" (change)="onFilesSelected($event)" multiple>
         </div>
     </div>
-
 </div>

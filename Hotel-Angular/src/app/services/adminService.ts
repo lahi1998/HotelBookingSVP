@@ -7,15 +7,16 @@ import { room } from '../interfaces/room';
   providedIn: 'root'
 })
 export class AdminService {
-  url: string = "https://localhost:8443/api/auth";
-  endpointRoom: string = "room"; // API endpoint
+  url: string = "https://localhost:8443/api/rooms"; // API endpoint
 
   constructor(private httpClient: HttpClient) { }
 
-  postRoom(/*username: string, password: string*/): Observable<room> {
-    const roomData = {/* username, password */};
+  postRoom(number: number, floor: number, roomType : number, bedAmount : number): Observable<room> {
+    const roomData = {number, floor, roomType, bedAmount};
 
     // Send a POST request to the API for login
-    return this.httpClient.post<room>(`${this.url}/${this.endpointRoom}`, roomData)
+    return this.httpClient.post<room>(`${this.url}`, roomData)
   }
+
+
 }

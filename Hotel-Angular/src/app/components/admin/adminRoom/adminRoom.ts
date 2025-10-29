@@ -3,7 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { room } from '../../../interfaces/room';
 import { ImageData } from '../../../interfaces/imageData';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observer } from 'rxjs';
 import { AdminService } from '../../../services/adminService';
 import { Router } from '@angular/router';
@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
   styleUrl: './adminRoom.css',
 })
 export class AdminRoom implements AfterViewInit {
-  displayedColumns: string[] = ['number', 'floor', 'type', 'bedCount', 'buttons'];
+  displayedColumns: string[] = ['number', 'floor', 'roomType', 'bedAmount', 'buttons'];
   filterValue: string = '';
   dataSource = new MatTableDataSource<room>(DATA);
   roomForm!: FormGroup;
@@ -28,6 +28,15 @@ export class AdminRoom implements AfterViewInit {
     private adminService: AdminService,
     private router: Router
   ) { }
+
+    ngOnInit() {
+    this.roomForm = this.fb.group({
+      number: ['', Validators.required],
+      floor: ['', Validators.required],
+      roomType: ['', Validators.required],
+      bedamount: ['', Validators.required],
+    });
+  }
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -43,7 +52,7 @@ export class AdminRoom implements AfterViewInit {
   onSubmit(): void {
     if (this.roomForm.invalid) return;
 
-    const { } = this.roomForm.value;
+    const {number, floor, roomType, bedAmount} = this.roomForm.value;
 
     const observer: Observer<room> = {
       next: (response) => {
@@ -58,7 +67,7 @@ export class AdminRoom implements AfterViewInit {
       complete: () => { },
     };
 
-    this.adminService.postRoom().subscribe(observer);
+    this.adminService.postRoom(number, floor, roomType, bedAmount).subscribe(observer);
   }
 
 
@@ -116,10 +125,7 @@ export class AdminRoom implements AfterViewInit {
 
 // --- Mock data ---
 const DATA: room[] = [
-  { number: 1, floor: 1, type: 'Enkelt', bedCount: 1 },
-  { number: 2, floor: 2, type: 'Double', bedCount: 2 },
-  { number: 3, floor: 1, type: 'Enkelt', bedCount: 1 },
-  { number: 4, floor: 2, type: 'Double', bedCount: 2 },
-  { number: 5, floor: 2, type: 'Konge', bedCount: 1 },
-  { number: 6, floor: 2, type: 'Dronning', bedCount: 1 }
+  { number: 101, floor: 1, roomType: 1, bedAmount: 1, lastCleaned: new Date(), roomStatus: true },
+  { number: 102, floor: 1, roomType: 1, bedAmount: 2, lastCleaned: new Date(), roomStatus: false },
+  { number: 201, floor: 2, roomType: 2, bedAmount: 3, lastCleaned: new Date(), roomStatus: true },  
 ];

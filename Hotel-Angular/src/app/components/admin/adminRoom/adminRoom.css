@@ -109,6 +109,12 @@ select {
   background-color: #2e8cd6;
 }
 
+.error {
+  color: #d9534f;
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
+
 /* Image carousel and upload */
 
 .image-upload {
