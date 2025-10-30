@@ -1,1 +1,64 @@
-<p>staff-check-in-out works!</p>
+<app-staffNav></app-staffNav>
+
+<div class="container">
+    <div class="table-wrapper left">
+        <h2>Bookings</h2>
+        <input style="width: auto; margin: 5px;" matInput [(ngModel)]="filterValue" (ngModelChange)="searchFilter()"
+            placeholder="Søg" />
+        <div class="table-border">
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+                <!-- Fullname Column -->
+                <ng-container matColumnDef="fullname">
+                    <th mat-header-cell *matHeaderCellDef> Fulde navn </th>
+                    <td mat-cell *matCellDef="let BookingListItem"> {{BookingListItem.fullname}} </td>
+                </ng-container>
+
+                <!-- Email Column -->
+                <ng-container matColumnDef="email">
+                    <th mat-header-cell *matHeaderCellDef> Email </th>
+                    <td mat-cell *matCellDef="let BookingListItem"> {{BookingListItem.email}} </td>
+                </ng-container>
+
+                <!-- phoneumber Column -->
+                <ng-container matColumnDef="phoneNumber">
+                    <th mat-header-cell *matHeaderCellDef> Telefon nummer </th>
+                    <td mat-cell *matCellDef="let BookingListItem"> {{BookingListItem.phoneNumber}} </td>
+                </ng-container>
+
+                <!-- roomCount Column -->
+                <ng-container matColumnDef="roomCount">
+                    <th mat-header-cell *matHeaderCellDef> Antal værelser </th>
+                    <td mat-cell *matCellDef="let BookingListItem"> {{BookingListItem.roomCount}} </td>
+                </ng-container>
+
+                <!-- startDate Column -->
+                <ng-container matColumnDef="startDate">
+                    <th mat-header-cell *matHeaderCellDef> start dato </th>
+                    <td mat-cell *matCellDef="let BookingListItem"> {{BookingListItem.startDate}} </td>
+                </ng-container>
+
+                <!-- endDate Column -->
+                <ng-container matColumnDef="endDate">
+                    <th mat-header-cell *matHeaderCellDef> slut dato </th>
+                    <td mat-cell *matCellDef="let BookingListItem"> {{BookingListItem.endDate}} </td>
+                </ng-container>
+
+                <!-- Actions Column -->
+                <ng-container matColumnDef="buttons">
+                    <th style="border-right: none;" mat-header-cell *matHeaderCellDef></th>
+                    <td style="border-right: none;" mat-cell *matCellDef="let worker">
+                        <button class="edit">Rediger</button>
+                        <button class="delete">Slet</button>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
+            </mat-paginator>
+        </div>
+    </div>
+</div>

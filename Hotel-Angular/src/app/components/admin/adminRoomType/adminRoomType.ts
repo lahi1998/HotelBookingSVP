@@ -5,7 +5,7 @@ import { roomTypeDto } from '../../../interfaces/roomTypeDto';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AdminService } from '../../../services/adminService';
 import { Router } from '@angular/router';
-import { CreateRoomTypeRequest } from '../../../interfaces/create-room-type-request';
+import { CreateRoomTypeRequest } from '../../../interfaces/createRoomTypeRequest';
 import { Observer } from 'rxjs';
 
 

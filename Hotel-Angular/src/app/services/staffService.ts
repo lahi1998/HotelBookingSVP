@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { roomDto } from '../interfaces/roomDto';
 import { CleaningScheduleDto } from '../interfaces/cleaningScheduleDto';
+import { BookingListItemDto } from '../interfaces/bookingListItemDto';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,7 @@ export class StaffService {
   /* Api endpoints */
   url: string = "https://hotel-hyggely.dk/api/rooms";
   url2: string = "https://hotel-hyggely.dk/api/cleaningschedules";
+  url3: string = "https://hotel-hyggely.dk/api/bookings";
 
   constructor(private httpClient: HttpClient) { }
 
@@ -19,6 +21,22 @@ export class StaffService {
     const storedKey = sessionStorage.getItem('authKey');
     const token = sessionStorage.getItem(storedKey ? storedKey : '');
     return token;
+  }
+
+  /* check in/out and booking endpoint for editing and stuff. */
+  getBookingListItems(): Observable<BookingListItemDto[]> {
+
+    const token = this.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+    return this.httpClient.get<BookingListItemDto[]>(this.url2, { headers }).pipe(
+      tap((bookingListItem: BookingListItemDto[]) => {
+        console.log('Fetched bookingListItem:', bookingListItem);
+      })
+    );
   }
 
   /* staff room status */

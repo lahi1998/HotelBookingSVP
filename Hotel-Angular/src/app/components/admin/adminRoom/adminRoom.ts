@@ -58,7 +58,7 @@ export class AdminRoom implements AfterViewInit {
     if (this.roomForm.valid) {
       const newRoom: CreateRoomRequest = {
         roomType: this.roomForm.value.roomType,
-        lastCleaned: new Date().toISOString(),
+        lastCleaned: new Date(),
         number: this.roomForm.value.number,
         floor: this.roomForm.value.floor,
         bedAmount: this.roomForm.value.bedamount,

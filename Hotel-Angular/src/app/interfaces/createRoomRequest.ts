@@ -1,6 +1,6 @@
 export interface CreateRoomRequest {
     roomType: number;
-    lastCleaned: string;
+    lastCleaned: Date;
     number: number;
     floor: number;
     bedAmount: number;
