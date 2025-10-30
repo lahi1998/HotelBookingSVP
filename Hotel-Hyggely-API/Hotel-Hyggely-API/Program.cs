@@ -8,6 +8,7 @@ using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using Scalar.AspNetCore;
 using Serilog;
 using System.Text;
 
@@ -24,6 +25,9 @@ builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<IStaffRepo, StaffRepo>();
 builder.Services.AddScoped<IPasswordHasher, BcryptPasswordHasher>();
+builder.Services.AddScoped<IBookingRepo, BookingRepo>();
+builder.Services.AddScoped<BookingService>();
+builder.Services.AddScoped<ICustomerRepo, CustomerRepo>();
 
 //builder.Services.AddAuthentication().AddJwtBearer();
 //Console.WriteLine(builder.Services.AddAuthentication().AddJwtBearer("Bearer"));
@@ -57,12 +61,20 @@ app.UseMiddleware<GlobalExceptionMiddleware>();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+
+    app.UseSwaggerUI(options => options.SwaggerEndpoint("/openapi/v1.json", "OpenAPI V1"));
+
+    app.UseReDoc(options => options.SpecUrl("/openapi/v1.json"));
+
+    app.MapScalarApiReference();
 }
 
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+DbInitializer.Seed(app.Services);
 
 app.MapControllers();
 
