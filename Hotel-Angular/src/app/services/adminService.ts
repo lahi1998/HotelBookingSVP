@@ -5,7 +5,7 @@ import { roomDto } from '../interfaces/roomDto';
 import { staffDto } from '../interfaces/staffDto';
 import { CreateStaffRequest } from '../interfaces/createStaffRequest';
 import { CreateRoomRequest } from '../interfaces/createRoomRequest';
-import { CreateRoomTypeRequest } from '../interfaces/create-room-type-request';
+import { CreateRoomTypeRequest } from '../interfaces/createRoomTypeRequest';
 import { roomTypeDto } from '../interfaces/roomTypeDto';
 
 @Injectable({
