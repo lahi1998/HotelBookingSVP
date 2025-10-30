@@ -15,10 +15,7 @@ import { LoginService } from './services/loginService';
 // --- Simple AuthService ---
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  loggedIn = false; // change to false to test guard
-
   isAuthenticated(): boolean {
-    if (this.loggedIn = true) {return true;}
     const storedKey = sessionStorage.getItem('authKey');
     if (!storedKey) return false;
     const token = sessionStorage.getItem(storedKey);
@@ -35,12 +32,15 @@ export class AuthService {
 
 }
 
+ let testloggedIn = true; // change to false to test guard
+
 // --- AuthGuard using AuthService ---
 @Injectable({ providedIn: 'root' })
 export class AdminAuthGuard implements CanActivateChild {
   constructor(private auth: AuthService, private router: Router, private loginService: LoginService) { }
 
   canActivateChild(): boolean | UrlTree {
+    if (testloggedIn = true) {return true;}
     if (this.auth.isAuthenticated()) {
       if (this.loginService.isAdmin()) {
       return true;
@@ -55,6 +55,7 @@ export class StaffAuthGuard implements CanActivateChild {
   constructor(private auth: AuthService, private router: Router, private loginService: LoginService) { }
 
   canActivateChild(): boolean | UrlTree {
+    if (testloggedIn = true) {return true;}
     if (this.auth.isAuthenticated()) {
       if (this.loginService.isStaff()) {
       return true;

@@ -1,7 +1,12 @@
 import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { roomType } from '../../../interfaces/roomType';
+import { roomTypeDto } from '../../../interfaces/roomTypeDto';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { AdminService } from '../../../services/adminService';
+import { Router } from '@angular/router';
+import { CreateRoomTypeRequest } from '../../../interfaces/create-room-type-request';
+import { Observer } from 'rxjs';
 
 
 @Component({
@@ -11,29 +16,100 @@ import { roomType } from '../../../interfaces/roomType';
   styleUrls: ['./adminRoomType.css'],
 })
 export class AdminRoomType implements AfterViewInit {
-  displayedColumns: string[] = ['id', 'type', 'pris', 'buttons'];
+  displayedColumns: string[] = ['id', 'name', 'price', 'buttons'];
   filterValue: string = '';
-  dataSource = new MatTableDataSource<roomType>(DATA);
+  DATA: roomTypeDto[] = [];
+  dataSource = new MatTableDataSource<roomTypeDto>(this.DATA);
+  roomTypeForm!: FormGroup;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  constructor(
+    private fb: FormBuilder,
+    private adminService: AdminService,
+  ) { }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
 
-  applyFilter() {
+  ngOnInit() {
+    this.roomTypeForm = this.fb.group({
+      name: [''],
+      price: [''],
+    });
+
+  }
+  /* search filter */
+  searchFilter() {
     this.dataSource.filter = this.filterValue.trim().toLowerCase();
   }
 
+  onSubmit(): void {
+    if (this.roomTypeForm.valid) {
+      const newRoomtype: CreateRoomTypeRequest = {
+        name: this.roomTypeForm.value.name,
+        price: this.roomTypeForm.value.price,
+      };
+
+      const observer: Observer<CreateRoomTypeRequest> = {
+        next: (response) => {
+          console.log('Create successful.', response);
+          alert('Create successful!');
+
+        },
+        error: (error) => {
+          console.error('Create error.', error);
+          alert('Create error!');
+        },
+        complete: () => {
+          // optional cleanup or navigation
+        },
+      };
+
+      this.adminService.postRoomType(newRoomtype).subscribe(observer);
+    }
+  }
+
+  getRoomtypes() {
+    const observer: Observer<roomTypeDto[]> = {
+      next: (roomType) => {
+        this.DATA = Array.isArray(roomType) ? roomType : [];
+        this.dataSource.data = this.DATA;
+        console.log('Room types fetched successfully', roomType);
+        alert('Room types fetched!');
+      },
+      error: (err) => {
+        console.error('Room types fetch failed:', err);
+        alert('Room types fetch failed!');
+      },
+      complete: () => {
+        // optional cleanup or navigation
+      },
+    };
+
+    this.adminService.getRoomTypes().subscribe(observer);
+  }
+
+  DeleteRow(id: number) {
+
+    const observer: Observer<any> = {
+      next: (response) => {
+        console.log('Delete successful.', response);
+        alert('Delete successful!');
+      },
+      error: (error) => {
+        console.error('Delete error.', error);
+        alert('Delete error!');
+      },
+      complete: () => {
+        // optional cleanup or navigation
+      },
+    };
+
+    this.adminService.deleteRoomType(id).subscribe(observer);
+  }
 
 }
 
-// --- Mock data ---
-const DATA: roomType[] = [
-  { id: 1, type: 'Enkelt', price: 150 },
-  { id: 2, type: 'Double', price: 250 },
-  { id: 3, type: 'Konge', price: 350 },
-  { id: 4, type: 'Dronning', price: 450 },
-  { id: 5, type: 'Enkelt hav', price: 250 },
-  { id: 6, type: 'Double hav', price: 350 }
-];
+

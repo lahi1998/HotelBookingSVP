@@ -27,7 +27,6 @@ export class AdminWorker implements AfterViewInit {
   constructor(
     private fb: FormBuilder,
     private adminService: AdminService,
-    private router: Router
   ) { }
 
   ngOnInit() {
@@ -59,7 +58,9 @@ export class AdminWorker implements AfterViewInit {
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
-  applyFilter() {
+
+  /* search filter */
+  searchFilter() {
     this.dataSource.filter = this.filterValue.trim().toLowerCase();
   }
 
@@ -91,26 +92,25 @@ export class AdminWorker implements AfterViewInit {
     }
   }
 
-    getWorkers() {
-      const observer: Observer<staffDto[]> = {
-        next: (worker) => {
-          this.DATA = Array.isArray(worker) ? worker : [];
-          this.dataSource.data = this.DATA;
-          console.log('Workers fetched successfully', worker);
-          alert('Workers fetched!');
-        },
-        error: (err) => {
-          console.error('Workers fetch failed:', err);
-          alert('Workers fetch failed!');
-        },
-        complete: () => {
-          // optional cleanup or navigation
-        },
-      };
-  
-      this.adminService.getWorkers().subscribe(observer);
-    }
-  
+  getWorkers() {
+    const observer: Observer<staffDto[]> = {
+      next: (worker) => {
+        this.DATA = Array.isArray(worker) ? worker : [];
+        this.dataSource.data = this.DATA;
+        console.log('Workers fetched successfully', worker);
+        alert('Workers fetched!');
+      },
+      error: (err) => {
+        console.error('Workers fetch failed:', err);
+        alert('Workers fetch failed!');
+      },
+      complete: () => {
+        // optional cleanup or navigation
+      },
+    };
+
+    this.adminService.getWorkers().subscribe(observer);
+  }
 
   DeleteRow(id: number) {
 

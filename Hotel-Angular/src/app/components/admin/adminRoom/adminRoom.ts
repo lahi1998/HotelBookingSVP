@@ -29,7 +29,6 @@ export class AdminRoom implements AfterViewInit {
   constructor(
     private fb: FormBuilder,
     private adminService: AdminService,
-    private router: Router
   ) { }
 
   ngOnInit() {
@@ -48,8 +47,9 @@ export class AdminRoom implements AfterViewInit {
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
-
-  applyFilter() {
+  
+  /* search filter */
+  searchFilter() {
     this.dataSource.filter = this.filterValue.trim().toLowerCase();
   }
 
