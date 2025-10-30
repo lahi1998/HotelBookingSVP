@@ -39,7 +39,7 @@ export class AdminService {
 
   uploadRoomImages(formData: FormData) {
 
-        const token = this.getToken();
+    const token = this.getToken();
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'
@@ -51,7 +51,7 @@ export class AdminService {
 
   getRooms(): Observable<roomDto[]> {
 
-        const token = this.getToken();
+    const token = this.getToken();
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'
@@ -86,6 +86,22 @@ export class AdminService {
 
     // Send a POST request to the API for room creation
     return this.httpClient.post<CreateStaffRequest>(`${this.url}`, newWorker, { headers })
+  }
+  
+  getWorkers(): Observable<staffDto[]> {
+
+    const token = this.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+    return this.httpClient.get<staffDto[]>(this.url, { headers }).pipe(
+      tap((Workers: staffDto[]) => {
+        console.log('Fetched workers:', Workers);
+      })
+    );
+
   }
 
   deleteWorker(id: number): Observable<any> {
