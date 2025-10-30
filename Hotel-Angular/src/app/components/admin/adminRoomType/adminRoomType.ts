@@ -39,7 +39,10 @@ export class AdminRoomType implements AfterViewInit {
       price: [''],
     });
 
+    this.getRoomtypes()
+
   }
+
   /* search filter */
   searchFilter() {
     this.dataSource.filter = this.filterValue.trim().toLowerCase();

@@ -61,3 +61,11 @@ td {
     border-right: 1px solid black;
     border-bottom: 1px solid black !important;
 }
+
+.delete {
+    background-color: #FF4646;
+}
+
+.delete:hover {
+    background-color: #e93d3d;
+}

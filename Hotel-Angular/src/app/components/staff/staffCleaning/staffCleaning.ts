@@ -2,8 +2,8 @@ import { Component, ViewChild } from '@angular/core';
 import { StaffService } from '../../../services/staffService';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { roomDto } from '../../../interfaces/roomDto';
 import { Observer } from 'rxjs';
+import { CleaningScheduleDto } from '../../../interfaces/cleaningScheduleDto';
 
 @Component({
   selector: 'app-staffCleaning',
@@ -12,15 +12,19 @@ import { Observer } from 'rxjs';
   styleUrl: './staffCleaning.css',
 })
 export class StaffCleaning {
-  displayedColumns: string[] = ['number', 'floor', 'type', 'bedCount', 'lastCleaned', 'roomStatus'];
+  displayedColumns: string[] = ['roomNumber', 'roomFloor', 'cleaningDate', 'buttons'];
   filterValue: string = '';
-  DATA: roomDto[] = [];
-  dataSource = new MatTableDataSource<roomDto>(this.DATA);
+  DATA: CleaningScheduleDto[] = [];
+  dataSource = new MatTableDataSource<CleaningScheduleDto>(this.DATA);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+  }
+
+  ngOnInit(){
+    this.getCleaningSchedule();
   }
 
   constructor(
@@ -32,24 +36,43 @@ export class StaffCleaning {
     this.dataSource.filter = this.filterValue.trim().toLowerCase();
   }
 
-  getRooms() {
-    const observer: Observer<roomDto[]> = {
-      next: (rooms) => {
-        this.DATA = Array.isArray(rooms) ? rooms : [];
+  getCleaningSchedule() {
+    const observer: Observer<CleaningScheduleDto[]> = {
+      next: (cleaningSchedule) => {
+        this.DATA = Array.isArray(cleaningSchedule) ? cleaningSchedule : [];
         this.dataSource.data = this.DATA;
-        console.log('Rooms fetched successfully', rooms);
-        alert('Rooms fetched!');
+        console.log('Cleaning schedule fetched successfully', cleaningSchedule);
+        alert('Cleaning schedule fetched!');
       },
       error: (err) => {
-        console.error('Rooms fetch failed:', err);
-        alert('Rooms fetch failed!');
+        console.error('Cleaning schedule fetch failed:', err);
+        alert('Cleaning schedule fetch failed!');
       },
       complete: () => {
         // optional cleanup or navigation
       },
     };
 
-    this.staffService.getRooms().subscribe(observer);
+    this.staffService.getCleaningSchedule().subscribe(observer);
   }
 
+  cleaned(id: number) {
+
+    const observer: Observer<any> = {
+      next: (response) => {
+        console.log('Delete successful.', response);
+        alert('Delete successful!');
+      },
+      error: (error) => {
+        console.error('Delete error.', error);
+        alert('Delete error!');
+      },
+      complete: () => {
+        // optional cleanup or navigation
+      },
+    };
+
+    this.staffService.deleteCleaningSchedule(id).subscribe(observer);
+  }
 }
+
