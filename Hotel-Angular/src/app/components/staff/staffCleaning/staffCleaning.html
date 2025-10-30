@@ -1,1 +1,47 @@
-<p>staff-cleaning works!</p>
+<app-staffNav></app-staffNav>
+<div class="container">
+    <div class="table-wrapper ">
+        <h2>Rengøring</h2>
+        <input style="width: auto; margin: 5px;" matInput [(ngModel)]="filterValue" (ngModelChange)="searchFilter()"
+            placeholder="Søg" />
+        <div class="table-border">
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+                <!-- number Column -->
+                <ng-container matColumnDef="roomNumber">
+                    <th mat-header-cell *matHeaderCellDef> Nummer </th>
+                    <td mat-cell *matCellDef="let cleaningSchedule"> {{cleaningSchedule.roomNumber}} </td>
+                </ng-container>
+
+                <!-- floor Column -->
+                <ng-container matColumnDef="roomFloor">
+                    <th mat-header-cell *matHeaderCellDef> Etage </th>
+                    <td mat-cell *matCellDef="let cleaningSchedule"> {{cleaningSchedule.roomFloor}} </td>
+                </ng-container>
+
+                <!-- type Column -->
+                <ng-container matColumnDef="cleaningDate">
+                    <th mat-header-cell *matHeaderCellDef> Rengørings dato </th>
+                    <td mat-cell *matCellDef="let cleaningSchedule"> {{cleaningSchedule.cleaningDate}} </td>
+                </ng-container>
+
+                <!-- Actions Column -->
+                <ng-container matColumnDef="buttons">
+                    <th style="border-right: none;" mat-header-cell *matHeaderCellDef></th>
+                    <td style="border-right: none;" mat-cell *matCellDef="let cleaningSchedule">
+                        <button class="delete"
+                            (click)="cleaned(cleaningSchedule.id)">
+                            Rengjort
+                        </button>
+                    </td>
+                </ng-container>
+
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
+            </mat-paginator>
+        </div>
+    </div>

@@ -39,6 +39,8 @@ export class AdminWorker implements AfterViewInit {
     },
       { validators: this.passwordsMatchValidator }
     );
+
+    this.getWorkers();
   }
 
   passwordsMatchValidator(control: AbstractControl) {
