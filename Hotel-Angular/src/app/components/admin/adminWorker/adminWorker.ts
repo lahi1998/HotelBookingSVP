@@ -18,7 +18,8 @@ export class AdminWorker implements AfterViewInit {
   roles: string[] = ['Receptionist', 'Rengøring'];
   displayedColumns: string[] = ['role', 'username', 'fullname', 'buttons'];
   filterValue: string = '';
-  dataSource = new MatTableDataSource<staffDto>(DATA);
+  DATA: staffDto[] = [];
+  dataSource = new MatTableDataSource<staffDto>(this.DATA);
   workerForm!: FormGroup;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -26,7 +27,6 @@ export class AdminWorker implements AfterViewInit {
   constructor(
     private fb: FormBuilder,
     private adminService: AdminService,
-    private router: Router
   ) { }
 
   ngOnInit() {
@@ -58,7 +58,9 @@ export class AdminWorker implements AfterViewInit {
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
-  applyFilter() {
+
+  /* search filter */
+  searchFilter() {
     this.dataSource.filter = this.filterValue.trim().toLowerCase();
   }
 
@@ -71,7 +73,7 @@ export class AdminWorker implements AfterViewInit {
         fullName: this.workerForm.value.fullName,
       };
 
-      const observer: Observer<CreateStaffRequest> = {
+      const observer: Observer<any> = {
         next: (response) => {
           console.log('Create successful.', response);
           alert('Create successful!');
@@ -88,6 +90,26 @@ export class AdminWorker implements AfterViewInit {
 
       this.adminService.postWorker(newWorker).subscribe(observer);
     }
+  }
+
+  getWorkers() {
+    const observer: Observer<staffDto[]> = {
+      next: (worker) => {
+        this.DATA = Array.isArray(worker) ? worker : [];
+        this.dataSource.data = this.DATA;
+        console.log('Workers fetched successfully', worker);
+        alert('Workers fetched!');
+      },
+      error: (err) => {
+        console.error('Workers fetch failed:', err);
+        alert('Workers fetch failed!');
+      },
+      complete: () => {
+        // optional cleanup or navigation
+      },
+    };
+
+    this.adminService.getWorkers().subscribe(observer);
   }
 
   DeleteRow(id: number) {
@@ -109,9 +131,4 @@ export class AdminWorker implements AfterViewInit {
     this.adminService.deleteWorker(id).subscribe(observer);
   }
 }
-
-// --- Mock data ---
-const DATA: staffDto[] = [
-
-];
 

@@ -2,7 +2,7 @@
 <div class="container">
     <div class="table-wrapper left">
         <h2>Medarbejdere</h2>
-        <input style="width: auto; margin: 5px;" matInput [(ngModel)]="filterValue" (ngModelChange)="applyFilter()"
+        <input style="width: auto; margin: 5px;" matInput [(ngModel)]="filterValue" (ngModelChange)="searchFilter()"
             placeholder="Søg" />
         <div class="table-border">
             <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">

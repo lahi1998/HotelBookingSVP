@@ -29,7 +29,6 @@ export class AdminRoom implements AfterViewInit {
   constructor(
     private fb: FormBuilder,
     private adminService: AdminService,
-    private router: Router
   ) { }
 
   ngOnInit() {
@@ -48,8 +47,9 @@ export class AdminRoom implements AfterViewInit {
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
-
-  applyFilter() {
+  
+  /* search filter */
+  searchFilter() {
     this.dataSource.filter = this.filterValue.trim().toLowerCase();
   }
 
@@ -65,7 +65,7 @@ export class AdminRoom implements AfterViewInit {
       };
 
 
-      const observer: Observer<CreateRoomRequest> = {
+      const observer: Observer<any> = {
         next: (response) => {
           console.log('Create successful.', response);
           alert('Create successful!');
@@ -182,7 +182,7 @@ export class AdminRoom implements AfterViewInit {
 
   DeleteRow(id: number) {
 
-    const observer: Observer<roomDto> = {
+    const observer: Observer<any> = {
       next: (response) => {
         console.log('Delete successful.', response);
         alert('Delete successful!');

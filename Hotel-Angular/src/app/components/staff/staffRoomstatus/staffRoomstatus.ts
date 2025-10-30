@@ -1,7 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { RoomStatus } from '../../../interfaces/room-status';
+import { Observer } from 'rxjs';
+import { roomDto } from '../../../interfaces/roomDto';
+import { StaffService } from '../../../services/staffService';
 
 @Component({
   selector: 'app-staffRoomstatus',
@@ -12,7 +14,8 @@ import { RoomStatus } from '../../../interfaces/room-status';
 export class StaffRoomstatus {
   displayedColumns: string[] = ['number', 'floor', 'type', 'bedCount', 'lastCleaned', 'roomStatus'];
   filterValue: string = '';
-  dataSource = new MatTableDataSource<RoomStatus>(DATA);
+  DATA: roomDto[] = [];
+  dataSource = new MatTableDataSource<roomDto>(this.DATA);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -20,22 +23,36 @@ export class StaffRoomstatus {
     this.dataSource.paginator = this.paginator;
   }
 
-  applyFilter() {
+  constructor(
+    private staffService: StaffService,
+  ) { }
+
+  /* search filter */
+  searchFilter() {
     this.dataSource.filter = this.filterValue.trim().toLowerCase();
+  }
+
+  getRooms() {
+    const observer: Observer<roomDto[]> = {
+      next: (rooms) => {
+        this.DATA = Array.isArray(rooms) ? rooms : [];
+        this.dataSource.data = this.DATA;
+        console.log('Rooms fetched successfully', rooms);
+        alert('Rooms fetched!');
+      },
+      error: (err) => {
+        console.error('Rooms fetch failed:', err);
+        alert('Rooms fetch failed!');
+      },
+      complete: () => {
+        // optional cleanup or navigation
+      },
+    };
+
+    this.staffService.getRooms().subscribe(observer);
   }
 
 
 }
 
-// --- Mock data ---
-const DATA: RoomStatus[] = [
-  {
-    number: 1,
-    floor: 1,
-    roomType: 1,
-    bedAmount: 1,
-    lastCleaned: '2024-01-01',
-    roomStatus: true,
-  },
-];
 
