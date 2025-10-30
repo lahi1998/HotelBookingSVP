@@ -28,6 +28,9 @@ builder.Services.AddScoped<IPasswordHasher, BcryptPasswordHasher>();
 builder.Services.AddScoped<IBookingRepo, BookingRepo>();
 builder.Services.AddScoped<BookingService>();
 builder.Services.AddScoped<ICustomerRepo, CustomerRepo>();
+builder.Services.AddScoped<IRoomTypeRepo, RoomTypeRepo>();
+builder.Services.AddScoped<RoomTypeService>();
+
 
 //builder.Services.AddAuthentication().AddJwtBearer();
 //Console.WriteLine(builder.Services.AddAuthentication().AddJwtBearer("Bearer"));

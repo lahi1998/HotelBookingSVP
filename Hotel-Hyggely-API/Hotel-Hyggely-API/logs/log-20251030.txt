@@ -611,3 +611,8 @@ System.Text.Json.JsonException: A possible object cycle was detected. This can e
    at Swashbuckle.AspNetCore.ReDoc.ReDocMiddleware.Invoke(HttpContext httpContext)
    at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
    at Hotel_Hyggely_API.Middleware.GlobalExceptionMiddleware.InvokeAsync(HttpContext context) in C:\Users\Lenovo\source\repos\HotelBookingSVP\Hotel-Hyggely-API\Hotel-Hyggely-API\Middleware\GlobalExceptionMiddleware.cs:line 23
+2025-10-30 15:59:34.785 +01:00 [ERR] Unhandled exception occurred
+System.Threading.Tasks.TaskCanceledException: A task was canceled.
+   at Swashbuckle.AspNetCore.EmbeddedResourceProvider.TryRespondWithFileAsync(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Hotel_Hyggely_API.Middleware.GlobalExceptionMiddleware.InvokeAsync(HttpContext context) in C:\Users\Lenovo\source\repos\HotelBookingSVP\Hotel-Hyggely-API\Hotel-Hyggely-API\Middleware\GlobalExceptionMiddleware.cs:line 23
