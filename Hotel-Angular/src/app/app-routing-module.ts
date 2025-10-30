@@ -10,11 +10,12 @@ import { StaffCleaning } from './components/staff/staffCleaning/staffCleaning';
 import { Booking } from './components/booking/booking'
 import { StaffRoomstatus } from './components/staff/staffRoomstatus/staffRoomstatus';
 import { StaffNav } from './components/staff/staffNav/staffNav';
+import { LoginService } from './services/loginService';
 
 // --- Simple AuthService ---
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  loggedIn = true; // change to false to test guard
+  loggedIn = false; // change to false to test guard
 
   isAuthenticated(): boolean {
     if (this.loggedIn = true) {return true;}
@@ -36,12 +37,28 @@ export class AuthService {
 
 // --- AuthGuard using AuthService ---
 @Injectable({ providedIn: 'root' })
-export class AuthGuard implements CanActivateChild {
-  constructor(private auth: AuthService, private router: Router) { }
+export class AdminAuthGuard implements CanActivateChild {
+  constructor(private auth: AuthService, private router: Router, private loginService: LoginService) { }
 
-  canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree {
+  canActivateChild(): boolean | UrlTree {
     if (this.auth.isAuthenticated()) {
+      if (this.loginService.isAdmin()) {
       return true;
+      }
+    }
+    return this.router.parseUrl('/login');
+  }
+}
+
+@Injectable({ providedIn: 'root' })
+export class StaffAuthGuard implements CanActivateChild {
+  constructor(private auth: AuthService, private router: Router, private loginService: LoginService) { }
+
+  canActivateChild(): boolean | UrlTree {
+    if (this.auth.isAuthenticated()) {
+      if (this.loginService.isStaff()) {
+      return true;
+      }
     }
     return this.router.parseUrl('/login');
   }
@@ -51,11 +68,12 @@ export class AuthGuard implements CanActivateChild {
 const routes: Routes = [
   { path: 'login', component: Login },
   { path: 'booking', component: Booking },
+  
 
   // --- Admin child group ---
   {
     path: 'admin',
-    canActivateChild: [AuthGuard],
+    canActivateChild: [AdminAuthGuard],
     children: [
       { path: 'room', component: AdminRoom },
       { path: 'room-type', component: AdminRoomType },
@@ -66,7 +84,7 @@ const routes: Routes = [
   // --- Staff child group ---
   {
     path: 'staff',
-    canActivateChild: [AuthGuard],
+    canActivateChild: [StaffAuthGuard],
     children: [
       { path: 'booking', component: StaffBooking },
       { path: 'check-in-out', component: StaffCheckInOut },
@@ -77,7 +95,7 @@ const routes: Routes = [
   },
   // --- Default redirects ---
   { path: '', redirectTo: 'booking', pathMatch: 'full' },
-  { path: '**', redirectTo: 'booking' },
+  { path: '**', redirectTo: 'login' },
 ];
 
 @NgModule({

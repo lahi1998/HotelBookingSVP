@@ -44,29 +44,29 @@
     </div>
 
     <div [formGroup]="workerForm" (ngSubmit)="onSubmit()" class="Create-worker right">
-
         <label>Fulde navn</label>
         <div class="form-group">
             <input type="text" formControlName="fullName" placeholder="Indtast fuldt navn" autocomplete="off" />
-            <div class="error"
-                *ngIf="workerForm.get('fullName')?.invalid && (workerForm.get('fullName')?.touched || workerForm.get('fullName')?.dirty)">
+            <div class="error" *ngIf="workerForm.get('fullName')?.invalid && workerForm.get('fullName')?.touched">
                 Fuldt navn er påkrævet
             </div>
         </div>
 
         <label>Role</label>
         <div class="form-group">
-            <select id="role" formControlName="fullName">
-                <option value="" selected disabled hidden>vælg her</option>
+            <select id="role" formControlName="role">
+                <option value="" selected disabled hidden>Vælg her</option>
                 <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
             </select>
+            <div class="error" *ngIf="workerForm.get('role')?.invalid && workerForm.get('role')?.touched">
+                Rolle er påkrævet
+            </div>
         </div>
 
         <label>Brugernavn</label>
         <div class="form-group">
             <input type="text" formControlName="userName" placeholder="Indtast brugernavn" autocomplete="off" />
-            <div class="error"
-                *ngIf="workerForm.get('userName')?.invalid && (workerForm.get('userName')?.touched || workerForm.get('userName')?.dirty)">
+            <div class="error" *ngIf="workerForm.get('userName')?.invalid && workerForm.get('userName')?.touched">
                 Brugernavn er påkrævet
             </div>
         </div>
@@ -74,31 +74,26 @@
         <label>Kodeord</label>
         <div class="form-group">
             <input type="password" formControlName="password" placeholder="Indtast kodeord" autocomplete="off" />
-            <div class="error"
-                *ngIf="workerForm.get('password')?.invalid && (workerForm.get('password')?.touched || workerForm.get('password')?.dirty)">
+            <div class="error" *ngIf="workerForm.get('password')?.invalid && workerForm.get('password')?.touched">
                 Kodeord er påkrævet
             </div>
         </div>
 
-        <label>Kodeord</label>
+        <label>Gentag kodeord</label>
         <div class="form-group">
-            <input type="password" formControlName="passwordConfirm" placeholder="Indtast kodeord" autocomplete="off" />
+            <input type="password" formControlName="passwordConfirm" placeholder="Gentag kodeord" autocomplete="off" />
             <div class="error"
-                *ngIf="workerForm.get('password')?.invalid && (workerForm.get('password')?.touched || workerForm.get('password')?.dirty)">
+                *ngIf="workerForm.get('passwordConfirm')?.hasError('required') && workerForm.get('passwordConfirm')?.touched">
                 Kodeord er påkrævet
             </div>
-            <div *ngIf="workerForm.get('passwordConfirm')?.hasError('mismatch')">
-                Passwords do not match.
+            <div class="error"
+                *ngIf="workerForm.get('passwordConfirm')?.hasError('mismatch') && workerForm.get('passwordConfirm')?.touched">
+                Kodeordene matcher ikke.
             </div>
         </div>
 
-        <button class="create" type="button">Opret</button>
+        <!-- Disable button until form valid -->
+        <button class="create" type="submit" [disabled]="workerForm.invalid">Opret</button>
 
-
-        <label for="password">Kodeord</label>
-        <input id="password" type="text">
-        <label for="repeatPassword">Gentag Kodeord</label>
-        <input id="repeatPassword" type="text">
-        <button class="create" type="button" style="align-self:flex-end; margin-top:12px;">Opret</button>
     </div>
 </div>
