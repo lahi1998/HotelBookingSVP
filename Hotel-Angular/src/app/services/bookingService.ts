@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { BookingInterface } from '../interfaces/booking';
-import { RoomTypeDto } from '../interfaces/roomTypeDto';
+import { roomTypeDto } from '../interfaces/roomTypeDto';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +12,9 @@ export class BookingService {
   
   constructor(private httpClient: HttpClient) { }
 
-  getRoomTypes(): Observable<RoomTypeDto[]>{
-    return this.httpClient.get<RoomTypeDto[]>(`${this.baseUrl}/roomtypes`).pipe(
-          tap((rooms: RoomTypeDto[]) => {
+  getRoomTypes(): Observable<roomTypeDto[]>{
+    return this.httpClient.get<roomTypeDto[]>(`${this.baseUrl}/roomtypes`).pipe(
+          tap((rooms: roomTypeDto[]) => {
             console.log('Fetched roomtypes:', rooms);
           }));
   }
