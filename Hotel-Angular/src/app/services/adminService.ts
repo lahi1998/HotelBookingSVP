@@ -17,6 +17,7 @@ export class AdminService {
   url2: string = "https://hotel-hyggely.dk/api/roomImages";
   url3: string = "https://hotel-hyggely.dk/api/staff";
   url4: string = "https://hotel-hyggely.dk/api/roomtypes";
+  url5: string = "https://hotel-hyggely.dk/api/roomstatuses";
 
   constructor(private httpClient: HttpClient) { }
 
@@ -160,5 +161,6 @@ export class AdminService {
 
     return this.httpClient.delete<any>(`${this.url3}/${id}`, { headers });
   }
+
 
 }

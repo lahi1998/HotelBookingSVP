@@ -1,3 +1,3 @@
 export interface LoginInterface {
-    jwtToken: string,
+    token: string,
 }

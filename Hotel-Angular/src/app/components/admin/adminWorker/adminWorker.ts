@@ -73,7 +73,7 @@ export class AdminWorker implements AfterViewInit {
         fullName: this.workerForm.value.fullName,
       };
 
-      const observer: Observer<CreateStaffRequest> = {
+      const observer: Observer<any> = {
         next: (response) => {
           console.log('Create successful.', response);
           alert('Create successful!');

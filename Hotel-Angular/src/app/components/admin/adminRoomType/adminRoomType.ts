@@ -52,7 +52,7 @@ export class AdminRoomType implements AfterViewInit {
         price: this.roomTypeForm.value.price,
       };
 
-      const observer: Observer<CreateRoomTypeRequest> = {
+      const observer: Observer<any> = {
         next: (response) => {
           console.log('Create successful.', response);
           alert('Create successful!');
