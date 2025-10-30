@@ -61,4 +61,36 @@
             </mat-paginator>
         </div>
     </div>
+
+    <div [formGroup]="bookingDetailsForm" (ngSubmit)="onSubmit()" class="Create-worker right">
+        <label>Fulde navn</label>
+        <div class="form-group">
+            <input type="text" formControlName="fullName" placeholder="Indtast fuldt navn" autocomplete="off" />
+            <div class="error" *ngIf="bookingDetailsForm.get('fullName')?.invalid && bookingDetailsForm.get('fullName')?.touched">
+                Fuldt navn er påkrævet
+            </div>
+        </div>
+
+        <label>Brugernavn</label>
+        <div class="form-group">
+            <input type="text" formControlName="userName" placeholder="Indtast brugernavn" autocomplete="off" />
+            <div class="error" *ngIf="bookingDetailsForm.get('userName')?.invalid && bookingDetailsForm.get('userName')?.touched">
+                Brugernavn er påkrævet
+            </div>
+        </div>
+
+        <label>Kodeord</label>
+        <div class="form-group">
+            <input type="password" formControlName="password" placeholder="Indtast kodeord" autocomplete="off" />
+            <div class="error" *ngIf="bookingDetailsForm.get('password')?.invalid && bookingDetailsForm.get('password')?.touched">
+                Kodeord er påkrævet
+            </div>
+        </div>
+
+
+        <!-- Disable button until form valid -->
+        <button class="create" type="submit">Opret</button>
+
+    </div>
+
 </div>
