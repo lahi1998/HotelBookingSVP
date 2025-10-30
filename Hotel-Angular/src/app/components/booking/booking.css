@@ -1,5 +1,10 @@
-*{
+* {
     box-sizing: border-box;
+}
+
+label.required::after {
+    content: " *";
+    color: red;
 }
 
 form {
@@ -7,6 +12,14 @@ form {
     flex-direction: row;
     align-items: center;
     justify-content: center;
+}
+
+.error {
+    color: red;
+}
+
+small {
+    color: inherit;
 }
 
 .contact-info-container {
@@ -33,7 +46,9 @@ form {
     flex-direction: row;
 }
 
-input {
+input,
+select,
+textarea {
     padding: 10px 12px;
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -51,7 +66,7 @@ input:focus {
     flex-direction: column;
     border: 1px solid black;
     border-radius: 15px;
-    padding: 20px;   
+    padding: 20px;
     margin: 10px;
 }
 
@@ -118,12 +133,12 @@ input:focus {
     justify-content: center;
 }
 
-.thumbnails > img {
-    width:56px; 
-    height:44px; 
-    object-fit:cover; 
-    cursor:pointer; 
-    border-radius:4px;
+.thumbnails>img {
+    width: 56px;
+    height: 44px;
+    object-fit: cover;
+    cursor: pointer;
+    border-radius: 4px;
 }
 
 button {
@@ -145,7 +160,7 @@ button {
 
 @media screen and (max-width: 950px) {
 
-    
+
     .room-picker-container,
     .booking-details-container {
         flex-direction: column;
@@ -153,33 +168,50 @@ button {
         width: 100%;
     }
 
-    .booking-container{
+    .booking-container {
         display: flex;
         justify-content: center;
     }
 
-    form{
+    form {
         flex-direction: column;
         align-items: center;
-        width:fit-content;
-        padding: 10px;
+        width: fit-content;
     }
 
-    .booked-rooms-outer-container, 
-    .carousel-main,  
-    .carousel,   
+    .disabled {
+        background-color: #ccc;
+
+    }
+
+    button:disabled:hover {
+        cursor: not-allowed;
+    }
+
+    .booked-rooms-outer-container,
+    .carousel,
     .room-info-container,
-    .contact-info-container
-    {
+    .contact-info-container{
+        width: 95%;
+    }
+
+    .carousel-main {
         width: 100%;
     }
 
-    .carousel-main{
-        max-width: 100%;
-        justify-content: space-evenly;
+    .carousel-main {
+        justify-content: center;
     }
 
-    .carousel-main > img {
+    .carousel-main>img {
         max-width: 60%;
     }
+}
+
+@media screen and (max-width: 300px) {
+
+    form{
+        width: 95%;
+    }
+
 }

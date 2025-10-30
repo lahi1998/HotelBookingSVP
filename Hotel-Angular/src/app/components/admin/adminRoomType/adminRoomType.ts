@@ -115,4 +115,3 @@ export class AdminRoomType implements AfterViewInit {
 
 }
 
-
