@@ -41,9 +41,6 @@ export class StaffCheckInOut {
     this.dataSource.filter = this.filterValue.trim().toLowerCase();
   }
 
-
-  
-
   getBookingListItems() {
     const observer: Observer<BookingListItemDto[]> = {
       next: (rooms) => {
