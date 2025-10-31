@@ -46,10 +46,9 @@
 				return;
 
 			context.RoomTypes.AddRange(
-				new RoomType { Name = "Single", Price = 69m },
-				new RoomType { Name = "Double", Price = 99m },
-				new RoomType { Name = "Twin", Price = 99m },
-				new RoomType { Name = "Deluxe", Price = 149m },
+				new RoomType { Name = "Enkelt", Price = 69m },
+				new RoomType { Name = "Dobbelt", Price = 99m },
+				new RoomType { Name = "Luksus", Price = 149m },
 				new RoomType { Name = "Suite", Price = 219m }
 			);
 		}

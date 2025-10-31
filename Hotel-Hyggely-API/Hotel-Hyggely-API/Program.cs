@@ -30,7 +30,17 @@ builder.Services.AddScoped<BookingService>();
 builder.Services.AddScoped<ICustomerRepo, CustomerRepo>();
 builder.Services.AddScoped<IRoomTypeRepo, RoomTypeRepo>();
 builder.Services.AddScoped<RoomTypeService>();
+builder.Services.AddScoped<IRoomRepo, RoomRepo>();
+builder.Services.AddScoped<RoomService>();
 
+builder.Services.AddCors(options =>
+{
+	options.AddPolicy(name: "allowall",
+					  policy =>
+					  {
+                          policy.AllowAnyOrigin();
+					  });
+});
 
 //builder.Services.AddAuthentication().AddJwtBearer();
 //Console.WriteLine(builder.Services.AddAuthentication().AddJwtBearer("Bearer"));
@@ -73,7 +83,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseCors("allowall"); // TODO: REMOVE CORS
 app.UseAuthentication();
 app.UseAuthorization();
 
