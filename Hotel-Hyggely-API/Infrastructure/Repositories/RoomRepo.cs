@@ -19,7 +19,16 @@ namespace Infrastructure.Repositories
             this.dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<Room>> GetByPeriod(DateTime fromDate, DateTime toDate)
+        public async Task<IEnumerable<Room>> GetByIdsAsync(IEnumerable<int> ids)
+        {
+            var rooms = await dbContext.Rooms
+                .Where(r => ids.Contains(r.ID))
+                .ToListAsync();
+
+            return rooms;
+        }
+
+        public async Task<IEnumerable<Room>> GetAvailableByPeriod(DateTime fromDate, DateTime toDate)
         {
             var rooms = await dbContext.Rooms
                 .Include(r => r.RoomType)

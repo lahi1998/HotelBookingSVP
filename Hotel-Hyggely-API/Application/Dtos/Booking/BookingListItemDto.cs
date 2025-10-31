@@ -8,6 +8,6 @@ namespace Application.Dtos.Booking
         public int RoomCount { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public CustomerDto Customer { get; set; }
+        public required CustomerDto Customer { get; set; }
     }
 }

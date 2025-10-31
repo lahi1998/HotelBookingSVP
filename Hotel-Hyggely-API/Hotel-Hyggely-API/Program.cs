@@ -2,6 +2,7 @@ using Application.Interfaces;
 using Application.Interfaces.Repositories;
 using Application.Services;
 using Hotel_Hyggely_API.Middleware;
+using Infrastructure.MappingProfiles;
 using Infrastructure.Persistance;
 using Infrastructure.Repositories;
 using Infrastructure.Services;
@@ -32,6 +33,7 @@ builder.Services.AddScoped<IRoomTypeRepo, RoomTypeRepo>();
 builder.Services.AddScoped<RoomTypeService>();
 builder.Services.AddScoped<IRoomRepo, RoomRepo>();
 builder.Services.AddScoped<RoomService>();
+builder.Services.AddAutoMapper(cf => { }, typeof(BookingProfile).Assembly);
 
 builder.Services.AddCors(options =>
 {
@@ -60,7 +62,7 @@ builder.Services.AddAuthentication()
     };
 });
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options => options.SuppressAsyncSuffixInActionNames = false);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
