@@ -2,7 +2,7 @@
 {
     public enum CheckInStatus
     {
-        NotCheckIn,
+        NotCheckedIn,
         CheckedIn,
         CheckedOut,
     }
