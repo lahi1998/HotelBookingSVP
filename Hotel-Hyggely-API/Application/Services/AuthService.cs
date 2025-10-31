@@ -1,8 +1,6 @@
 ﻿using Application.Interfaces;
 using Application.Interfaces.Repositories;
 using Application.Requests;
-using Domain.Entities;
-using Domain.Enums;
 
 namespace Application.Services
 {

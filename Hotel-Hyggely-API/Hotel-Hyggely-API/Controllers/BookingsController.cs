@@ -26,101 +26,49 @@ namespace Hotel_Hyggely_API.Controllers
         {
             var bookings = await bookingService.GetAllBookingsAsync();
 
-            var BookingDetails = bookings.Select(b => new BookingListItemDto
-            {
-                Id = b.ID,
-                RoomCount = b.Rooms.Count,
-                StartDate = b.StartDate,
-                EndDate = b.EndDate,
-                Customer = new CustomerDto
-                {
-                    FullName = b.Customer!.FullName,
-                    Email = b.Customer.Email,
-                    PhoneNumber = b.Customer.PhoneNumber
-                }
-            });
-
-			return Ok(BookingDetails);
+			return Ok(bookings);
 		}
 
 		[Authorize]
 		[HttpGet("{id}")]
 		public async Task<IActionResult> GetBookingAsync(int id)
 		{
-			var b = await bookingService.GetByIdWithDetailsAsync(id);
+			var bookingDetails = await bookingService.GetByIdWithDetailsAsync(id);
 
-            if(b is null)
+            if(bookingDetails is null)
             {
                 return NotFound();
             }
 
-			var BookingDetails = new BookingDetailsDto
-			{
-				Id = b.ID,
-				StartDate = b.StartDate,
-				EndDate = b.EndDate,
-                Status = b.CheckInStatus,
-                Price = b.TotalPrice,
-                PersonCount = b.PersonCount,
-                Comment = b.Comment,
-				Customer = new CustomerDto
-				{
-					FullName = b.Customer!.FullName,
-					Email = b.Customer.Email,
-					PhoneNumber = b.Customer.PhoneNumber
-				},
-                Rooms = b.Rooms.Select(r => new RoomDetailsDto
-                {
-                    ID = r.ID,
-                    Number = r.Number,
-                    BedAmount = r.BedAmount,
-                    Floor = r.Floor,
-                    LastCleanedDate = r.LastCleanedDate,
-                    RoomType = new RoomTypeDto
-                    {
-                        ID = r.RoomType!.ID,
-                        Name = r.RoomType.Name,
-                        Price = r.RoomType.Price
-					}
-				})
-
-			};
-
-			return Ok(BookingDetails);
+			return Ok(bookingDetails);
 		}
 
-		[HttpPost]
-        public async Task<IActionResult> CreateBookingAsync([FromBody]CreateBookingRequest request)
+        [HttpPost]
+        public async Task<IActionResult> CreateBookingAsync([FromBody] CreateBookingRequest request)
         {
-            var booking = await bookingService.CreateBookingAsync(request);
-
-            var bookingDto = new BookingDto
+            if (!ModelState.IsValid)
             {
-                Id = booking.ID,
-                StartDate = booking.StartDate,
-                EndDate = booking.EndDate,
-                Price = booking.TotalPrice,
-                PersonCount = booking.PersonCount,
-                Comment = booking.Comment,
-                Customer = new CustomerDto
-                {
-                    FullName = booking.Customer!.FullName,
-                    Email = booking.Customer.Email,
-                    PhoneNumber = booking.Customer.PhoneNumber
-                },
-                RoomIds = booking.Rooms.Select(r => r.ID).ToList()
-            };
+                return BadRequest(ModelState);
+            }
 
-			return Ok(bookingDto);
+            var createdBooking = await bookingService.CreateBookingAsync(request);
+
+            return CreatedAtAction(nameof(GetBookingAsync), new { id = createdBooking.Id }, createdBooking);
         }
 
+        [Authorize]
         [HttpPut]
         public async Task<IActionResult> UpdateBookingAsync()
         {
-			//var booking = await bookingService.UpdateBookingAsync(request);
-			//return Ok(booking);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-			return StatusCode(501);
+            //var booking = await bookingService.UpdateBookingAsync(request);
+            //return Ok(booking);
+
+            return StatusCode(501);
 		}
 
 		[Authorize]

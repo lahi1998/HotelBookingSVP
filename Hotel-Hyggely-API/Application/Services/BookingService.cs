@@ -1,6 +1,8 @@
 ﻿using Application.Dtos;
+using Application.Dtos.Booking;
 using Application.Interfaces.Repositories;
 using Application.Requests.Booking;
+using AutoMapper;
 using Domain.Entities;
 using Domain.Enums;
 
@@ -10,16 +12,22 @@ namespace Application.Services
 	{
 		private readonly IBookingRepo bookingRepo;
         private readonly ICustomerRepo customerRepo;
+        private readonly IMapper mapper;
+        private readonly IRoomRepo roomRepo;
 
-        public BookingService(IBookingRepo bookingRepo, ICustomerRepo customerRepo)
+        public BookingService(IBookingRepo bookingRepo, ICustomerRepo customerRepo, IMapper mapper, IRoomRepo roomRepo)
 		{
 			this.bookingRepo = bookingRepo;
             this.customerRepo = customerRepo;
+            this.mapper = mapper;
+            this.roomRepo = roomRepo;
         }
 
-		public async Task<IEnumerable<Booking>> GetAllBookingsAsync()
+		public async Task<IEnumerable<BookingListItemDto>> GetAllBookingsAsync()
 		{
-			return await bookingRepo.GetAllWithCustomerAsync();
+			var bookings = await bookingRepo.GetAllWithCustomerAndRoomsAsync();
+
+            return mapper.Map<IEnumerable<BookingListItemDto>>(bookings);
 		}
 
 		public async Task CheckInAsync(int id)
@@ -55,35 +63,43 @@ namespace Application.Services
 			return await bookingRepo.GetById(id);
 		}
 
-		public async Task<Booking?> GetByIdWithDetailsAsync(int id)
+		public async Task<BookingDetailsDto?> GetByIdWithDetailsAsync(int id)
 		{
-			return await bookingRepo.GetByIdWithDetails(id);
-		}
+			var booking = await bookingRepo.GetByIdWithDetails(id);
 
-		public async Task<Booking> CreateBookingAsync(CreateBookingRequest request)
+            return mapper.Map<BookingDetailsDto>(booking);
+        }
+
+		public async Task<BookingDto> CreateBookingAsync(CreateBookingRequest request)
 		{
-			var existingCustomer = await customerRepo.GetByEmailAsync(request.Customer.Email);
+            var existingCustomer = await customerRepo.GetByEmailAsync(request.Email);
 
-			var booking = new Booking
-			{
-				StartDate = request.StartDate,
-				EndDate = request.EndDate,
-				CheckInStatus = CheckInStatus.NotCheckedIn,
-				TotalPrice = request.Price,
-				PersonCount = request.PersonCount,
-				Comment = request.Comment,
-				Customer = existingCustomer ?? new Customer
-				{
-					FullName = request.Customer.FullName,
-					Email = request.Customer.Email,
-					PhoneNumber = request.Customer.PhoneNumber
-				}
-			};
+            var booking = mapper.Map<Booking>(request);
 
-			return await bookingRepo.CreateAsync(booking);
-		}
+            if (existingCustomer != null)
+            {
+                booking.CustomerId = existingCustomer.ID;
+				booking.Customer = null;
+            }
+            else
+            {
+                booking.Customer = new Customer
+                {
+                    FullName = request.FullName,
+                    Email = request.Email,
+                    PhoneNumber = request.PhoneNumber
+                };
+            }
 
-		public async Task<Booking?> UpdateBookingAsync(UpdateBookingRequest request)
+            var rooms = await roomRepo.GetByIdsAsync(request.RoomIds);
+            booking.Rooms = rooms.ToList();
+
+			var createdBooking = await bookingRepo.CreateAsync(booking);
+
+            return mapper.Map<BookingDto>(createdBooking);
+        }
+
+        public async Task<Booking?> UpdateBookingAsync(UpdateBookingRequest request)
 		{
 			var booking = new Booking
 			{

@@ -44,9 +44,12 @@ namespace Infrastructure.Repositories
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Booking>> GetAllWithCustomerAsync()
+        public async Task<IEnumerable<Booking>> GetAllWithCustomerAndRoomsAsync()
         {
-            return await dbContext.Bookings.Include(b => b.Customer).ToListAsync();
+            return await dbContext.Bookings
+                .Include(b => b.Customer)
+                .Include(b => b.Rooms)
+                .ToListAsync();
         }
 
         public async Task<Booking?> UpdateAsync(Booking booking)
