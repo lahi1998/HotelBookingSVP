@@ -59,11 +59,12 @@
                         </small>
                     </div>
                     <label>Værelsestype</label>
-                    <select id="roomTypesList">
+                    <select id="roomTypesList" #roomTypesList (change)="onRoomTypeChange(roomTypesList.value)">
                         @for (roomType of roomTypes; track roomType.name) {
-                        <option [value]="roomType.name">{{roomType.name}}</option>
+                        <option [value]="roomType.id">{{roomType.name}}</option>
                         }
                     </select>
+                    <p>Antal ledige værelser: {{roomCount}}</p>
                     <button class="imgControlBtn">Tilføj</button>
                 </div>
 

@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { Observable, Observer } from 'rxjs';
 import { BookingInterface } from '../../interfaces/booking';
 import { roomTypeDto } from '../../interfaces/roomTypeDto';
+import { roomDto } from '../../interfaces/roomDto';
 
 //Move this to its own  interface file
 interface ImageData {
@@ -34,6 +35,9 @@ export class Booking implements OnInit {
   images: ImageData[] = [];
   currentImageIndex = 0;
   roomTypes: any[] = [];
+  roomsFromAPI: any[] = [];
+  selectedRoomType: number = 0;
+  roomCount: number = 0;
 
 
   constructor(
@@ -43,9 +47,8 @@ export class Booking implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const observer: Observer<roomTypeDto[]> = {
+    const roomTypeObserver: Observer<roomTypeDto[]> = {
       next: (response) => {
-        console.log("No error");
         this.roomTypes = response;
       },
       error: (error) => {
@@ -54,9 +57,23 @@ export class Booking implements OnInit {
       },
       complete: () => { },
     };
-    this.bookingService.getRoomTypes().subscribe(observer);
+    const roomObserver: Observer<any[]> = {
+      next: (response) => {
+        this.roomsFromAPI = response;
+      },
+      error: (error) => {
+        console.error('Room error', error);
+        alert('Kunne ikke hente værelserne');
+      },
+      complete: () => { },
+    };
+    this.bookingService.getRoomTypes().subscribe(roomTypeObserver);
+    
     const today = new Date();
-    const dayAfterTomorrow = new Date()
+    
+    const dayAfterTomorrow = new Date();
+    const todayString = today.toISOString().split('T')[0];
+    const dayAfterTomorrowString = dayAfterTomorrow.toISOString().split('T')[0];
     dayAfterTomorrow.setDate(today.getDate() + 2);
     this.bookingForm = this.fb.group({
       fullName: ['', Validators.required],
@@ -64,16 +81,21 @@ export class Booking implements OnInit {
       phoneNumber: ['', [Validators.required, Validators.min(8)]],
       personCount: [2, [Validators.required, Validators.min(1)]],
       comment: [''],
-      startDate: [today.toISOString().split('T')[0], Validators.required],
-      endDate: [dayAfterTomorrow.toISOString().split('T')[0], Validators.required]
+      startDate: [todayString, Validators.required],
+      endDate: [dayAfterTomorrowString, Validators.required]
     });
-
+    this.bookingService.getRooms(todayString, dayAfterTomorrowString).subscribe(roomObserver);
     this.images = [{ dataUrl: "/assets/logo.png" }, { dataUrl: "/assets/download.jpg" }]
-
   }
 
   validateEmail(){
 
+  }
+
+  onRoomTypeChange(category: String) {
+    let categoryAsNumber = Number(category);
+    this.selectedRoomType = categoryAsNumber;
+    this.roomCount = this.roomsFromAPI[categoryAsNumber]?.length || 0;
   }
 
   onSubmit(): void {
@@ -91,6 +113,7 @@ export class Booking implements OnInit {
       startDate: this.bookingForm.value.startDate,
       endDate: this.bookingForm.value.endDate,
     }
+
     const observer: Observer<any> = {
       next: (response) => {
         console.log('Booking created', response);
