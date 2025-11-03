@@ -19,10 +19,11 @@ namespace Infrastructure.Repositories
             this.dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<Room>> GetByIdsAsync(IEnumerable<int> ids)
+        public async Task<IEnumerable<Room>> GetByIdsWithRoomTypeAsync(IEnumerable<int> ids)
         {
             var rooms = await dbContext.Rooms
-                .Where(r => ids.Contains(r.ID))
+                .Include(r => r.RoomType)
+				.Where(r => ids.Contains(r.ID))
                 .ToListAsync();
 
             return rooms;

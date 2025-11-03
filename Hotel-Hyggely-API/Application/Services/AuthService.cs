@@ -19,7 +19,7 @@ namespace Application.Services
 
         public async Task<string?> AuthenticateAsync(LoginRequest request)
         {
-            var existingStaff = await staffRepo.GetStaffByUserNameAsync(request.UserName);
+            var existingStaff = await staffRepo.GetByUserNameAsync(request.UserName);
 
             if(existingStaff is null || !passwordHasher.VerifyPassword(request.Password, existingStaff.Password))
             {

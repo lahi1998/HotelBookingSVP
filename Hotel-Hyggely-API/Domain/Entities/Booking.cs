@@ -15,6 +15,6 @@ namespace Domain.Entities
         public int PersonCount { get; set; }
         public string? Comment { get; set; }
 
-        public ICollection<Room> Rooms { get; set; } = new List<Room>();
+        public ICollection<Room> Rooms { get; set; } = [];
     }
 }

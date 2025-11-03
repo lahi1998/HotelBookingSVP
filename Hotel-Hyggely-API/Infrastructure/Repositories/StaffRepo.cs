@@ -14,10 +14,34 @@ namespace Infrastructure.Repositories
             this.dbContext = dbContext;
         }
 
-        public async Task<Staff?> GetStaffByUserNameAsync(string userName)
+		public Task<IEnumerable<Staff>> GetAllAsync()
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task<Staff?> GetByIdAsync(int id)
+		{
+			throw new NotImplementedException();
+		}
+
+		public async Task<Staff?> GetByUserNameAsync(string userName)
+		{
+			return await dbContext.Staff
+				.FirstOrDefaultAsync(s => s.UserName == userName);
+		}
+
+		public Task<Staff> CreateAsync(Staff staff)
         {
-            return await dbContext.Staff
-                .FirstOrDefaultAsync(s => s.UserName == userName);
+            throw new NotImplementedException();
+        }
+
+        public Task<Staff?> UpdateAsync(Booking staff)
+        {
+            throw new NotImplementedException();
+        }
+        public Task DeleteAsync(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

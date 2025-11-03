@@ -14,6 +14,6 @@ namespace Infrastructure.Persistance.Configurations
 
             builder.Property(b => b.Comment)
                 .HasMaxLength(1000);
-        }
+		}
     }
 }

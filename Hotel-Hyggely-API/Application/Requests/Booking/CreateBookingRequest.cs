@@ -9,10 +9,7 @@ namespace Application.Requests.Booking
         [Required]
         public DateTime EndDate { get; set; }
         [Required]
-        public decimal TotalPrice { get; set; }
-        [Required]
         public int PersonCount { get; set; }
-        [Required]
         public string? Comment { get; set; }
         [Required]
         public required string FullName { get; set; }
