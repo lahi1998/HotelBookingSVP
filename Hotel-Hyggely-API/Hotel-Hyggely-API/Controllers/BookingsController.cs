@@ -43,7 +43,14 @@ namespace Hotel_Hyggely_API.Controllers
 			return Ok(bookingDetails);
 		}
 
-        [HttpPost]
+		[Authorize]
+		[HttpGet("{id}/cleaningschedules")]
+		public async Task<IActionResult> GetCleaningSchedules(int id)
+		{
+			return StatusCode(501);
+		}
+
+		[HttpPost]
         public async Task<IActionResult> CreateBookingAsync([FromBody] CreateBookingRequest request)
         {
             if (!ModelState.IsValid)
