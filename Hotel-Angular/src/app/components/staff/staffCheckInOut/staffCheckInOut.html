@@ -11,19 +11,19 @@
                 <!-- Fullname Column -->
                 <ng-container matColumnDef="fullName">
                     <th mat-header-cell *matHeaderCellDef> Fulde navn </th>
-                    <td mat-cell *matCellDef="let BookingListItem"> {{BookingListItem.fullname}} </td>
+                    <td mat-cell *matCellDef="let BookingListItem"> {{BookingListItem.customer.fullName}} </td>
                 </ng-container>
 
                 <!-- Email Column -->
                 <ng-container matColumnDef="email">
                     <th mat-header-cell *matHeaderCellDef> Email </th>
-                    <td mat-cell *matCellDef="let BookingListItem"> {{BookingListItem.email}} </td>
+                    <td mat-cell *matCellDef="let BookingListItem"> {{BookingListItem.customer.email}} </td>
                 </ng-container>
 
                 <!-- phoneumber Column -->
                 <ng-container matColumnDef="phoneNumber">
                     <th mat-header-cell *matHeaderCellDef> Telefon nummer </th>
-                    <td mat-cell *matCellDef="let BookingListItem"> {{BookingListItem.phoneNumber}} </td>
+                    <td mat-cell *matCellDef="let BookingListItem"> {{BookingListItem.customer.phoneNumber}} </td>
                 </ng-container>
 
                 <!-- roomCount Column -->
