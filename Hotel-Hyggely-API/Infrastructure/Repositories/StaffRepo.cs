@@ -14,34 +14,48 @@ namespace Infrastructure.Repositories
             this.dbContext = dbContext;
         }
 
-		public Task<IEnumerable<Staff>> GetAllAsync()
+		public async Task<IEnumerable<Staff>> GetAllAsync()
 		{
-			throw new NotImplementedException();
+			return await dbContext.Staff
+				.ToListAsync();
 		}
 
-		public Task<Staff?> GetByIdAsync(int id)
+		public async Task<Staff?> GetByIdAsync(int id)
 		{
-			throw new NotImplementedException();
+			return await dbContext.Staff
+				.SingleOrDefaultAsync(b => b.ID == id);
 		}
 
 		public async Task<Staff?> GetByUserNameAsync(string userName)
 		{
 			return await dbContext.Staff
-				.FirstOrDefaultAsync(s => s.UserName == userName);
+				.SingleOrDefaultAsync(s => s.UserName == userName);
 		}
 
-		public Task<Staff> CreateAsync(Staff staff)
+		public async Task<Staff> CreateAsync(Staff staff)
         {
-            throw new NotImplementedException();
-        }
+			var result = await dbContext.Staff.AddAsync(staff);
 
-        public Task<Staff?> UpdateAsync(Booking staff)
+			await dbContext.SaveChangesAsync();
+
+			return result.Entity;
+		}
+
+        public async Task<Staff> UpdateAsync(Staff staff)
         {
-            throw new NotImplementedException();
-        }
-        public Task DeleteAsync(int id)
+			var result = dbContext.Staff.Update(staff);
+
+			await dbContext.SaveChangesAsync();
+
+			return result.Entity;
+		}
+        public async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
-        }
+			var staffToDelete = await dbContext.Staff.SingleAsync(b => b.ID == id);
+
+			dbContext.Staff.Remove(staffToDelete);
+
+			await dbContext.SaveChangesAsync();
+		}
     }
 }

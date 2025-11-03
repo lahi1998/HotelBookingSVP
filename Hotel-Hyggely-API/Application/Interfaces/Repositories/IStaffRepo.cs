@@ -8,7 +8,7 @@ namespace Application.Interfaces.Repositories
 		Task<Staff?> GetByUserNameAsync(string userName);
 		Task<Staff?> GetByIdAsync(int id);
 		Task<Staff> CreateAsync(Staff staff);
-		Task<Staff?> UpdateAsync(Booking staff);
+		Task<Staff> UpdateAsync(Staff staff);
 		Task DeleteAsync(int id);
 	}
 }
