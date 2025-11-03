@@ -7,6 +7,7 @@ import { BookingListItemDto } from '../../../interfaces/bookingListItemDto';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BookingDetailsDto } from '../../../interfaces/bookingDetailsDto';
 import { roomDto } from '../../../interfaces/roomDto';
+import { UpdateBookingRequest } from '../../../interfaces/updateBookingRequest';
 
 @Component({
   selector: 'app-staffCheckInOut',
@@ -26,6 +27,7 @@ export class StaffCheckInOut {
   DATABookingDetails: BookingDetailsDto[] = [];
   DATABookingDetailsRoom: roomDto[] = [];
   dataSourceRooms = new MatTableDataSource<roomDto>(this.DATABookingDetailsRoom);
+  roomIdsArray: number[] = this.DATABookingDetailsRoom.map(room => room.id);
   bookingDetailsForm!: FormGroup;
   bookingid: number = 0;
 
@@ -43,6 +45,7 @@ export class StaffCheckInOut {
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
       comment: [],
+      personCount: ['', Validators.required],
       /* todo more is here just to tired to think of it*/
     })
 
@@ -64,19 +67,22 @@ export class StaffCheckInOut {
 
 
   onSubmit(): void {
-    /* if (this.bookingDetailsForm.valid) {
-      const updatedBookingDetaulsDto: BookingDetailsDto = {
+    if (this.bookingDetailsForm.valid) {
+      const updatedBookingDetailsDto: UpdateBookingRequest = {
         id: this.bookingid,
-        startDate: this.bookingDetailsForm.startDate,
-        endDate: 
-        status: 
-        price: 
-        personCount: 
-        comment: 
+        fullName: this.bookingDetailsForm.value.fullName,
+        email: this.bookingDetailsForm.value.email,
+        phoneNumber: this.bookingDetailsForm.value.phoneNumber,
+        startDate: this.bookingDetailsForm.value.startDate,
+        endDate: this.bookingDetailsForm.value.endDate,
+        comment: this.bookingDetailsForm.value.comment,
+        totalPrice: this.totalprice,
+        personCount: this.bookingDetailsForm.value.personCount,
+        roomIds: this.roomIdsArray,
 
-        };
+      };
 
-      const observer: Observer<any> = {
+      /*const observer: Observer<any> = {
         next: (response) => {
           console.log('Create successful.', response);
           alert('Create successful!');
@@ -91,8 +97,8 @@ export class StaffCheckInOut {
         },
       };
 
-      this.staffService.putbookingdetails(updatedBookingDetaulsDto).subscribe(observer); 
-    } */
+      this.staffService.putbookingdetails(updatedBookingDetailsDto).subscribe(observer);*/
+    }
   }
 
   EditRow(id: number) {

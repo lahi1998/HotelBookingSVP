@@ -115,6 +115,16 @@
                     </div>
                 </div>
 
+                <label>Antal personer</label>
+                <div class="form-group">
+                    <input type="number" formControlName="personCount" 
+                        autocomplete="off" />
+                    <div class="error"
+                        *ngIf="bookingDetailsForm.get('personCount')?.invalid && bookingDetailsForm.get('personCount')?.touched">
+                        Telefon nummer er påkrævet
+                    </div>
+                </div>
+
                 <div>
                     <p>Samlet pris: {{totalprice}} kr</p>
                 </div>
@@ -169,9 +179,10 @@
 
                     <!-- Actions Column -->
                     <ng-container matColumnDef="buttons">
-                        <th style="border-right: none;" mat-header-cell *matHeaderCellDef></th>
+                        <th style="border-right: none;" mat-header-cell *matHeaderCellDef>
+                            <button class="create">Opret</button>
+                        </th>
                         <td style="border-right: none;" mat-cell *matCellDef="let BookingListItem">
-                            <button class="edit">Rediger</button>
                             <button class="delete">Slet</button>
                         </td>
                     </ng-container>

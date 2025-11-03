@@ -59,6 +59,14 @@ button {
   background-color: #2e8cd6;
 }
 
+.create {
+    background-color: #4EA9E9;
+}
+
+.create:hover {
+  background-color: #2e8cd6;
+}
+
 .delete {
     background-color: #FF4646;
 }
