@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Application.Requests.CleaningSchedule;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Hotel_Hyggely_API.Controllers
 {
@@ -6,36 +7,34 @@ namespace Hotel_Hyggely_API.Controllers
     [ApiController]
     public class CleaningSchedulesController : ControllerBase
     {
-        // GET: api/<CleaningSchedulesController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IActionResult> GetAllAsync()
         {
-            return new string[] { "value1", "value2" };
-        }
+			return StatusCode(501);
+		}
 
-        // GET api/<CleaningSchedulesController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<IActionResult> GetAsync(int id)
         {
-            return "value";
-        }
+			return StatusCode(501);
+		}
 
-        // POST api/<CleaningSchedulesController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+		[HttpPost]
+        public async Task<IActionResult> PostAsync([FromBody] CreateCleaningScheduleRequest request)
         {
-        }
+			return StatusCode(501);
+		}
 
-        // PUT api/<CleaningSchedulesController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut]
+        public async Task<IActionResult> PutAsync([FromBody] UpdateCleaningScheduleRequest request)
         {
-        }
+			return StatusCode(501);
+		}
 
-        // DELETE api/<CleaningSchedulesController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> DeleteAsync(int id)
         {
-        }
+			return StatusCode(501);
+		}
     }
 }
