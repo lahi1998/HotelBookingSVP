@@ -22,7 +22,7 @@ namespace Application.Requests.Booking
 
 		public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
 		{
-			if (StartDate < DateTime.Now)
+			if (StartDate < DateTime.Today)
 			{
 				yield return new ValidationResult(
 					"StartDate cannot be older than current date",
