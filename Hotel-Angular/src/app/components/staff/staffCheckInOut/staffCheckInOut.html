@@ -9,7 +9,7 @@
             <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
                 <!-- Fullname Column -->
-                <ng-container matColumnDef="fullname">
+                <ng-container matColumnDef="fullName">
                     <th mat-header-cell *matHeaderCellDef> Fulde navn </th>
                     <td mat-cell *matCellDef="let BookingListItem"> {{BookingListItem.fullname}} </td>
                 </ng-container>
@@ -66,29 +66,61 @@
         <label>Fulde navn</label>
         <div class="form-group">
             <input type="text" formControlName="fullName" placeholder="Indtast fuldt navn" autocomplete="off" />
-            <div class="error" *ngIf="bookingDetailsForm.get('fullName')?.invalid && bookingDetailsForm.get('fullName')?.touched">
+            <div class="error"
+                *ngIf="bookingDetailsForm.get('fullName')?.invalid && bookingDetailsForm.get('fullName')?.touched">
                 Fuldt navn er påkrævet
             </div>
         </div>
 
-        <label>Brugernavn</label>
+        <label>Email</label>
         <div class="form-group">
-            <input type="text" formControlName="userName" placeholder="Indtast brugernavn" autocomplete="off" />
-            <div class="error" *ngIf="bookingDetailsForm.get('userName')?.invalid && bookingDetailsForm.get('userName')?.touched">
-                Brugernavn er påkrævet
+            <input type="text" formControlName="email" placeholder="Indtast email" autocomplete="off" />
+            <div class="error"
+                *ngIf="bookingDetailsForm.get('email')?.invalid && bookingDetailsForm.get('email')?.touched">
+                Email er påkrævet
             </div>
         </div>
 
-        <label>Kodeord</label>
+        <label>Telefon nummer</label>
         <div class="form-group">
-            <input type="password" formControlName="password" placeholder="Indtast kodeord" autocomplete="off" />
-            <div class="error" *ngIf="bookingDetailsForm.get('password')?.invalid && bookingDetailsForm.get('password')?.touched">
-                Kodeord er påkrævet
+            <input type="number" formControlName="phoneNumber" placeholder="Indtast telefon nummer" autocomplete="off" />
+            <div class="error"
+                *ngIf="bookingDetailsForm.get('phoneNumber')?.invalid && bookingDetailsForm.get('phoneNumber')?.touched">
+                Telefon nummer er påkrævet
             </div>
         </div>
 
+        <label>Start dato</label>
+        <div class="form-group">
+            <input type="date" formControlName="startDate" autocomplete="off" />
+            <div class="error"
+                *ngIf="bookingDetailsForm.get('startDate')?.invalid && bookingDetailsForm.get('startDate')?.touched">
+                start dato er påkrævet
+            </div>
+        </div>
 
-        <!-- Disable button until form valid -->
+        <label>Slut dato</label>
+        <div class="form-group">
+            <input type="date" formControlName="endDate" autocomplete="off" />
+            <div class="error"
+                *ngIf="bookingDetailsForm.get('endDate')?.invalid && bookingDetailsForm.get('endDate')?.touched">
+                slut dato er påkrævet
+            </div>
+        </div>
+
+        <div>
+            <p>Samlet pris: 3600 kr</p>
+        </div>
+
+        <label>Ønsker og bemærkninger</label>
+        <div class="form-group">
+            <textarea rows="10" type="text" formControlName="comment"></textarea>
+            <div class="error"
+                *ngIf="bookingDetailsForm.get('comment')?.invalid && bookingDetailsForm.get('comment')?.touched">
+                slut dato er påkrævet
+            </div>
+        </div>
+
         <button class="create" type="submit">Opret</button>
 
     </div>

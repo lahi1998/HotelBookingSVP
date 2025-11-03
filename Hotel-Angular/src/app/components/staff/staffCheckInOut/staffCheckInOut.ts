@@ -14,11 +14,12 @@ import { BookingDetailsDto } from '../../../interfaces/bookingDetailsDto';
   styleUrl: './staffCheckInOut.css',
 })
 export class StaffCheckInOut {
-  displayedColumns: string[] = ['number', 'floor', 'roomType', 'bedAmount', 'buttons'];
+  displayedColumns: string[] = ['fullName', 'email', 'phoneNumber', 'roomCount', 'startDate', 'endDate', 'buttons'];
   filterValue: string = '';
   DATABookingListItem: BookingListItemDto[] = [];
   dataSource = new MatTableDataSource<BookingListItemDto>(this.DATABookingListItem);
   bookingDetailsForm!: FormGroup;
+  bookingid: number = 0;
 
   constructor(
     private fb: FormBuilder,
@@ -26,17 +27,18 @@ export class StaffCheckInOut {
   ) { }
 
   ngOnInit() {
+
     this.bookingDetailsForm = this.fb.group({
       fullName: ['', Validators.required],
-      Email: ['', Validators.required],
+      email: ['', Validators.required],
       phoneNumber: ['', Validators.required],
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
-      Comment: [],
+      comment: [],
       /* todo more is here just to tired to think of it*/
-    }
+    })
 
-    /*this.getBookingListItems();*/
+    this.getBookingListItems();
   }
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -50,10 +52,20 @@ export class StaffCheckInOut {
     this.dataSource.filter = this.filterValue.trim().toLowerCase();
   }
 
+
+
+
   onSubmit(): void {
-    if (this.bookingDetailsForm.valid) {
+    /* if (this.bookingDetailsForm.valid) {
       const updatedBookingDetaulsDto: BookingDetailsDto = {
-        id: 
+        id: this.bookingid,
+        startDate: this.bookingDetailsForm.startDate,
+        endDate: 
+        status: 
+        price: 
+        personCount: 
+        comment: 
+
         };
 
       const observer: Observer<any> = {
@@ -71,8 +83,8 @@ export class StaffCheckInOut {
         },
       };
 
-      this.staffService.putbookingdetails(updatedBookingDetaulsDto).subscribe(observer);
-    }
+      this.staffService.putbookingdetails(updatedBookingDetaulsDto).subscribe(observer); 
+    } */
   }
 
   getBookingListItems() {

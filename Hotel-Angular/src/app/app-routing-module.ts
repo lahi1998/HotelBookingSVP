@@ -32,15 +32,12 @@ export class AuthService {
 
 }
 
- let testloggedIn = true; // change to false to test guard
-
 // --- AuthGuard using AuthService ---
 @Injectable({ providedIn: 'root' })
 export class AdminAuthGuard implements CanActivateChild {
   constructor(private auth: AuthService, private router: Router, private loginService: LoginService) { }
 
   canActivateChild(): boolean | UrlTree {
-    if (testloggedIn = true) {return true;}
     if (this.auth.isAuthenticated()) {
       if (this.loginService.isAdmin()) {
       return true;
@@ -55,7 +52,6 @@ export class StaffAuthGuard implements CanActivateChild {
   constructor(private auth: AuthService, private router: Router, private loginService: LoginService) { }
 
   canActivateChild(): boolean | UrlTree {
-    if (testloggedIn = true) {return true;}
     if (this.auth.isAuthenticated()) {
       if (this.loginService.isStaff()) {
       return true;
