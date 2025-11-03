@@ -6,4 +6,5 @@ export interface BookingInterface {
     comment: String;
     startDate: Date;
     endDate: Date;
+    roomIds: number[];
 }

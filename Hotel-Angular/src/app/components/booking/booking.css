@@ -10,7 +10,6 @@ label.required::after {
 form {
     display: flex;
     flex-direction: row;
-    align-items: center;
     justify-content: center;
 }
 
@@ -44,6 +43,10 @@ small {
 .room-picker-container {
     display: flex;
     flex-direction: row;
+}
+
+textarea{
+    height: 100%;
 }
 
 input,
@@ -158,8 +161,15 @@ button {
     background-color: #4EA9E9;
 }
 
-@media screen and (max-width: 950px) {
+button:disabled {
+    background-color: #aaa;
+}
 
+button:disabled:hover {
+    cursor: not-allowed;
+}
+
+@media screen and (max-width: 950px) {
 
     .room-picker-container,
     .booking-details-container {
@@ -179,19 +189,10 @@ button {
         width: fit-content;
     }
 
-    .disabled {
-        background-color: #ccc;
-
-    }
-
-    button:disabled:hover {
-        cursor: not-allowed;
-    }
-
     .booked-rooms-outer-container,
     .carousel,
     .room-info-container,
-    .contact-info-container{
+    .contact-info-container {
         width: 95%;
     }
 
@@ -210,7 +211,7 @@ button {
 
 @media screen and (max-width: 300px) {
 
-    form{
+    form {
         width: 95%;
     }
 

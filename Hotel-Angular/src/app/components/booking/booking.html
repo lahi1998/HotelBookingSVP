@@ -43,7 +43,8 @@
             <div class="room-picker-container">
                 <div class="room-info-container">
                     <label class="required">Fra</label>
-                    <input type="date" formControlName="startDate">
+                    <input type="date" formControlName="startDate" [min]="today"
+                        (change)="onDateChanged(bookingForm.get('startDate')?.value, bookingForm.get('endDate')?.value)">
                     <div class="error"
                         *ngIf="bookingForm.get('startDate')?.invalid && (bookingForm.get('startDate')?.touched || bookingForm.get('startDate')?.dirty)">
                         <small>
@@ -51,7 +52,8 @@
                         </small>
                     </div>
                     <label class="required">Til</label>
-                    <input type="date" formControlName="endDate">
+                    <input type="date" formControlName="endDate" [min]="endDateMin"
+                        (change)="onDateChanged(bookingForm.get('startDate')?.value, bookingForm.get('endDate')?.value)">
                     <div class="error"
                         *ngIf="bookingForm.get('endDate')?.invalid && (bookingForm.get('endDate')?.touched || bookingForm.get('endDate')?.dirty)">
                         <small>
@@ -59,13 +61,15 @@
                         </small>
                     </div>
                     <label>Værelsestype</label>
-                    <select id="roomTypesList" #roomTypesList (change)="onRoomTypeChange(roomTypesList.value)">
+                    <select id="roomTypesList" [(ngModel)]="selectedRoomTypeId" [ngModelOptions]="{ standalone: true }" (change)="onRoomTypeChange(selectedRoomTypeId)">
                         @for (roomType of roomTypes; track roomType.name) {
                         <option [value]="roomType.id">{{roomType.name}}</option>
                         }
                     </select>
+                    <p>Pris pr nat: {{roomTypePrice}}</p>
                     <p>Antal ledige værelser: {{roomCount}}</p>
-                    <button class="imgControlBtn">Tilføj</button>
+                    <button type="button" class="imgControlBtn" (click)="addRoom()"
+                        [disabled]="roomCount <= 0">Tilføj</button>
                 </div>
 
 
@@ -87,17 +91,16 @@
                 <div class="booked-rooms-outer-container">
                     Værelser
                     <div class="booked-rooms-container">
-                        @for (room of rooms; track room){
-                        <span>{{room}}</span>
-                        }
-                        @empty{
-
-
+                        @for (room of addedRooms; track room.roomTypeId){
+                        <div style="display:flex; flex-direction: row; justify-content: space-between;">
+                            <p>{{room.count}}x {{room.roomType.name}}</p>
+                            <p>{{room.roomType.price}} kr</p>
+                        </div>
                         }
                     </div>
                 </div>
                 <div class="price-container">
-                    Samlet pris:
+                    <p style="text-align: center;">Samlet pris: {{totalPrice}}</p>
                     <button class="bg-blue" type="submit" [disabled]="bookingForm.invalid">Book !</button>
                 </div>
             </div>
