@@ -15,9 +15,6 @@
 			using var scope = serviceProvider.CreateScope();
 			var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-			// Apply pending migrations (uncomment if you want automatic migration on startup)
-			// context.Database.Migrate();
-
 			SeedStaff(context);
 			context.SaveChanges();
 
@@ -89,7 +86,7 @@
 			const string demoHash = "$2a$12$WwwRGOLk51pBPPyaTX.xBOOhKretH42r00uSeBtkLW/Pp567nd/UK";
 
 			context.Staff.AddRange(
-				new Staff { UserName = "admin", Password = demoHash, Role = StaffRole.Administrator, FullName = "System Administrator" },
+				new Staff { UserName = "admin", Password = demoHash, Role = StaffRole.Admin, FullName = "System Administrator" },
 				new Staff { UserName = "reception1", Password = demoHash, Role = StaffRole.Receptionist, FullName = "Reception Desk" },
 				new Staff { UserName = "cleaner1", Password = demoHash, Role = StaffRole.Cleaning, FullName = "Housekeeping Team" }
 			);
