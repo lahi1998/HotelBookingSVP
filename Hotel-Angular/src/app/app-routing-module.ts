@@ -32,15 +32,12 @@ export class AuthService {
 
 }
 
- let testloggedIn = true; // change to false to test guard
-
 // --- AuthGuard using AuthService ---
 @Injectable({ providedIn: 'root' })
 export class AdminAuthGuard implements CanActivateChild {
   constructor(private auth: AuthService, private router: Router, private loginService: LoginService) { }
 
   canActivateChild(): boolean | UrlTree {
-    if (testloggedIn = true) {return true;}
     if (this.auth.isAuthenticated()) {
       if (this.loginService.isAdmin()) {
       return true;
@@ -51,13 +48,26 @@ export class AdminAuthGuard implements CanActivateChild {
 }
 
 @Injectable({ providedIn: 'root' })
-export class StaffAuthGuard implements CanActivateChild {
+export class ReceptionistAuthGuard implements CanActivateChild {
   constructor(private auth: AuthService, private router: Router, private loginService: LoginService) { }
 
   canActivateChild(): boolean | UrlTree {
-    if (testloggedIn = true) {return true;}
     if (this.auth.isAuthenticated()) {
-      if (this.loginService.isStaff()) {
+      if (this.loginService.isReceptionist()) {
+      return true;
+      }
+    }
+    return this.router.parseUrl('/login');
+  }
+}
+
+@Injectable({ providedIn: 'root' })
+export class CleaningAuthGuard implements CanActivateChild {
+  constructor(private auth: AuthService, private router: Router, private loginService: LoginService) { }
+
+  canActivateChild(): boolean | UrlTree {
+    if (this.auth.isAuthenticated()) {
+      if (this.loginService.isCleaning()) {
       return true;
       }
     }
@@ -85,13 +95,19 @@ const routes: Routes = [
   // --- Staff child group ---
   {
     path: 'staff',
-    canActivateChild: [StaffAuthGuard],
+    canActivateChild: [ReceptionistAuthGuard],
     children: [
       { path: 'booking', component: StaffBooking },
       { path: 'check-in-out', component: StaffCheckInOut },
-      { path: 'cleaning', component: StaffCleaning },
       { path: 'room-status', component: StaffRoomstatus },
       { path: 'nav', component: StaffNav },
+    ],
+  },
+  {
+    path: 'staff',
+    canActivateChild: [CleaningAuthGuard],
+    children: [
+      { path: 'cleaning', component: StaffCleaning },
     ],
   },
   // --- Default redirects ---

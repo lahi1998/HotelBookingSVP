@@ -56,12 +56,9 @@ export class AdminService {
   getRooms(): Observable<roomDto[]> {
 
     const token = this.getToken();
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    });
 
-    return this.httpClient.get<roomDto[]>(this.url, { headers }).pipe(
+
+    return this.httpClient.get<roomDto[]>(this.url).pipe(
       tap((rooms: roomDto[]) => {
         console.log('Fetched rooms:', rooms);
       })

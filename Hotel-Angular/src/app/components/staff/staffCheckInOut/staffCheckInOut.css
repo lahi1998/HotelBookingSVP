@@ -67,6 +67,20 @@ button {
     background-color: #e93d3d;
 }
 
+input,
+select,
+textarea {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 70%;
+}
+
+textarea{
+    height: 10vh;
+}
+
 /* Responsive behavior */
 @media screen and (max-width: 900px) {
     .container {
@@ -93,13 +107,4 @@ button {
         font-size: 14px;
         padding: 4px 8px;
     }
-}
-
-input,
-select {
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-    width: 70%;
 }

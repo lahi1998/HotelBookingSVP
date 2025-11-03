@@ -4,6 +4,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Observer } from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
 import { BookingListItemDto } from '../../../interfaces/bookingListItemDto';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { BookingDetailsDto } from '../../../interfaces/bookingDetailsDto';
 
 @Component({
   selector: 'app-staffCheckInOut',
@@ -12,22 +14,31 @@ import { BookingListItemDto } from '../../../interfaces/bookingListItemDto';
   styleUrl: './staffCheckInOut.css',
 })
 export class StaffCheckInOut {
-  displayedColumns: string[] = ['number', 'floor', 'roomType', 'bedAmount', 'buttons'];
+  displayedColumns: string[] = ['fullName', 'email', 'phoneNumber', 'roomCount', 'startDate', 'endDate', 'buttons'];
   filterValue: string = '';
   DATABookingListItem: BookingListItemDto[] = [];
   dataSource = new MatTableDataSource<BookingListItemDto>(this.DATABookingListItem);
-
-  // Image handling properties
-  images: ImageData[] = [];
-  currentImageIndex = 0;
+  bookingDetailsForm!: FormGroup;
+  bookingid: number = 0;
 
   constructor(
+    private fb: FormBuilder,
     private staffService: StaffService,
   ) { }
 
   ngOnInit() {
 
-    /*this.getBookingListItems();*/
+    this.bookingDetailsForm = this.fb.group({
+      fullName: ['', Validators.required],
+      email: ['', Validators.required],
+      phoneNumber: ['', Validators.required],
+      startDate: ['', Validators.required],
+      endDate: ['', Validators.required],
+      comment: [],
+      /* todo more is here just to tired to think of it*/
+    })
+
+    this.getBookingListItems();
   }
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -35,10 +46,45 @@ export class StaffCheckInOut {
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
-  
+
   /* search filter */
   searchFilter() {
     this.dataSource.filter = this.filterValue.trim().toLowerCase();
+  }
+
+
+
+
+  onSubmit(): void {
+    /* if (this.bookingDetailsForm.valid) {
+      const updatedBookingDetaulsDto: BookingDetailsDto = {
+        id: this.bookingid,
+        startDate: this.bookingDetailsForm.startDate,
+        endDate: 
+        status: 
+        price: 
+        personCount: 
+        comment: 
+
+        };
+
+      const observer: Observer<any> = {
+        next: (response) => {
+          console.log('Create successful.', response);
+          alert('Create successful!');
+
+        },
+        error: (error) => {
+          console.error('Create error.', error);
+          alert('Create error!');
+        },
+        complete: () => {
+          // optional cleanup or navigation
+        },
+      };
+
+      this.staffService.putbookingdetails(updatedBookingDetaulsDto).subscribe(observer); 
+    } */
   }
 
   getBookingListItems() {

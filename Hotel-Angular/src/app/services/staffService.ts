@@ -32,7 +32,7 @@ export class StaffService {
       'Content-Type': 'application/json'
     });
 
-    return this.httpClient.get<BookingListItemDto[]>(this.url2, { headers }).pipe(
+    return this.httpClient.get<BookingListItemDto[]>(this.url3, { headers }).pipe(
       tap((bookingListItem: BookingListItemDto[]) => {
         console.log('Fetched bookingListItem:', bookingListItem);
       })

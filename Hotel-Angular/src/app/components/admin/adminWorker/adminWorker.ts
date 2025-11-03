@@ -15,7 +15,7 @@ import { CreateStaffRequest } from '../../../interfaces/createStaffRequest';
   styleUrl: './adminWorker.css',
 })
 export class AdminWorker implements AfterViewInit {
-  roles: string[] = ['Receptionist', 'Rengøring'];
+  roles: string[] = ['Receptionist', 'Cleaning'];
   displayedColumns: string[] = ['role', 'username', 'fullname', 'buttons'];
   filterValue: string = '';
   DATA: staffDto[] = [];

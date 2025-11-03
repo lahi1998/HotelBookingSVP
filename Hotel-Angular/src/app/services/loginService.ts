@@ -42,7 +42,19 @@ export class LoginService {
   }
 
   getToken(): string | null {
-    return localStorage.getItem('token');
+  const storedKey = sessionStorage.getItem('authKey');
+  if (!storedKey) {
+    console.warn('No authKey found in sessionStorage');
+    return null;
+  }
+
+  const token = sessionStorage.getItem(storedKey);
+  if (!token) {
+    console.warn('No token found for key:', storedKey);
+    return null;
+  }
+
+  return token;
   }
 
   getRole(): string | null {
@@ -50,14 +62,19 @@ export class LoginService {
     if (!token) return null;
 
     const decodedToken = this.jwtHelper.decodeToken(token);
-    return decodedToken?.role || null;
+    console.log('Decoded JWT:', decodedToken);
+    return decodedToken?.['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || null;
   }
 
   isAdmin(): boolean {
-    return this.getRole() === 'admin';
+    return this.getRole() === 'Admin';
   }
 
-  isStaff(): boolean {
-    return this.getRole() === 'staff';
+  isReceptionist(): boolean {
+    return this.getRole() === 'Receptionist';
+  }
+
+  isCleaning(): boolean {
+    return this.getRole() === 'Cleaning';
   }
 }

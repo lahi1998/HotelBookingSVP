@@ -43,10 +43,12 @@ export class Login implements OnInit {
         console.log('Login successful', response);
         const role = this.loginService.getRole();
         
-          if (role === 'admin') {
-            this.router.navigate(['/admin']);
-          } else if (role === 'staff') {
-            this.router.navigate(['/staff']);
+          if (role === 'Admin') {
+            this.router.navigate(['/admin/room']);
+          } else if (role === 'Receptionist') {
+            this.router.navigate(['/staff/check-in-out']);
+          } else if (role === 'Cleaning') {
+            this.router.navigate(['/staff/cleaning']);
           }
       },
       error: (error) => {
