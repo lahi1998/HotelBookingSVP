@@ -6,6 +6,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { BookingListItemDto } from '../../../interfaces/bookingListItemDto';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BookingDetailsDto } from '../../../interfaces/bookingDetailsDto';
+import { roomDto } from '../../../interfaces/roomDto';
 
 @Component({
   selector: 'app-staffCheckInOut',
@@ -14,10 +15,17 @@ import { BookingDetailsDto } from '../../../interfaces/bookingDetailsDto';
   styleUrl: './staffCheckInOut.css',
 })
 export class StaffCheckInOut {
-  displayedColumns: string[] = ['fullName', 'email', 'phoneNumber', 'roomCount', 'startDate', 'endDate', 'buttons'];
+  displayedColumnsList: string[] = ['fullName', 'email', 'phoneNumber', 'roomCount', 'startDate', 'endDate', 'buttons'];
+  displayedColumnsDetails: string[] = ['number', 'floor', 'roomType', 'bedAmount', 'buttons'];
   filterValue: string = '';
+  totalprice: number = 0;
+  /* list */
   DATABookingListItem: BookingListItemDto[] = [];
-  dataSource = new MatTableDataSource<BookingListItemDto>(this.DATABookingListItem);
+  dataSourceList = new MatTableDataSource<BookingListItemDto>(this.DATABookingListItem);
+  /* details */
+  DATABookingDetails: BookingDetailsDto[] = [];
+  DATABookingDetailsRoom: roomDto[] = [];
+  dataSourceRooms = new MatTableDataSource<roomDto>(this.DATABookingDetailsRoom);
   bookingDetailsForm!: FormGroup;
   bookingid: number = 0;
 
@@ -44,12 +52,12 @@ export class StaffCheckInOut {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
+    this.dataSourceList.paginator = this.paginator;
   }
 
   /* search filter */
   searchFilter() {
-    this.dataSource.filter = this.filterValue.trim().toLowerCase();
+    this.dataSourceList.filter = this.filterValue.trim().toLowerCase();
   }
 
 
@@ -87,17 +95,54 @@ export class StaffCheckInOut {
     } */
   }
 
+  EditRow(id: number) {
+
+    const observer: Observer<BookingDetailsDto> = {
+      next: (bookingDetail) => {
+        if (bookingDetail) {
+          this.bookingDetailsForm.patchValue({
+            fullName: bookingDetail.customer.fullName,
+            email: bookingDetail.customer.email,
+            phoneNumber: bookingDetail.customer.phoneNumber,
+            startDate: bookingDetail.startDate
+              ? new Date(bookingDetail.startDate).toISOString().slice(0, 10)
+              : '',
+            endDate: bookingDetail.endDate
+              ? new Date(bookingDetail.endDate).toISOString().slice(0, 10)
+              : '',
+            comment: bookingDetail.comment,
+          });
+        }
+
+        this.totalprice = bookingDetail.totalPrice;
+
+        this.DATABookingDetails = [bookingDetail];
+
+        this.DATABookingDetailsRoom = bookingDetail.rooms;
+        this.dataSourceRooms.data = this.DATABookingDetailsRoom;
+
+        console.log('booking details fetched successfully', bookingDetail);
+      },
+      error: (err) => {
+        console.error('booking details fetch failed:', err);
+      },
+      complete: () => {
+        // optional cleanup or navigation
+      },
+    };
+
+    this.staffService.getBookingDetails(id).subscribe(observer);
+  }
+
   getBookingListItems() {
     const observer: Observer<BookingListItemDto[]> = {
       next: (rooms) => {
         this.DATABookingListItem = Array.isArray(rooms) ? rooms : [];
-        this.dataSource.data = this.DATABookingListItem;
+        this.dataSourceList.data = this.DATABookingListItem;
         console.log('booking List Item fetched successfully', rooms);
-        alert('booking ListItem fetched!');
       },
       error: (err) => {
         console.error('booking List Item fetch failed:', err);
-        alert('booking List Item fetch failed!');
       },
       complete: () => {
         // optional cleanup or navigation
@@ -105,6 +150,24 @@ export class StaffCheckInOut {
     };
 
     this.staffService.getBookingListItems().subscribe(observer);
+  }
+
+  DeleteRow(id: number) {
+
+    const observer: Observer<any> = {
+      next: (response) => {
+        console.log('Delete successful.', response);
+        this.getBookingListItems();
+      },
+      error: (error) => {
+        console.error('Delete error.', error);
+      },
+      complete: () => {
+        // optional cleanup or navigation
+      },
+    };
+
+    this.staffService.deletebooking(id).subscribe(observer);
   }
 
 }

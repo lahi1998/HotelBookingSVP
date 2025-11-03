@@ -1,3 +1,6 @@
+import { CustomerDto } from "./customerDto";
+import { roomDto } from "./roomDto";
+
 export interface BookingDetailsDto {
     id: number,
     startDate: Date,
@@ -6,6 +9,7 @@ export interface BookingDetailsDto {
     price: number,
     personCount: number,
     comment: string,
-    customer: any[],
-    rooms: any[]
+    customer: CustomerDto,
+    rooms: roomDto[],
+    totalPrice: number
 }

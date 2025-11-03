@@ -100,6 +100,7 @@ export class AdminRoomType implements AfterViewInit {
       next: (response) => {
         console.log('Delete successful.', response);
         alert('Delete successful!');
+        this.getRoomtypes();
       },
       error: (error) => {
         console.error('Delete error.', error);

@@ -1,6 +1,8 @@
+import { roomTypeDto } from "./roomTypeDto";
+
 export interface roomDto {
 id: number;
-roomType: number;
+roomType: roomTypeDto;
 lastCleaned: Date;
 number: number;
 floor: number;

@@ -6,7 +6,7 @@
         <input style="width: auto; margin: 5px;" matInput [(ngModel)]="filterValue" (ngModelChange)="searchFilter()"
             placeholder="Søg" />
         <div class="table-border">
-            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+            <table mat-table [dataSource]="dataSourceList" class="mat-elevation-z8">
 
                 <!-- Fullname Column -->
                 <ng-container matColumnDef="fullName">
@@ -34,27 +34,31 @@
 
                 <!-- startDate Column -->
                 <ng-container matColumnDef="startDate">
-                    <th mat-header-cell *matHeaderCellDef> start dato </th>
-                    <td mat-cell *matCellDef="let BookingListItem"> {{BookingListItem.startDate}} </td>
+                    <th mat-header-cell *matHeaderCellDef> Start dato </th>
+                    <td mat-cell *matCellDef="let BookingListItem">
+                        {{ BookingListItem.startDate | date:'dd.MM.yyyy' }}
+                    </td>
                 </ng-container>
 
                 <!-- endDate Column -->
                 <ng-container matColumnDef="endDate">
                     <th mat-header-cell *matHeaderCellDef> slut dato </th>
-                    <td mat-cell *matCellDef="let BookingListItem"> {{BookingListItem.endDate}} </td>
+                    <td mat-cell *matCellDef="let BookingListItem">
+                        {{ BookingListItem.endDate | date:'dd.MM.yyyy' }}
+                    </td>
                 </ng-container>
 
                 <!-- Actions Column -->
                 <ng-container matColumnDef="buttons">
                     <th style="border-right: none;" mat-header-cell *matHeaderCellDef></th>
-                    <td style="border-right: none;" mat-cell *matCellDef="let worker">
-                        <button class="edit">Rediger</button>
-                        <button class="delete">Slet</button>
+                    <td style="border-right: none;" mat-cell *matCellDef="let BookingListItem">
+                        <button class="edit" (click)="EditRow(BookingListItem.id)">Rediger</button>
+                        <button class="delete" (click)="DeleteRow(BookingListItem.id)">Slet</button>
                     </td>
                 </ng-container>
 
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                <tr mat-header-row *matHeaderRowDef="displayedColumnsList"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumnsList;"></tr>
             </table>
 
             <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
@@ -62,67 +66,123 @@
         </div>
     </div>
 
-    <div [formGroup]="bookingDetailsForm" (ngSubmit)="onSubmit()" class="Create-worker right">
-        <label>Fulde navn</label>
-        <div class="form-group">
-            <input type="text" formControlName="fullName" placeholder="Indtast fuldt navn" autocomplete="off" />
-            <div class="error"
-                *ngIf="bookingDetailsForm.get('fullName')?.invalid && bookingDetailsForm.get('fullName')?.touched">
-                Fuldt navn er påkrævet
+    <div class="edit-booking">
+        <div [formGroup]="bookingDetailsForm" (ngSubmit)="onSubmit()" class="edit-booking-inner ">
+            <div class="div1">
+                <label>Fulde navn</label>
+                <div class="form-group">
+                    <input type="text" formControlName="fullName" placeholder="Indtast fuldt navn" autocomplete="off" />
+                    <div class="error"
+                        *ngIf="bookingDetailsForm.get('fullName')?.invalid && bookingDetailsForm.get('fullName')?.touched">
+                        Fuldt navn er påkrævet
+                    </div>
+                </div>
+
+                <label>Email</label>
+                <div class="form-group">
+                    <input type="text" formControlName="email" placeholder="Indtast email" autocomplete="off" />
+                    <div class="error"
+                        *ngIf="bookingDetailsForm.get('email')?.invalid && bookingDetailsForm.get('email')?.touched">
+                        Email er påkrævet
+                    </div>
+                </div>
+
+                <label>Telefon nummer</label>
+                <div class="form-group">
+                    <input type="text" formControlName="phoneNumber" placeholder="Indtast telefon nummer"
+                        autocomplete="off" />
+                    <div class="error"
+                        *ngIf="bookingDetailsForm.get('phoneNumber')?.invalid && bookingDetailsForm.get('phoneNumber')?.touched">
+                        Telefon nummer er påkrævet
+                    </div>
+                </div>
+
+                <label>Start dato</label>
+                <div class="form-group">
+                    <input type="date" formControlName="startDate" autocomplete="off" />
+                    <div class="error"
+                        *ngIf="bookingDetailsForm.get('startDate')?.invalid && bookingDetailsForm.get('startDate')?.touched">
+                        start dato er påkrævet
+                    </div>
+                </div>
+
+                <label>Slut dato</label>
+                <div class="form-group">
+                    <input type="date" formControlName="endDate" autocomplete="off" />
+                    <div class="error"
+                        *ngIf="bookingDetailsForm.get('endDate')?.invalid && bookingDetailsForm.get('endDate')?.touched">
+                        slut dato er påkrævet
+                    </div>
+                </div>
+
+                <div>
+                    <p>Samlet pris: {{totalprice}} kr</p>
+                </div>
+
+                <label>Ønsker og bemærkninger</label>
+                <div class="form-group">
+                    <textarea rows="10" type="text" formControlName="comment"></textarea>
+                    <div class="error"
+                        *ngIf="bookingDetailsForm.get('comment')?.invalid && bookingDetailsForm.get('comment')?.touched">
+                        slut dato er påkrævet
+                    </div>
+                </div>
+            </div>
+
+            <div class="div2">
+                <button class="cleaning" type="button">Opret rengøring</button>
+                <button class="checkin/out" type="button">Tjek ind</button>
+
+                <button class="update" type="submit">Gem</button>
             </div>
         </div>
+        <div class="table-wrapper" style="max-width: 100%;">
+            <h2>Booked værelser</h2>
+            <div class="table-border">
+                <table mat-table [dataSource]="dataSourceRooms" class="mat-elevation-z8">
 
-        <label>Email</label>
-        <div class="form-group">
-            <input type="text" formControlName="email" placeholder="Indtast email" autocomplete="off" />
-            <div class="error"
-                *ngIf="bookingDetailsForm.get('email')?.invalid && bookingDetailsForm.get('email')?.touched">
-                Email er påkrævet
+                    <!-- number Column -->
+                    <ng-container matColumnDef="number">
+                        <th mat-header-cell *matHeaderCellDef> nummer </th>
+                        <td mat-cell *matCellDef="let BookingDetailsRoom"> {{BookingDetailsRoom.number}} </td>
+                    </ng-container>
+
+                    <!-- Floor Column -->
+                    <ng-container matColumnDef="floor">
+                        <th mat-header-cell *matHeaderCellDef> Etage </th>
+                        <td mat-cell *matCellDef="let BookingDetailsRoom"> {{BookingDetailsRoom.floor}} </td>
+                    </ng-container>
+
+                    <!-- roomType Column -->
+                    <ng-container matColumnDef="roomType">
+                        <th mat-header-cell *matHeaderCellDef> Værelses type </th>
+                        <td mat-cell *matCellDef="let BookingDetailsRoom"> {{BookingDetailsRoom.roomType.name}}
+                        </td>
+                    </ng-container>
+
+                    <!-- roomCount Column -->
+                    <ng-container matColumnDef="bedAmount">
+                        <th mat-header-cell *matHeaderCellDef> Antal senge </th>
+                        <td mat-cell *matCellDef="let BookingDetailsRoom"> {{BookingDetailsRoom.bedAmount}} </td>
+                    </ng-container>
+
+
+                    <!-- Actions Column -->
+                    <ng-container matColumnDef="buttons">
+                        <th style="border-right: none;" mat-header-cell *matHeaderCellDef></th>
+                        <td style="border-right: none;" mat-cell *matCellDef="let BookingListItem">
+                            <button class="edit">Rediger</button>
+                            <button class="delete">Slet</button>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumnsDetails"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumnsDetails;"></tr>
+                </table>
+
+                <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
+                </mat-paginator>
             </div>
         </div>
-
-        <label>Telefon nummer</label>
-        <div class="form-group">
-            <input type="number" formControlName="phoneNumber" placeholder="Indtast telefon nummer" autocomplete="off" />
-            <div class="error"
-                *ngIf="bookingDetailsForm.get('phoneNumber')?.invalid && bookingDetailsForm.get('phoneNumber')?.touched">
-                Telefon nummer er påkrævet
-            </div>
-        </div>
-
-        <label>Start dato</label>
-        <div class="form-group">
-            <input type="date" formControlName="startDate" autocomplete="off" />
-            <div class="error"
-                *ngIf="bookingDetailsForm.get('startDate')?.invalid && bookingDetailsForm.get('startDate')?.touched">
-                start dato er påkrævet
-            </div>
-        </div>
-
-        <label>Slut dato</label>
-        <div class="form-group">
-            <input type="date" formControlName="endDate" autocomplete="off" />
-            <div class="error"
-                *ngIf="bookingDetailsForm.get('endDate')?.invalid && bookingDetailsForm.get('endDate')?.touched">
-                slut dato er påkrævet
-            </div>
-        </div>
-
-        <div>
-            <p>Samlet pris: 3600 kr</p>
-        </div>
-
-        <label>Ønsker og bemærkninger</label>
-        <div class="form-group">
-            <textarea rows="10" type="text" formControlName="comment"></textarea>
-            <div class="error"
-                *ngIf="bookingDetailsForm.get('comment')?.invalid && bookingDetailsForm.get('comment')?.touched">
-                slut dato er påkrævet
-            </div>
-        </div>
-
-        <button class="create" type="submit">Opret</button>
-
     </div>
-
 </div>
