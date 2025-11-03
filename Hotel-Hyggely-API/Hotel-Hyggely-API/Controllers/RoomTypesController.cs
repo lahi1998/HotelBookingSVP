@@ -1,17 +1,13 @@
-﻿using Application.Dtos.Booking;
-using Application.Dtos.Customer;
-using Application.Dtos.RoomType;
-using Application.Requests.Room;
+﻿using Application.Dtos.RoomType;
 using Application.Requests.RoomType;
-using Application.Requests.Staff;
 using Application.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hotel_Hyggely_API.Controllers
 {
-    [Route("api/[controller]")]
+	[Authorize]
+	[Route("api/[controller]")]
     [ApiController]
     public class RoomTypesController : ControllerBase
     {

@@ -1,9 +1,11 @@
 ﻿using Application.Requests.CleaningSchedule;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hotel_Hyggely_API.Controllers
 {
-    [Route("api/[controller]")]
+	[Authorize]
+	[Route("api/[controller]")]
     [ApiController]
     public class CleaningSchedulesController : ControllerBase
     {
