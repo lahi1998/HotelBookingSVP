@@ -4,6 +4,6 @@
     {
         Receptionist,
         Cleaning,
-        Administrator
+        Admin
     }
 }

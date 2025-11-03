@@ -39,9 +39,11 @@ namespace Infrastructure.Repositories
 
         public async Task DeleteAsync(int id)
         {
-            await dbContext.Bookings.SingleAsync(b => b.ID == id);
+            var bookingToDelete = await dbContext.Bookings.SingleAsync(b => b.ID == id);
 
-            await dbContext.SaveChangesAsync();
+            dbContext.Bookings.Remove(bookingToDelete);
+
+			await dbContext.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Booking>> GetAllWithCustomerAndRoomsAsync()
