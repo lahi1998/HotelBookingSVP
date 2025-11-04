@@ -4,6 +4,7 @@ import { Observable, tap } from 'rxjs';
 import { roomDto } from '../interfaces/roomDto';
 import { CleaningScheduleDto } from '../interfaces/cleaningScheduleDto';
 import { BookingListItemDto } from '../interfaces/bookingListItemDto';
+import { BookingDetailsDto } from '../interfaces/bookingDetailsDto';
 
 @Injectable({
   providedIn: 'root'
@@ -37,6 +38,48 @@ export class StaffService {
         console.log('Fetched bookingListItem:', bookingListItem);
       })
     );
+  }
+
+
+  getBookingDetails(id: number): Observable<BookingDetailsDto> {
+
+    const token = this.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+    return this.httpClient.get<BookingDetailsDto>(`${this.url3}/${id}`, { headers }).pipe(
+      tap((bookingDetails: BookingDetailsDto) => {
+        console.log('Fetched bookingListItem:', bookingDetails);
+      })
+    );
+  }
+
+  deletebooking(id: number): Observable<any> {
+
+    const token = this.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+    return this.httpClient.delete<any>(`${this.url3}/${id}`, { headers });
+  }
+
+  checkInOut(id: number, checkstatus: string): Observable<any> {
+    const token = this.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+    if (checkstatus = "CheckedIn") {
+      return this.httpClient.patch<any>(`${this.url3}/${id}/check-in`, { headers });
+    }
+    else{
+      return this.httpClient.patch<any>(`${this.url3}/${id}/check-out`, { headers });
+    }
   }
 
   /* staff room status */

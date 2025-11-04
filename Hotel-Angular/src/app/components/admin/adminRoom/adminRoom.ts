@@ -186,6 +186,7 @@ export class AdminRoom implements AfterViewInit {
       next: (response) => {
         console.log('Delete successful.', response);
         alert('Delete successful!');
+        this.getRooms();
       },
       error: (error) => {
         console.error('Delete error.', error);

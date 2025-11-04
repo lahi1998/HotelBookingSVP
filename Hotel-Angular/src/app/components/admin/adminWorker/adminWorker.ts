@@ -120,6 +120,7 @@ export class AdminWorker implements AfterViewInit {
       next: (response) => {
         console.log('Delete successful.', response);
         alert('Delete successful!');
+        this.getWorkers();
       },
       error: (error) => {
         console.error('Delete error.', error);

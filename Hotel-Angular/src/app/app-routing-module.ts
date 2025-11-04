@@ -21,15 +21,6 @@ export class AuthService {
     const token = sessionStorage.getItem(storedKey);
     return !!token;
   }
-
-  logout(): void {
-    const storedKey = sessionStorage.getItem('authKey');
-    if (storedKey) {
-      sessionStorage.removeItem(storedKey);
-      sessionStorage.removeItem('authKey');
-    }
-  }
-
 }
 
 // --- AuthGuard using AuthService ---
