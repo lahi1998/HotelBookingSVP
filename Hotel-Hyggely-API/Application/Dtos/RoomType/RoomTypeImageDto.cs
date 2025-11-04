@@ -3,6 +3,7 @@
     public class RoomTypeImageDto
     {
         public int Id { get; set; }
+        public int RoomTypeId { get; set; }
         public required string FilePath { get; set; }
     }
 }

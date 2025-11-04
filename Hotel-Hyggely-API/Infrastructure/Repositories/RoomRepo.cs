@@ -19,7 +19,20 @@ namespace Infrastructure.Repositories
             this.dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<Room>> GetByIdsWithRoomTypeAsync(IEnumerable<int> ids)
+		public async Task<IEnumerable<Room>> GetAllAsync()
+		{
+			return await dbContext.Rooms
+                .Include(r => r.RoomType)
+                .Include(r => r.RoomStatuses)
+                .ToListAsync();
+		}
+
+		public async Task<Room?> GetByIdAsync(int id)
+		{
+            return await dbContext.Rooms.SingleOrDefaultAsync(r => r.ID == id);
+		}
+
+		public async Task<IEnumerable<Room>> GetByIdsWithRoomTypeAsync(IEnumerable<int> ids)
         {
             var rooms = await dbContext.Rooms
                 .Include(r => r.RoomType)
@@ -41,6 +54,34 @@ namespace Infrastructure.Repositories
                 .ToListAsync();
 
             return rooms;
+        }
+
+        public async Task<Room> CreateAsync(Room room)
+        {
+            var result = await dbContext.Rooms.AddAsync(room);
+
+            await dbContext.SaveChangesAsync();
+
+            return result.Entity;
+        }
+
+        public async Task<Room> UpdateAsync(Room room)
+        {
+			var result = dbContext.Rooms.Update(room);
+
+			await dbContext.SaveChangesAsync();
+
+			return result.Entity;
+
+		}
+
+		public async Task DeleteAsync(int id)
+        {
+            var roomToDelete = await dbContext.Rooms.SingleAsync(r => r.ID == id);
+
+            dbContext.Rooms.Remove(roomToDelete);
+
+            await dbContext.SaveChangesAsync();
         }
     }
 }

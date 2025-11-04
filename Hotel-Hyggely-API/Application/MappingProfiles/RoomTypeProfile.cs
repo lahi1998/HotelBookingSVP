@@ -1,5 +1,6 @@
 ﻿using Application.Dtos.RoomType;
 using Application.Requests.RoomType;
+using Application.Requests.RoomTypeImage;
 using AutoMapper;
 using Domain.Entities;
 
@@ -16,6 +17,8 @@ namespace Application.MappingProfiles
             CreateMap<UpdateRoomTypeRequest, RoomType>();
 
             CreateMap<RoomTypeImage, RoomTypeImageDto>();
+
+            CreateMap<CreateImageRequest, RoomTypeImage>();
 		}
     }
 }
