@@ -1,27 +1,75 @@
 <div class="booking-container">
     <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
         <div class="contact-info-container">
-            <label>Fulde navn</label>
-            <input required type="text" formControlName="fullName">
-            <label>Email</label>
-            <input required type="text" formControlName="email">
-            <label>Telefon nummer</label>
-            <input required type="text" formControlName="phoneNumber">
-            <label>Antal personer</label>
-            <input required type="number" formControlName="personCount">
+            <label class="required">Fulde navn</label>
+            <input type="text" formControlName="fullName">
+            <div class="error"
+                *ngIf="bookingForm.get('fullName')?.invalid && (bookingForm.get('fullName')?.touched || bookingForm.get('fullName')?.dirty)">
+                <small>
+                    Fulde navn er påkrævet
+                </small>
+            </div>
+            <label class="required">Email</label>
+            <input type="text" formControlName="email">
+            <div class="error"
+                *ngIf="bookingForm.get('email')?.invalid && (bookingForm.get('email')?.touched || bookingForm.get('email')?.dirty)">
+                <small *ngIf="bookingForm.get('email')?.errors?.['required']">
+                    Email er påkrævet.
+                </small>
+                <small class="text-red-500" *ngIf="bookingForm.get('email')?.errors?.['invalidEmail']">
+                    Emailadressen er ikke gyldig
+                </small>
+            </div>
+            <label class="required">Telefon nummer</label>
+            <input type="text" formControlName="phoneNumber" name="phoneNumber">
+            <div class="error"
+                *ngIf="bookingForm.get('phoneNumber')?.invalid && (bookingForm.get('phoneNumber')?.touched || bookingForm.get('phoneNumber')?.dirty)">
+                <small>
+                    Telefon nummer er påkrævet
+                </small>
+            </div>
+            <label class="required">Antal personer</label>
+            <input type="number" formControlName="personCount">
+            <div class="error"
+                *ngIf="bookingForm.get('personCount')?.invalid && (bookingForm.get('personCount')?.touched || bookingForm.get('personCount')?.dirty)">
+                <small>
+                    Antal personer er påkrævet
+                </small>
+            </div>
             <label>Ønsker og bemærkninger</label>
             <textarea rows="10" type="text" formControlName="comment"></textarea>
         </div>
         <div style="max-width: 100%;">
             <div class="room-picker-container">
                 <div class="room-info-container">
-                    <label>Fra</label>
-                    <input required type="date" formControlName="fromDate">
-
-                    <label>Til</label>
-                    <input required type="date" formControlName="toDate">
+                    <label class="required">Fra</label>
+                    <input type="date" formControlName="startDate" [min]="today"
+                        (change)="onDateChanged(bookingForm.get('startDate')?.value, bookingForm.get('endDate')?.value)">
+                    <div class="error"
+                        *ngIf="bookingForm.get('startDate')?.invalid && (bookingForm.get('startDate')?.touched || bookingForm.get('startDate')?.dirty)">
+                        <small>
+                            Start datoen er påkrævet
+                        </small>
+                    </div>
+                    <label class="required">Til</label>
+                    <input type="date" formControlName="endDate" [min]="endDateMin"
+                        (change)="onDateChanged(bookingForm.get('startDate')?.value, bookingForm.get('endDate')?.value)">
+                    <div class="error"
+                        *ngIf="bookingForm.get('endDate')?.invalid && (bookingForm.get('endDate')?.touched || bookingForm.get('endDate')?.dirty)">
+                        <small>
+                            Slut datoen er påkrævet
+                        </small>
+                    </div>
                     <label>Værelsestype</label>
-                    <input required type="text" formControlName="roomType">
+                    <select id="roomTypesList" [(ngModel)]="selectedRoomTypeId" [ngModelOptions]="{ standalone: true }" (change)="onRoomTypeChange(selectedRoomTypeId)">
+                        @for (roomType of roomTypes; track roomType.name) {
+                        <option [value]="roomType.id">{{roomType.name}}</option>
+                        }
+                    </select>
+                    <p>Pris pr nat: {{roomTypePrice}}</p>
+                    <p>Antal ledige værelser: {{roomCount}}</p>
+                    <button type="button" class="imgControlBtn" (click)="addRoom()"
+                        [disabled]="roomCount <= 0">Tilføj</button>
                 </div>
 
 
@@ -43,18 +91,17 @@
                 <div class="booked-rooms-outer-container">
                     Værelser
                     <div class="booked-rooms-container">
-                        @for (room of rooms; track room){
-                        <span>{{room}}</span>
-                        }
-                        @empty{
-
-
+                        @for (room of addedRooms; track room.roomTypeId){
+                        <div style="display:flex; flex-direction: row; justify-content: space-between;">
+                            <p>{{room.count}}x {{room.roomType.name}}</p>
+                            <p>{{room.roomType.price}} kr</p>
+                        </div>
                         }
                     </div>
                 </div>
                 <div class="price-container">
-                    Samlet pris:
-                    <button class="bg-blue">Book !</button>
+                    <p style="text-align: center;">Samlet pris: {{totalPrice}}</p>
+                    <button class="bg-blue" type="submit" [disabled]="bookingForm.invalid">Book !</button>
                 </div>
             </div>
         </div>
