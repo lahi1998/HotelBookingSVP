@@ -74,11 +74,11 @@ export class StaffService {
       'Content-Type': 'application/json'
     });
 
-    if (checkstatus = "CheckedIn") {
-      return this.httpClient.patch<any>(`${this.url3}/${id}/check-in`, { headers });
+    if (checkstatus === "NotCheckedIn") {
+      return this.httpClient.patch<any>(`${this.url3}/${id}/check-in`, {}, { headers });
     }
     else{
-      return this.httpClient.patch<any>(`${this.url3}/${id}/check-out`, { headers });
+      return this.httpClient.patch<any>(`${this.url3}/${id}/check-out`, {}, { headers });
     }
   }
 
