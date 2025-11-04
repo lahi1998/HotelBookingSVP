@@ -17,7 +17,6 @@ export function customEmailValidator(): ValidatorFn {
     const email = control.value;
     if (!email) return null;
     const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,4}$/;
-    console.log("a");
     return regex.test(email) ? null : { invalidEmail: true };
   };
 }
@@ -77,13 +76,13 @@ export class Booking implements OnInit {
       endDate: [dayAfterTomorrowString, Validators.required]
     });
 
+    //TODO Get images
     this.images = [{ dataUrl: "/assets/logo.png" }, { dataUrl: "/assets/download.jpg" }]
 
     this.bookingForm.get('startDate')?.valueChanges.subscribe(() => {
     this.updateEndDateMinAndValue();
   });
   this.updateEndDateMinAndValue();
-
   }
 
   updateEndDateMinAndValue() {
@@ -181,6 +180,10 @@ export class Booking implements OnInit {
       return;
     }
 
+    this.createBooking();
+  }
+
+  private createBooking(){
     const booking: BookingInterface = {
       fullName: this.bookingForm.value.fullName,
       email: this.bookingForm.value.email,
@@ -194,7 +197,6 @@ export class Booking implements OnInit {
 
     const observer: Observer<any> = {
       next: (response) => {
-        console.log('Booking created', response);
         alert('Booking oprettet. Du vil snart modtage en bekræftelsesmail');
       },
       error: (error) => {
@@ -205,24 +207,6 @@ export class Booking implements OnInit {
     };
 
     this.bookingService.createBooking(booking).subscribe(observer);
-  }
-
-  prevImage() {
-    if (this.currentImageIndex > 0) {
-      this.currentImageIndex--;
-    }
-    else {
-      this.currentImageIndex = this.images.length - 1;
-    }
-  }
-
-  nextImage() {
-    if (this.currentImageIndex < this.images.length - 1) {
-      this.currentImageIndex++;
-    }
-    else {
-      this.currentImageIndex = 0;
-    }
   }
 
   onDateChanged(startDate: string, endDate: string) {
@@ -255,5 +239,24 @@ export class Booking implements OnInit {
       this.roomCount--;
     }
     this.calcTotalPrice();
+  }
+
+  //Image carousel
+  prevImage() {
+    if (this.currentImageIndex > 0) {
+      this.currentImageIndex--;
+    }
+    else {
+      this.currentImageIndex = this.images.length - 1;
+    }
+  }
+
+  nextImage() {
+    if (this.currentImageIndex < this.images.length - 1) {
+      this.currentImageIndex++;
+    }
+    else {
+      this.currentImageIndex = 0;
+    }
   }
 }
