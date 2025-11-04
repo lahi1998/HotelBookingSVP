@@ -75,6 +75,26 @@ button {
     background-color: #e93d3d;
 }
 
+.checkIn{
+    background-color: #4EA9E9;
+    font-size: xx-large;
+    padding: 5%;
+}
+
+.checkIn:hover {
+  background-color: #2e8cd6;
+}
+
+.checkOut {
+    background-color: #FF4646;
+    font-size: xx-large;
+    padding: 5%;
+}
+
+.checkOut:hover {
+  background-color: #e93d3d;
+}
+
 input,
 select,
 textarea {

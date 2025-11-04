@@ -67,6 +67,21 @@ export class StaffService {
     return this.httpClient.delete<any>(`${this.url3}/${id}`, { headers });
   }
 
+  checkInOut(id: number, checkstatus: string): Observable<any> {
+    const token = this.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+    if (checkstatus = "CheckedIn") {
+      return this.httpClient.patch<any>(`${this.url3}/${id}/check-in`, { headers });
+    }
+    else{
+      return this.httpClient.patch<any>(`${this.url3}/${id}/check-out`, { headers });
+    }
+  }
+
   /* staff room status */
   getRooms(): Observable<roomDto[]> {
 

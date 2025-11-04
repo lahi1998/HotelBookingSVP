@@ -117,8 +117,7 @@
 
                 <label>Antal personer</label>
                 <div class="form-group">
-                    <input type="number" formControlName="personCount" 
-                        autocomplete="off" />
+                    <input type="number" formControlName="personCount" autocomplete="off" />
                     <div class="error"
                         *ngIf="bookingDetailsForm.get('personCount')?.invalid && bookingDetailsForm.get('personCount')?.touched">
                         Telefon nummer er påkrævet
@@ -126,7 +125,7 @@
                 </div>
 
                 <div>
-                    <p>Samlet pris: {{totalprice}} kr</p>
+                    <p>Samlet pris: {{totalPrice}} kr</p>
                 </div>
 
                 <label>Ønsker og bemærkninger</label>
@@ -141,8 +140,15 @@
 
             <div class="div2">
                 <button class="cleaning" type="button">Opret rengøring</button>
-                <button class="checkin/out" type="button">Tjek ind</button>
-
+                <button type="button" (click)="CheckInOut(bookingid)" 
+                [ngClass]="{
+                'checkIn': checkStatus === 'NotCheckedIn',
+                'checkOut': checkStatus === 'CheckedIn'
+                }" 
+                [disabled]="checkStatus === 'CheckedOut'" 
+                [hidden]="checkStatus === 'CheckedOut'">
+                    {{ checkStatus }}
+                </button>
                 <button class="update" type="submit">Gem</button>
             </div>
         </div>

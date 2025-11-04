@@ -2,6 +2,7 @@ import { CustomerDto } from "./customerDto";
 import { roomDto } from "./roomDto";
 
 export interface BookingDetailsDto {
+    checkInStatus: string,
     id: number,
     startDate: Date,
     endDate: Date,

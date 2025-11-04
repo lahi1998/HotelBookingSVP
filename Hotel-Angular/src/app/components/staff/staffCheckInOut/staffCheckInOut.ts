@@ -19,7 +19,7 @@ export class StaffCheckInOut {
   displayedColumnsList: string[] = ['fullName', 'email', 'phoneNumber', 'roomCount', 'startDate', 'endDate', 'buttons'];
   displayedColumnsDetails: string[] = ['number', 'floor', 'roomType', 'bedAmount', 'buttons'];
   filterValue: string = '';
-  totalprice: number = 0;
+  totalPrice: number = 0;
   /* list */
   DATABookingListItem: BookingListItemDto[] = [];
   dataSourceList = new MatTableDataSource<BookingListItemDto>(this.DATABookingListItem);
@@ -30,6 +30,8 @@ export class StaffCheckInOut {
   roomIdsArray: number[] = this.DATABookingDetailsRoom.map(room => room.id);
   bookingDetailsForm!: FormGroup;
   bookingid: number = 0;
+  /* check in/out status */
+  checkStatus: string = ''
 
   constructor(
     private fb: FormBuilder,
@@ -63,9 +65,6 @@ export class StaffCheckInOut {
     this.dataSourceList.filter = this.filterValue.trim().toLowerCase();
   }
 
-
-
-
   onSubmit(): void {
     if (this.bookingDetailsForm.valid) {
       const updatedBookingDetailsDto: UpdateBookingRequest = {
@@ -76,10 +75,9 @@ export class StaffCheckInOut {
         startDate: this.bookingDetailsForm.value.startDate,
         endDate: this.bookingDetailsForm.value.endDate,
         comment: this.bookingDetailsForm.value.comment,
-        totalPrice: this.totalprice,
+        totalPrice: this.totalPrice,
         personCount: this.bookingDetailsForm.value.personCount,
         roomIds: this.roomIdsArray,
-
       };
 
       /*const observer: Observer<any> = {
@@ -120,7 +118,9 @@ export class StaffCheckInOut {
           });
         }
 
-        this.totalprice = bookingDetail.totalPrice;
+        this.totalPrice = bookingDetail.totalPrice;
+        this.checkStatus = bookingDetail.checkInStatus;
+        this.bookingid = bookingDetail.id;
 
         this.DATABookingDetails = [bookingDetail];
 
@@ -174,6 +174,26 @@ export class StaffCheckInOut {
     };
 
     this.staffService.deletebooking(id).subscribe(observer);
+  }
+
+  CheckInOut(id: number) {
+    
+    console.log("here me lord", id)
+    const observer: Observer<any> = {
+      next: (response) => {
+        console.log('check successful.', response);
+        this.EditRow(id);
+      },
+      error: (error) => {
+        console.error('check error.', error);
+      },
+      complete: () => {
+        // optional cleanup or navigation
+      },
+    };
+
+    this.staffService.checkInOut(id, this.checkStatus).subscribe(observer);
+
   }
 
 }
