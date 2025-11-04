@@ -34,6 +34,14 @@ namespace Hotel_Hyggely_API.Controllers
 
 			return Ok(availableRooms);
 		}
+		[Authorize]
+		[HttpGet("availabledetailed")]
+		public async Task<IActionResult> GetAvailableRoomsWithDetailsAsync([FromQuery] DateTime fromDate, DateTime toDate)
+		{
+			var availableRooms = await roomService.GetAvailableByPeriodWithDetails(fromDate, toDate);
+
+			return Ok(availableRooms);
+		}
 
 		[Authorize]
 		[HttpGet("{id}")]

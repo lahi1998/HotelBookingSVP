@@ -35,6 +35,13 @@ namespace Application.Services
             return mapper.Map<IEnumerable<AvailableRoomDto>>(availableRooms);
         }
 
+		public async Task<IEnumerable<RoomDto>> GetAvailableByPeriodWithDetails(DateTime fromDate, DateTime toDate)
+		{
+			var availableRooms = await roomRepo.GetAvailableByPeriod(fromDate, toDate);
+
+			return mapper.Map<IEnumerable<RoomDto>>(availableRooms);
+		}
+
 		public async Task<RoomDto?> GetByIdAsync(int id)
 		{
 			var room = await roomRepo.GetByIdAsync(id);
