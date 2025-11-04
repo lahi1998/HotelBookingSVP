@@ -1,6 +1,8 @@
 <app-staffNav></app-staffNav>
 
 <div class="container">
+
+    <!-- bookingListItem table -->
     <div class="table-wrapper left">
         <h2>Bookings</h2>
         <input style="width: auto; margin: 5px;" matInput [(ngModel)]="filterValue" (ngModelChange)="searchFilter()"
@@ -53,7 +55,7 @@
                     <th style="border-right: none;" mat-header-cell *matHeaderCellDef></th>
                     <td style="border-right: none;" mat-cell *matCellDef="let BookingListItem">
                         <button class="edit" (click)="EditRow(BookingListItem.id)">Rediger</button>
-                        <button class="delete" (click)="DeleteRow(BookingListItem.id)">Slet</button>
+                        <button class="delete" (click)="DeletebookingRow(BookingListItem.id)">Slet</button>
                     </td>
                 </ng-container>
 
@@ -66,6 +68,7 @@
         </div>
     </div>
 
+    <!-- Edit form -->
     <div class="edit-booking">
         <div [formGroup]="bookingDetailsForm" (ngSubmit)="onSubmit()" class="edit-booking-inner ">
             <div class="div1">
@@ -140,6 +143,8 @@
 
             <div class="div2">
                 <button class="cleaning" type="button">Opret rengøring</button>
+
+                <!-- ngClass works like a switch and checks the condtions set and sets class-->
                 <button type="button" (click)="CheckInOut(bookingid)" 
                 [ngClass]="{
                 'checkIn': checkStatus === 'NotCheckedIn',
@@ -147,11 +152,13 @@
                 }" 
                 [disabled]="checkStatus === 'CheckedOut'" 
                 [hidden]="checkStatus === 'CheckedOut'">
-                    {{ checkStatus }}
+                    {{ statusText }}
                 </button>
                 <button class="update" type="submit">Gem</button>
             </div>
         </div>
+
+        <!-- Table with booke rooms -->
         <div class="table-wrapper" style="max-width: 100%;">
             <h2>Booked værelser</h2>
             <div class="table-border">
@@ -188,8 +195,8 @@
                         <th style="border-right: none;" mat-header-cell *matHeaderCellDef>
                             <button class="create">Opret</button>
                         </th>
-                        <td style="border-right: none;" mat-cell *matCellDef="let BookingListItem">
-                            <button class="delete">Slet</button>
+                        <td style="border-right: none;" mat-cell *matCellDef="let BookingDetailsRoom">
+                            <button class="delete" (click)="DeleteBookedRoomRow(BookingDetailsRoom.id)">Slet</button>
                         </td>
                     </ng-container>
 
@@ -202,4 +209,9 @@
             </div>
         </div>
     </div>
+
+    <!-- add room dialog -->
+
+
+
 </div>

@@ -31,7 +31,8 @@ export class StaffCheckInOut {
   bookingDetailsForm!: FormGroup;
   bookingid: number = 0;
   /* check in/out status */
-  checkStatus: string = ''
+  checkStatus: string = '';
+  statusText: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -39,7 +40,6 @@ export class StaffCheckInOut {
   ) { }
 
   ngOnInit() {
-
     this.bookingDetailsForm = this.fb.group({
       fullName: ['', Validators.required],
       email: ['', Validators.required],
@@ -60,10 +60,51 @@ export class StaffCheckInOut {
     this.dataSourceList.paginator = this.paginator;
   }
 
+  /* booking list item logic */
+
   /* search filter */
   searchFilter() {
     this.dataSourceList.filter = this.filterValue.trim().toLowerCase();
   }
+
+  getBookingListItems() {
+    const observer: Observer<BookingListItemDto[]> = {
+      next: (rooms) => {
+        this.DATABookingListItem = Array.isArray(rooms) ? rooms : [];
+        this.dataSourceList.data = this.DATABookingListItem;
+        // console.log('booking List Item fetched successfully', rooms);
+      },
+      error: (err) => {
+        // console.error('booking List Item fetch failed:', err);
+      },
+      complete: () => {
+        // optional cleanup or navigation
+      },
+    };
+
+    this.staffService.getBookingListItems().subscribe(observer);
+  }
+
+  DeletebookingRow(id: number) {
+
+    const observer: Observer<any> = {
+      next: (response) => {
+        console.log('Delete successful.', response);
+        this.getBookingListItems();
+      },
+      error: (error) => {
+        console.error('Delete error.', error);
+      },
+      complete: () => {
+        // optional cleanup or navigation
+      },
+    };
+
+    this.staffService.deletebooking(id).subscribe(observer);
+  }
+
+
+  /* bookind detail / edit logik */
 
   onSubmit(): void {
     if (this.bookingDetailsForm.valid) {
@@ -120,6 +161,10 @@ export class StaffCheckInOut {
 
         this.totalPrice = bookingDetail.totalPrice;
         this.checkStatus = bookingDetail.checkInStatus;
+        if (bookingDetail.checkInStatus == 'NotCheckedIn') {
+          this.statusText = "Tjek ind"
+        }
+        else { this.statusText = "Tjek ud" }
         this.bookingid = bookingDetail.id;
 
         this.DATABookingDetails = [bookingDetail];
@@ -140,44 +185,13 @@ export class StaffCheckInOut {
     this.staffService.getBookingDetails(id).subscribe(observer);
   }
 
-  getBookingListItems() {
-    const observer: Observer<BookingListItemDto[]> = {
-      next: (rooms) => {
-        this.DATABookingListItem = Array.isArray(rooms) ? rooms : [];
-        this.dataSourceList.data = this.DATABookingListItem;
-        console.log('booking List Item fetched successfully', rooms);
-      },
-      error: (err) => {
-        console.error('booking List Item fetch failed:', err);
-      },
-      complete: () => {
-        // optional cleanup or navigation
-      },
-    };
-
-    this.staffService.getBookingListItems().subscribe(observer);
-  }
-
-  DeleteRow(id: number) {
-
-    const observer: Observer<any> = {
-      next: (response) => {
-        console.log('Delete successful.', response);
-        this.getBookingListItems();
-      },
-      error: (error) => {
-        console.error('Delete error.', error);
-      },
-      complete: () => {
-        // optional cleanup or navigation
-      },
-    };
-
-    this.staffService.deletebooking(id).subscribe(observer);
+  /* Repops the array with only id's not matching the id, thats meant to be removed */
+  DeleteBookedRoomRow(id: number) {
+    this.roomIdsArray = this.roomIdsArray.filter(roomId => roomId !== id);
   }
 
   CheckInOut(id: number) {
-    
+
     console.log("here me lord", id)
     const observer: Observer<any> = {
       next: (response) => {
