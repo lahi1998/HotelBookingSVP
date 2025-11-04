@@ -22,43 +22,68 @@ namespace Hotel_Hyggely_API.Controllers
 		{
 			var roomTypes = await roomTypeService.GetAllAsync();
 
-			var RoomTypeDto = roomTypes.Select(r => new RoomTypeDto
-			{
-				ID = r.ID,
-				Name = r.Name,
-				Price = r.Price
-			});
-
-			return Ok(RoomTypeDto);
+			return Ok(roomTypes);
 		}
 
 		[Authorize]
 		[HttpGet("{id}")]
 		public async Task<IActionResult> GetAsync(int id)
 		{
-			return StatusCode(501);
+			var roomType = await roomTypeService.GetByIdAsync(id);
+
+			if (roomType == null)
+			{
+				return NotFound();
+			}
+
+			return Ok(roomType);
 		}
 
 		[Authorize]
 		[HttpPost]
 		public async Task<IActionResult> PostAsync([FromBody] CreateRoomTypeRequest request)
 		{
-			return StatusCode(501);
+			if (!ModelState.IsValid)
+			{
+				return BadRequest(ModelState);
+			}
+
+			var createdRoomType = await roomTypeService.CreateAsync(request);
+
+			return CreatedAtAction(nameof(GetAsync), new { id = createdRoomType.ID }, createdRoomType);
 		}
 
 		[Authorize]
 		[HttpPut]
 		public async Task<IActionResult> PutAsync([FromBody] UpdateRoomTypeRequest request)
 		{
-			return StatusCode(501);
+			if (!ModelState.IsValid)
+			{
+				return BadRequest(ModelState);
+			}
+
+			var updatedRoomType = await roomTypeService.UpdateAsync(request);
+
+			if (updatedRoomType == null)
+			{
+				return NotFound();
+			}
+
+			return Ok(updatedRoomType);
 		}
 
 		[Authorize]
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> DeleteAsync(int id)
 		{
-			return StatusCode(501);
-		}
+			var result = await roomTypeService.DeleteAsync(id);
 
+			if (!result)
+			{
+				return NotFound();
+			}
+
+			return NoContent();
+		}
 	}
 }
