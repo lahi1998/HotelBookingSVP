@@ -19,7 +19,7 @@ h2 {
 .table-wrapper {
     flex: 1 1 60%;
     min-width: 300px;
-    max-width: 50%;
+    max-width: 65%;
 }
 
 .table-border {
@@ -112,7 +112,7 @@ textarea{
 .edit-booking {
     flex: 1 1 35%;
     min-width: 280px;
-    max-width: 60%;
+    max-width: 32%;
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -154,6 +154,7 @@ textarea{
 .update:hover {
   background-color: #2e8cd6;
 }
+
 
 /* Responsive behavior */
 @media screen and (max-width: 900px) {

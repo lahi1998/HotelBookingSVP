@@ -28,7 +28,7 @@ export class BookingService {
     return this.httpClient.get<any[]>(`${this.baseUrl}/rooms/available`, { params }).pipe(
           map((items: any[]) => this.groupBy(items, 'roomTypeId')),
         tap((rooms: any[][]) => {
-            console.log('Fetched rooms:', rooms);
+            console.log('Fetched available rooms:', rooms);
           }));
   }
 

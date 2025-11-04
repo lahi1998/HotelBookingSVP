@@ -7,4 +7,5 @@ lastCleaned: Date;
 number: number;
 floor: number;
 bedAmount: number;
+roomstatus: string;
 }

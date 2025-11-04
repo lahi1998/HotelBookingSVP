@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { StaffService } from '../../../services/staffService';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observer } from 'rxjs';
@@ -24,20 +24,23 @@ export class StaffCheckInOut {
   DATABookingListItem: BookingListItemDto[] = [];
   dataSourceList = new MatTableDataSource<BookingListItemDto>(this.DATABookingListItem);
   /* details */
-  DATABookingDetails: BookingDetailsDto[] = [];
   DATABookingDetailsRoom: roomDto[] = [];
   dataSourceRooms = new MatTableDataSource<roomDto>(this.DATABookingDetailsRoom);
   roomIdsArray: number[] = this.DATABookingDetailsRoom.map(room => room.id);
   bookingDetailsForm!: FormGroup;
   bookingid: number = 0;
-  /* check in/out status */
+  startDate: Date = new Date();
+  endDate: Date = new Date();
   checkStatus: string = '';
   statusText: string = '';
+  editopen = false;
 
   constructor(
     private fb: FormBuilder,
     private staffService: StaffService,
   ) { }
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngOnInit() {
     this.bookingDetailsForm = this.fb.group({
@@ -53,8 +56,6 @@ export class StaffCheckInOut {
 
     this.getBookingListItems();
   }
-
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngAfterViewInit() {
     this.dataSourceList.paginator = this.paginator;
@@ -140,7 +141,11 @@ export class StaffCheckInOut {
     }
   }
 
+
+  /* Edit booking */
   EditRow(id: number) {
+
+    this.editopen = true;
 
     const observer: Observer<BookingDetailsDto> = {
       next: (bookingDetail) => {
@@ -156,6 +161,7 @@ export class StaffCheckInOut {
               ? new Date(bookingDetail.endDate).toISOString().slice(0, 10)
               : '',
             comment: bookingDetail.comment,
+            personCount: bookingDetail.personCount,
           });
         }
 
@@ -167,7 +173,8 @@ export class StaffCheckInOut {
         else { this.statusText = "Tjek ud" }
         this.bookingid = bookingDetail.id;
 
-        this.DATABookingDetails = [bookingDetail];
+        this.startDate = bookingDetail.startDate;
+        this.endDate = bookingDetail.endDate;
 
         this.DATABookingDetailsRoom = bookingDetail.rooms;
         this.dataSourceRooms.data = this.DATABookingDetailsRoom;
@@ -187,7 +194,16 @@ export class StaffCheckInOut {
 
   /* Repops the array with only id's not matching the id, thats meant to be removed */
   DeleteBookedRoomRow(id: number) {
+    /*  Remove the room ID from the selected room list */
     this.roomIdsArray = this.roomIdsArray.filter(roomId => roomId !== id);
+
+    /* Remove the full room object from the booked rooms table */
+    this.DATABookingDetailsRoom = this.DATABookingDetailsRoom.filter(room => room.id !== id);
+
+    /* Update the Material Table datasource */
+    this.dataSourceRooms.data = [...this.DATABookingDetailsRoom];
+
+    console.log('Room deleted from booking:', id);
   }
 
   CheckInOut(id: number) {
@@ -209,6 +225,90 @@ export class StaffCheckInOut {
     this.staffService.checkInOut(id, this.checkStatus).subscribe(observer);
 
   }
+
+
+  /* Add room */
+  availableRooms: any[] = [];
+  allRooms: roomDto[] = [];
+
+  DATAAvailableRooom: roomDto[] = [];
+  dataSourceAvailableRooom = new MatTableDataSource<roomDto>(this.DATAAvailableRooom);
+
+  /* Open dialog logik and funtion calls */
+  async openAddRoomDialog() {
+
+    const startDateObj = new Date(this.startDate);
+    const endDateObj = new Date(this.endDate);
+
+    const startDateString = startDateObj.toISOString().split('T')[0];
+    const endDateString = endDateObj.toISOString().split('T')[0];
+
+    this.getAvailableRooms(startDateString, endDateString);
+  }
+
+
+
+
+
+  /* Adds id to roomids array */
+  addRoom(newid: number) {
+    /* Add the room ID to the array of selected rooms */
+    this.roomIdsArray.push(newid);
+
+    /* Remove the room from available rooms */
+    this.availableRooms = this.availableRooms.filter(room => room.id !== newid);
+
+    /* Find the full room object in allRomms */
+    const roomToAdd = this.allRooms.find(room => room.id === newid);
+    if (!roomToAdd) {
+      console.error('Room not found in allRomms for ID:', newid);
+      return;
+    }
+
+    /* Add it to the current booking room list */
+    this.DATABookingDetailsRoom.push(roomToAdd);
+
+    /* Update the table datasource */
+    this.dataSourceRooms.data = [...this.DATABookingDetailsRoom];
+
+    console.log('Room added:', roomToAdd);
+  }
+
+  /* Gets a array of available rooms (id and roomtypeid)*/
+  getAvailableRooms(startDate: string, endDate: string){
+    if (!startDate || !endDate) {
+      this.availableRooms = [];
+      return;
+    }
+
+    const startDateAsDate = Date.parse(startDate);
+    const endDateAsDate = Date.parse(endDate);
+
+    if (isNaN(startDateAsDate) || isNaN(endDateAsDate)) {
+      this.availableRooms = [];
+      return;
+    }
+
+      const roomObserver: Observer<any[]> = {
+        next: (response) => {
+          this.availableRooms = response;
+        },
+        error: (error) => {
+          console.error('Room error', error);
+          alert('Available rooms fetch failed');
+        },
+        complete: () => {
+        },
+      };
+
+      this.staffService.getAvailableRoomsDetailed(startDate, endDate).subscribe(roomObserver);
+  }
+
+
+
+  // begreng også samlet pris med nye værelser.
+
+
 
 }
 

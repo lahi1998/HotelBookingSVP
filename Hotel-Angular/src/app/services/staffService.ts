@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { roomDto } from '../interfaces/roomDto';
@@ -14,6 +14,7 @@ export class StaffService {
   url: string = "https://hotel-hyggely.dk/api/rooms";
   url2: string = "https://hotel-hyggely.dk/api/cleaningschedules";
   url3: string = "https://hotel-hyggely.dk/api/bookings";
+  url4: string = "https://hotel-hyggely.dk/api/rooms/availabledetailed";
 
   constructor(private httpClient: HttpClient) { }
 
@@ -36,6 +37,24 @@ export class StaffService {
     return this.httpClient.get<BookingListItemDto[]>(this.url3, { headers }).pipe(
       tap((bookingListItem: BookingListItemDto[]) => {
         console.log('Fetched bookingListItem:', bookingListItem);
+      })
+    );
+  }
+
+  getAvailableRoomsDetailed(startDate: string, endDate: string): Observable<any[]>{
+    const params = new HttpParams()
+    .set('FromDate', startDate)
+    .set('ToDate', endDate);
+
+    const token = this.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+    return this.httpClient.get<roomDto[]>(this.url, { headers }).pipe(
+      tap((rooms: roomDto[]) => {
+        console.log('Fetched rooms:', rooms);
       })
     );
   }
