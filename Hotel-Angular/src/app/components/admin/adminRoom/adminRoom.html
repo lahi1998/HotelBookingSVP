@@ -4,7 +4,7 @@
         <h2>Værelser</h2>
         <input style="width: auto; margin: 5px;" matInput [(ngModel)]="filterValue" (ngModelChange)="searchFilter()"
             placeholder="Søg" />
-            
+
         <div class="table-border">
             <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
@@ -23,7 +23,7 @@
                 <!-- roomType Column -->
                 <ng-container matColumnDef="roomType">
                     <th mat-header-cell *matHeaderCellDef> Værelses type </th>
-                    <td mat-cell *matCellDef="let room"> {{room.roomType}} </td>
+                    <td mat-cell *matCellDef="let room"> {{room.roomTypeName}} </td>
                 </ng-container>
 
                 <!-- bedAmount Column -->
@@ -87,32 +87,6 @@
             </div>
 
             <button class="create" type="button">Opret</button>
-        </div>
-
-        <div class="image-upload" style="width:320px; flex-shrink:0;">
-            <div class="carousel" *ngIf="images.length > 0">
-                <div class="carousel-main">
-                    <button class="imgControlBtn" type="button" (click)="prevImage()"
-                        [disabled]="images.length <= 1">‹</button>
-                    <img class="imgprew" [src]="images[currentImageIndex]?.dataUrl" alt="Preview">
-                    <button class="imgControlBtn" type="button" (click)="nextImage()"
-                        [disabled]="images.length <= 1">›</button>
-                </div>
-
-                <div class="carousel-controls">
-                    <small>{{ currentImageIndex + 1 }} / {{ images.length }}</small>
-                    <button type="button" (click)="deleteCurrentImage()" class="delete">Slet</button>
-                </div>
-
-                <div class="thumbnails">
-                    <img *ngFor="let img of images; let i = index" [src]="img.dataUrl" (click)="selectImage(i)"
-                        [style.border]="i === currentImageIndex ? '2px solid #3f51b5' : '1px solid #ddd'"
-                        style="width:56px; height:44px; object-fit:cover; cursor:pointer; border-radius:4px;">
-                </div>
-            </div>
-
-            <label for="roomImages">Billeder</label>
-            <input id="roomImages" type="file" accept="image/*" (change)="onFilesSelected($event)" multiple>
         </div>
     </div>
 </div>
