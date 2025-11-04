@@ -11,6 +11,9 @@ import { Booking } from './components/booking/booking'
 import { StaffRoomstatus } from './components/staff/staffRoomstatus/staffRoomstatus';
 import { StaffNav } from './components/staff/staffNav/staffNav';
 import { LoginService } from './services/loginService';
+import { Contact } from './components/guest/contact/contact';
+import { Frontpage } from './components/guest/frontpage/frontpage';
+
 
 // --- Simple AuthService ---
 @Injectable({ providedIn: 'root' })
@@ -70,6 +73,8 @@ export class CleaningAuthGuard implements CanActivateChild {
 const routes: Routes = [
   { path: 'login', component: Login },
   { path: 'booking', component: Booking },
+  { path: 'frontpage', component: Frontpage },
+  { path: 'contact', component: Contact },
   
 
   // --- Admin child group ---

@@ -30,7 +30,7 @@
                     <th style="border-right: none;" mat-header-cell *matHeaderCellDef></th>
                     <td style="border-right: none;" *matCellDef="let roomtype">
                         <button class="edit">Rediger</button>
-                        <button class="delete"(click)="DeleteRow(roomtype.id)">Slet</button>
+                        <button class="delete" (click)="DeleteRow(roomtype.id)">Slet</button>
                     </td>
                 </ng-container>
 
@@ -43,25 +43,50 @@
         </div>
     </div>
 
-    <div [formGroup]="roomTypeForm" (ngSubmit)="onSubmit()" class="Create-type-box right">
-
-        <label>Name</label>
-        <div class="form-group">
-            <input type="text" formControlName="name" placeholder="Indtast navn" autocomplete="off" />
-            <div class="error" *ngIf="roomTypeForm.get('name')?.invalid && roomTypeForm.get('name')?.touched">
-                Navn er påkrævet
+    <div class="create-container">
+        <form [formGroup]="roomTypeForm" (ngSubmit)="onSubmit()" class="Create-type-box" style="flex:1;">
+            <label>Name</label>
+            <div class="form-group">
+                <input type="text" formControlName="name" placeholder="Indtast navn" autocomplete="off" />
+                <div class="error" *ngIf="roomTypeForm.get('name')?.invalid && roomTypeForm.get('name')?.touched">
+                    Navn er påkrævet
+                </div>
             </div>
-        </div>
 
-        <label>Pris</label>
-        <div class="form-group">
-            <input type="number" formControlName="price" placeholder="Indtast pris" autocomplete="off" />
-            <div class="error" *ngIf="roomTypeForm.get('price')?.invalid && roomTypeForm.get('price')?.touched">
-                Pris er påkrævet
+            <label>Pris</label>
+            <div class="form-group">
+                <input type="number" formControlName="price" placeholder="Indtast pris" autocomplete="off" />
+                <div class="error" *ngIf="roomTypeForm.get('price')?.invalid && roomTypeForm.get('price')?.touched">
+                    Pris er påkrævet
+                </div>
             </div>
-        </div>
 
-        <button class="create" type="button" style="align-self:flex-end; margin-top:12px;">Opret</button>
+            <button class="create" type="submit" style="align-self:flex-end; margin-top:12px;">Opret</button>
+        </form>
+        <div class="image-upload">
+            <div class="carousel" *ngIf="images.length > 0">
+                <div class="carousel-main">
+                    <button class="imgControlBtn" type="button" (click)="prevImage()"
+                        [disabled]="images.length <= 1">‹</button>
+                    <img class="imgprew" [src]="images[currentImageIndex]?.dataUrl" alt="Preview">
+                    <button class="imgControlBtn" type="button" (click)="nextImage()"
+                        [disabled]="images.length <= 1">›</button>
+                </div>
+
+                <div class="carousel-controls">
+                    <small>{{ currentImageIndex + 1 }} / {{ images.length }}</small>
+                    <button type="button" (click)="deleteCurrentImage()" class="delete">Slet</button>
+                </div>
+
+                <div class="thumbnails">
+                    <img *ngFor="let img of images; let i = index" [src]="img.dataUrl" (click)="selectImage(i)"
+                        [style.border]="i === currentImageIndex ? '2px solid #3f51b5' : '1px solid #ddd'">
+                </div>
+            </div>
+
+            <label for="roomImages">Billeder</label>
+            <input id="roomImages" type="file" accept="image/*" (change)="onFilesSelected($event)" multiple>
+        </div>
     </div>
 
 </div>

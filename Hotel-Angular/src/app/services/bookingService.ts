@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { map, Observable, tap } from 'rxjs';
 import { BookingInterface } from '../interfaces/booking';
 import { roomTypeDto } from '../interfaces/roomTypeDto';
+import { RoomTypeImageDto } from '../interfaces/roomTypeImageDto';
 import { roomDto } from '../interfaces/roomDto';
 
 @Injectable({
@@ -10,26 +11,36 @@ import { roomDto } from '../interfaces/roomDto';
 })
 export class BookingService {
   baseUrl = "https://hotel-hyggely.dk/api";
-  
+
   constructor(private httpClient: HttpClient) { }
 
-  getRoomTypes(): Observable<roomTypeDto[]>{
+  getRoomTypes(): Observable<roomTypeDto[]> {
     return this.httpClient.get<roomTypeDto[]>(`${this.baseUrl}/roomtypes`).pipe(
-          tap((rooms: roomTypeDto[]) => {
-            console.log('Fetched roomtypes:', rooms);
-          }));
+      tap((rooms: roomTypeDto[]) => {
+        console.log('Fetched roomtypes:', rooms);
+      }));
   }
 
-  getRooms(startDate: string, endDate: string): Observable<any[]>{
+  getRooms(startDate: string, endDate: string): Observable<any[]> {
     const params = new HttpParams()
-    .set('FromDate', startDate)
-    .set('ToDate', endDate);
+      .set('FromDate', startDate)
+      .set('ToDate', endDate);
 
     return this.httpClient.get<any[]>(`${this.baseUrl}/rooms/available`, { params }).pipe(
-          map((items: any[]) => this.groupBy(items, 'roomTypeId')),
-        tap((rooms: any[][]) => {
-            console.log('Fetched rooms:', rooms);
-          }));
+      //group items by roomtype id
+      map((items: any[]) => this.groupBy(items, 'roomTypeId')),
+      tap((rooms: any[][]) => {
+        console.log('Fetched rooms:', rooms);
+      }));
+  }
+
+  getImages() {
+    return this.httpClient.get<RoomTypeImageDto[]>(`${this.baseUrl}/roomtypes/images`).pipe(
+      //group items by roomtype id
+      map((items: RoomTypeImageDto[]) => this.groupBy(items, 'roomTypeId')),
+      tap((images: RoomTypeImageDto[]) => {
+        console.log('Fetched images:', images);
+      }));
   }
 
   createBooking(booking: BookingInterface): Observable<BookingInterface> {

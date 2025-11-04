@@ -7,6 +7,7 @@ import { AdminService } from '../../../services/adminService';
 import { Router } from '@angular/router';
 import { CreateRoomTypeRequest } from '../../../interfaces/createRoomTypeRequest';
 import { Observer } from 'rxjs';
+import { ImageData } from '../../../interfaces/imageData';
 
 
 @Component({
@@ -23,6 +24,8 @@ export class AdminRoomType implements AfterViewInit {
   roomTypeForm!: FormGroup;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  images: ImageData[] = [];
+    currentImageIndex = 0;
 
   constructor(
     private fb: FormBuilder,
@@ -49,6 +52,7 @@ export class AdminRoomType implements AfterViewInit {
   }
 
   onSubmit(): void {
+    console.log("Here");
     if (this.roomTypeForm.valid) {
       const newRoomtype: CreateRoomTypeRequest = {
         name: this.roomTypeForm.value.name,
@@ -58,12 +62,12 @@ export class AdminRoomType implements AfterViewInit {
       const observer: Observer<any> = {
         next: (response) => {
           console.log('Create successful.', response);
-          alert('Create successful!');
-
+          alert('Værelsestype oprettet');
+          this.uploadRoomImages(response.id);
         },
         error: (error) => {
           console.error('Create error.', error);
-          alert('Create error!');
+          alert('Kunne ikke oprettet værelsestype');
         },
         complete: () => {
           // optional cleanup or navigation
@@ -80,11 +84,10 @@ export class AdminRoomType implements AfterViewInit {
         this.DATA = Array.isArray(roomType) ? roomType : [];
         this.dataSource.data = this.DATA;
         console.log('Room types fetched successfully', roomType);
-        alert('Room types fetched!');
       },
       error: (err) => {
         console.error('Room types fetch failed:', err);
-        alert('Room types fetch failed!');
+        alert('Kunne ikke hente værelsestyper');
       },
       complete: () => {
         // optional cleanup or navigation
@@ -99,12 +102,12 @@ export class AdminRoomType implements AfterViewInit {
     const observer: Observer<any> = {
       next: (response) => {
         console.log('Delete successful.', response);
-        alert('Delete successful!');
+        alert('Værelsestype slettet');
         this.getRoomtypes();
       },
       error: (error) => {
         console.error('Delete error.', error);
-        alert('Delete error!');
+        alert('Kunne ikke slette værelsestype');
       },
       complete: () => {
         // optional cleanup or navigation
@@ -112,6 +115,86 @@ export class AdminRoomType implements AfterViewInit {
     };
 
     this.adminService.deleteRoomType(id).subscribe(observer);
+  }
+
+
+  //Images logic
+  /* image carousel and upload logik */
+  async onFilesSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files) {
+      for (const file of Array.from(input.files)) {
+        if (file.type.startsWith('image/')) {
+          const dataUrl = await this.readFileAsDataURL(file);
+          this.images.push({ file, dataUrl });
+        }
+      }
+    }
+  }
+
+  private readFileAsDataURL(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  prevImage() {
+    if (this.currentImageIndex > 0) {
+      this.currentImageIndex--;
+    }
+    else {
+      this.currentImageIndex = this.images.length - 1;
+    }
+  }
+
+  nextImage() {
+    if (this.currentImageIndex < this.images.length - 1) {
+      this.currentImageIndex++;
+    }
+    else {
+      this.currentImageIndex = 0;
+    }
+  }
+
+  selectImage(index: number) {
+    this.currentImageIndex = index;
+  }
+
+  deleteCurrentImage() {
+    this.images.splice(this.currentImageIndex, 1);
+    if (this.currentImageIndex >= this.images.length) {
+      this.currentImageIndex = Math.max(0, this.images.length - 1);
+    }
+  }
+
+  uploadRoomImages(roomTypeId: string) {
+    if (this.images.length === 0) return;
+
+    const formData = new FormData();
+debugger;
+    this.images.forEach((image) => {
+      
+      formData.append('images', image.file);
+    });
+    formData.append('roomTypeId', roomTypeId);
+
+    const observer: Observer<any> = {
+      next: () => {
+        console.log('Images uploaded successfully');
+      },
+      error: (err) => {
+        console.error('Image upload failed:', err);
+        alert('Kunne ikke uploade billeder');
+      },
+      complete: () => {
+        // optional cleanup or navigation
+      },
+    };
+
+    this.adminService.uploadRoomImages(formData).subscribe(observer);
   }
 
 }
