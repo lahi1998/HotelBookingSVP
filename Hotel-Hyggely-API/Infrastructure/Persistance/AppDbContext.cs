@@ -16,7 +16,7 @@ namespace Infrastructure.Persistance
         public DbSet<CleaningSchedule> CleaningSchedules { get; set; }
         public DbSet<Customer> Customers{ get; set; }
         public DbSet<Room> Rooms { get; set; }
-        public DbSet<RoomStatus> RoomStatuses { get; set; }
+        public DbSet<RoomMaintenance> RoomMaintenances { get; set; }
         public DbSet<RoomType> RoomTypes{ get; set; }
         public DbSet<Staff> Staff{ get; set; }
         public DbSet<RoomTypeImage> RoomTypeImages { get; set; }

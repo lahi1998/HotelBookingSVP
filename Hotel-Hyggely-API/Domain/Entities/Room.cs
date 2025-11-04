@@ -13,6 +13,6 @@
 
         public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
         public ICollection<CleaningSchedule> CleaningSchedules { get; set; } = new List<CleaningSchedule>();
-        public ICollection<RoomStatus> RoomStatuses { get; set; } = new List<RoomStatus>();
+        public ICollection<RoomMaintenance> MaintenancePeriods { get; set; } = new List<RoomMaintenance>();
     }
 }

@@ -23,7 +23,8 @@ namespace Infrastructure.Repositories
 		{
 			return await dbContext.Rooms
                 .Include(r => r.RoomType)
-                .Include(r => r.RoomStatuses)
+				.Include(r => r.Bookings)
+				.Include(r => r.MaintenancePeriods)
                 .ToListAsync();
 		}
 
@@ -42,21 +43,25 @@ namespace Infrastructure.Repositories
             return rooms;
         }
 
-        public async Task<IEnumerable<Room>> GetAvailableByPeriod(DateTime fromDate, DateTime toDate)
-        {
-            var rooms = await dbContext.Rooms
-                .Include(r => r.RoomType)
-                .Where(r => r.RoomStatuses.Any(rs =>
-                    rs.Status == RoomStatusType.Available
-                    && rs.StartDate <= fromDate
-                    && rs.EndDate >= toDate))
-                .Distinct()
-                .ToListAsync();
+		public async Task<IEnumerable<Room>> GetAvailableByPeriod(DateTime fromDate, DateTime toDate)
+		{
+			var rooms = await dbContext.Rooms
+				.Include(r => r.RoomType)
+				.Where(r =>
+					!r.Bookings.Any(b =>
+						b.StartDate < toDate &&
+						b.EndDate > fromDate)
+					&&
+					!r.MaintenancePeriods.Any(m =>
+						m.StartDate < toDate &&
+						m.EndDate > fromDate))
+				.ToListAsync();
 
-            return rooms;
-        }
+			return rooms;
+		}
 
-        public async Task<Room> CreateAsync(Room room)
+
+		public async Task<Room> CreateAsync(Room room)
         {
             var result = await dbContext.Rooms.AddAsync(room);
 

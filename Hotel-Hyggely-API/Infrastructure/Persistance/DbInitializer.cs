@@ -30,9 +30,6 @@
 			SeedBookings(context);
 			context.SaveChanges();
 
-			SeedRoomStatuses(context);
-			context.SaveChanges();
-
 			SeedCleaningSchedules(context);
 			context.SaveChanges();
 
@@ -189,36 +186,6 @@
 			};
 
 			context.Bookings.AddRange(bookings);
-		}
-
-		private static void SeedRoomStatuses(AppDbContext context)
-		{
-			if (context.RoomStatuses.Any())
-				return;
-
-			var today = DateTime.Today;
-
-			var r1 = context.Rooms.First(x => x.Number == 1);
-			var r2 = context.Rooms.First(x => x.Number == 2);
-			var r4 = context.Rooms.First(x => x.Number == 4);
-			var r6 = context.Rooms.First(x => x.Number == 6);
-			var r8 = context.Rooms.First(x => x.Number == 8);
-			var r10 = context.Rooms.First(x => x.Number == 10);
-
-			var statuses = new List<RoomStatus>
-			{
-				// General availability windows
-				new RoomStatus { RoomId = r1.ID,  Status = RoomStatusType.Available, StartDate = today.AddDays(-30), EndDate = today.AddDays(60) },
-				new RoomStatus { RoomId = r2.ID,  Status = RoomStatusType.Available, StartDate = today.AddDays(-30), EndDate = today.AddDays(60) },
-				new RoomStatus { RoomId = r10.ID, Status = RoomStatusType.Available, StartDate = today.AddDays(-30), EndDate = today.AddDays(60) },
-
-				// Specific conditions matching our bookings/scenarios
-				new RoomStatus { RoomId = r6.ID, Status = RoomStatusType.Occupied,    StartDate = today.AddDays(-1), EndDate = today.AddDays(2) },  // matches Peter
-				new RoomStatus { RoomId = r8.ID, Status = RoomStatusType.Reserved,    StartDate = today.AddDays(10), EndDate = today.AddDays(13) }, // matches Maria
-				new RoomStatus { RoomId = r4.ID, Status = RoomStatusType.OutOfService,StartDate = today.AddDays(-3), EndDate = today.AddDays(3) }   // maintenance
-			};
-
-			context.RoomStatuses.AddRange(statuses);
 		}
 
 		private static void SeedCleaningSchedules(AppDbContext context)
