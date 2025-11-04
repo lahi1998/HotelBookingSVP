@@ -19,8 +19,9 @@ namespace Infrastructure.Persistance
         public DbSet<RoomStatus> RoomStatuses { get; set; }
         public DbSet<RoomType> RoomTypes{ get; set; }
         public DbSet<Staff> Staff{ get; set; }
+        public DbSet<RoomTypeImage> RoomTypeImages { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(BookingConf).Assembly);
         }

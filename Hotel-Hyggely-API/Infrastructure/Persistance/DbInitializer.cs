@@ -35,6 +35,9 @@
 
 			SeedCleaningSchedules(context);
 			context.SaveChanges();
+
+			SeedRoomTypeImage(context);
+			context.SaveChanges();
 		}
 
 		private static void SeedRoomTypes(AppDbContext context)
@@ -241,6 +244,46 @@
 			};
 
 			context.CleaningSchedules.AddRange(schedules);
+		}
+
+		private static void SeedRoomTypeImage(AppDbContext context)
+		{
+			if (context.RoomTypeImages.Any())
+				return;
+
+			var images = new List<RoomTypeImage>
+			{
+				new RoomTypeImage
+				{
+					RoomTypeId = context.RoomTypes.First(rt => rt.Name == "Enkelt").ID,
+					FilePath = "/images/roomtypes/single_1.jpg",
+					FileType = "jpg",
+					UploadedAt = DateTime.Now
+				},
+				new RoomTypeImage
+				{
+					RoomTypeId = context.RoomTypes.First(rt => rt.Name == "Dobbelt").ID,
+					FilePath = "/images/roomtypes/double_1.jpg",
+					FileType = "jpg",
+					UploadedAt = DateTime.Now
+				},
+				new RoomTypeImage
+				{
+					RoomTypeId = context.RoomTypes.First(rt => rt.Name == "Luksus").ID,
+					FilePath = "/images/roomtypes/luxury_1.jpg",
+					FileType = "jpg",
+					UploadedAt = DateTime.Now
+				},
+				new RoomTypeImage
+				{
+					RoomTypeId = context.RoomTypes.First(rt => rt.Name == "Suite").ID,
+					FilePath = "/images/roomtypes/suite_1.jpg",
+					FileType = "jpg",
+					UploadedAt = DateTime.Now
+				}
+			};
+
+			context.RoomTypeImages.AddRange(images);
 		}
 	}
 }

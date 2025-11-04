@@ -14,6 +14,8 @@ namespace Application.MappingProfiles
             CreateMap<CreateRoomTypeRequest, RoomType>();
 
             CreateMap<UpdateRoomTypeRequest, RoomType>();
+
+            CreateMap<RoomTypeImage, RoomTypeImageDto>();
 		}
     }
 }

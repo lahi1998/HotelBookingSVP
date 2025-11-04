@@ -11,10 +11,12 @@ namespace Hotel_Hyggely_API.Controllers
     public class RoomTypesController : ControllerBase
     {
         private readonly RoomTypeService roomTypeService;
+        private readonly RoomTypeImageService imageService;
 
-        public RoomTypesController(RoomTypeService roomTypeService)
+        public RoomTypesController(RoomTypeService roomTypeService, RoomTypeImageService imageService)
         {
             this.roomTypeService = roomTypeService;
+            this.imageService = imageService;
         }
 
 		[HttpGet]
@@ -23,6 +25,22 @@ namespace Hotel_Hyggely_API.Controllers
 			var roomTypes = await roomTypeService.GetAllAsync();
 
 			return Ok(roomTypes);
+		}
+
+		[HttpGet("images")]
+		public async Task<IActionResult> GetAllImagesAsync()
+		{
+			var roomTypeImages = await imageService.GetAllAsync();
+
+			return Ok(roomTypeImages);
+		}
+
+		[HttpGet("{id}/images")]
+		public async Task<IActionResult> GetImagesAsync(int id)
+		{
+			var roomTypeImages = await imageService.GetByRoomTypeIdAsync(id);
+
+			return Ok(roomTypeImages);
 		}
 
 		[Authorize]
