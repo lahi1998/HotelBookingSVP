@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { BookingService } from '../../services/bookingService';
 import { Router } from '@angular/router';
-import { Observable, Observer } from 'rxjs';
+import { Observer } from 'rxjs';
 import { BookingInterface } from '../../interfaces/booking';
 import { roomTypeDto } from '../../interfaces/roomTypeDto';
 import { roomDto } from '../../interfaces/roomDto';
+import { RoomTypeImageDto } from '../../interfaces/roomTypeImageDto';
 
 //Move this to its own  interface file
 interface ImageData {
@@ -30,20 +31,19 @@ export function customEmailValidator(): ValidatorFn {
 
 export class Booking implements OnInit {
   bookingForm!: FormGroup;
-  images: ImageData[] = [];
+  imagesForCurrentRoomType: any[] = [];
+  allImages: any[] = [];
   currentImageIndex = 0;
   roomTypes: any[] = [];
   roomsFromAPI: any[] = [];
   selectedRoomType: number = 0;
   roomCount: number = 0;
   today: String = "";
-  tomorrow: String = "";
   addedRooms: any[] = [];
   roomTypePrice: number = 0;
   selectedRoomTypeId: number | null = null;
   totalPrice: number = 0;
   endDateMin: string = "";
-
 
   constructor(
     private fb: FormBuilder,
@@ -53,9 +53,6 @@ export class Booking implements OnInit {
 
   ngOnInit(): void {
     const today = new Date();
-    const tomorrow = new Date();
-    tomorrow.setDate(today.getDate() + 1);
-    this.tomorrow = tomorrow.toISOString().split('T')[0];
     const dayAfterTomorrow = new Date();
     dayAfterTomorrow.setDate(today.getDate() + 2);
     const todayString = today.toISOString().split('T')[0];
@@ -65,6 +62,8 @@ export class Booking implements OnInit {
 
     this.getRoomTypes();
     this.getRooms(todayString, dayAfterTomorrowString);
+    this.getImages();
+
 
     this.bookingForm = this.fb.group({
       fullName: ['', Validators.required],
@@ -77,7 +76,6 @@ export class Booking implements OnInit {
     });
 
     //TODO Get images
-    this.images = [{ dataUrl: "/assets/logo.png" }, { dataUrl: "/assets/download.jpg" }]
 
     this.bookingForm.get('startDate')?.valueChanges.subscribe(() => {
     this.updateEndDateMinAndValue();
@@ -122,6 +120,8 @@ export class Booking implements OnInit {
     const roomTypeObserver: Observer<roomTypeDto[]> = {
       next: (response) => {
         this.roomTypes = response;
+
+        //set initial value on roomtype
         this.onRoomTypeChange(this.roomTypes[0].id);
         if (this.roomTypes.length > 0) {
           this.selectedRoomTypeId = this.roomTypes[0].id;
@@ -167,11 +167,40 @@ export class Booking implements OnInit {
     this.bookingService.getRooms(startDate, endDate).subscribe(roomObserver);
   }
 
+  getImages(){
+    const observer: Observer<RoomTypeImageDto[]> = {
+      next: (response) => {
+        this.allImages = response;
+        this.currentImageIndex = 0;
+    if(this.allImages[this.selectedRoomType] != null){
+      this.imagesForCurrentRoomType = this.allImages[this.selectedRoomType]
+    }
+    else {
+      this.imagesForCurrentRoomType = [];
+    }
+      },
+      error: (error) => {
+        console.error('Image error', error);
+        alert('Kunne ikke hente billeder for værelsestyperne');
+      },
+      complete: () => { },
+    };
+
+    this.bookingService.getImages().subscribe(observer);
+  }
+
   onRoomTypeChange(category: number | null) {
     let categoryAsNumber = Number(category);
     this.selectedRoomType = categoryAsNumber;
     this.roomCount = this.roomsFromAPI[categoryAsNumber]?.length || 0;
     this.roomTypePrice = this.roomTypes.find(a => a.id == categoryAsNumber)?.price;
+    this.currentImageIndex = 0;
+    if(this.allImages[categoryAsNumber] != null){
+      this.imagesForCurrentRoomType = this.allImages[categoryAsNumber]
+    }
+    else {
+      this.imagesForCurrentRoomType = [];
+    }
   }
 
   onSubmit(): void {
@@ -247,12 +276,12 @@ export class Booking implements OnInit {
       this.currentImageIndex--;
     }
     else {
-      this.currentImageIndex = this.images.length - 1;
+      this.currentImageIndex = this.allImages[this.selectedRoomType].length - 1;
     }
   }
 
   nextImage() {
-    if (this.currentImageIndex < this.images.length - 1) {
+    if (this.currentImageIndex < this.allImages[this.selectedRoomType].length - 1) {
       this.currentImageIndex++;
     }
     else {

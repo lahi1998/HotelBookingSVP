@@ -62,7 +62,8 @@
                         </small>
                     </div>
                     <label>Værelsestype</label>
-                    <select id="roomTypesList" [(ngModel)]="selectedRoomTypeId" [ngModelOptions]="{ standalone: true }" (change)="onRoomTypeChange(selectedRoomTypeId)">
+                    <select id="roomTypesList" [(ngModel)]="selectedRoomTypeId" [ngModelOptions]="{ standalone: true }"
+                        (change)="onRoomTypeChange(selectedRoomTypeId)">
                         @for (roomType of roomTypes; track roomType.name) {
                         <option [value]="roomType.id">{{roomType.name}}</option>
                         }
@@ -73,17 +74,17 @@
                         [disabled]="roomCount <= 0">Tilføj</button>
                 </div>
 
-
-                <div class="carousel" *ngIf="images.length > 0">
+                <div class="carousel">
                     <div class="carousel-main">
                         <button class="imgControlBtn" type="button" (click)="prevImage()"
-                            [disabled]="images.length <= 1">‹</button>
-                        <img class="imgprew" [src]="images[currentImageIndex]?.dataUrl" alt="Preview">
+                            [disabled]="imagesForCurrentRoomType.length <= 1">‹</button>
+                        <img class="imgprew" [src]="imagesForCurrentRoomType[currentImageIndex]?.filePath"
+                            alt="Preview">
                         <button class="imgControlBtn" type="button" (click)="nextImage()"
-                            [disabled]="images.length <= 1">›</button>
+                            [disabled]="imagesForCurrentRoomType.length <= 1">›</button>
                     </div>
                     <div class="thumbnails">
-                        <img *ngFor="let img of images; let i = index" [src]="img.dataUrl"
+                        <img *ngFor="let img of imagesForCurrentRoomType; let i = index" [src]="img.filePath"
                             [style.border]="i === currentImageIndex ? '2px solid #3f51b5' : '1px solid #ddd'">
                     </div>
                 </div>
