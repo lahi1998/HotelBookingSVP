@@ -111,21 +111,32 @@ namespace Application.Services
             return mapper.Map<BookingDto>(createdBooking);
         }
 
-        public async Task<Booking?> UpdateBookingAsync(UpdateBookingRequest request)
+        public async Task<BookingDto?> UpdateBookingAsync(UpdateBookingRequest request)
 		{
-			var booking = new Booking
-			{
-				ID = request.Id,
-				CustomerId = request.CustomerId,
-				StartDate = request.StartDate,
-				EndDate = request.EndDate,
-				CheckInStatus = request.Status,
-				TotalPrice = request.Price,
-				PersonCount = request.PersonCount,
-				Comment = request.Comment
-			};
+			var existingBooking = await bookingRepo.GetByIdWithDetails(request.Id);
 
-			return await bookingRepo.UpdateAsync(booking);
+			if (existingBooking == null)
+			{
+				return null;
+			}
+
+			mapper.Map(request, existingBooking);
+			var existingCustomer = await customerRepo.GetByEmailAsync(request.Email);
+
+			if (existingCustomer != null)
+			{
+				existingBooking.Customer = existingCustomer;
+				existingBooking.Customer.FullName = request.FullName;
+				existingBooking.Customer.Email = request.Email;
+				existingBooking.Customer.PhoneNumber = request.PhoneNumber;
+			}
+
+			var rooms = await roomRepo.GetByIdsWithRoomTypeAsync(request.RoomIds);
+			existingBooking.Rooms = rooms.ToList();
+
+			var updatedBooking = await bookingRepo.UpdateAsync(existingBooking);
+
+			return mapper.Map<BookingDto>(updatedBooking);
 		}
 
 		public async Task DeleteBookingAsync(int id)

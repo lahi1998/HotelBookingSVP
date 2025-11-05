@@ -67,17 +67,21 @@ namespace Hotel_Hyggely_API.Controllers
 
         [Authorize]
         [HttpPut]
-        public async Task<IActionResult> UpdateBookingAsync()
+        public async Task<IActionResult> UpdateBookingAsync([FromBody] UpdateBookingRequest request)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            //var booking = await bookingService.UpdateBookingAsync(request);
-            //return Ok(booking);
+            var booking = await bookingService.UpdateBookingAsync(request);
 
-            return StatusCode(501);
+            if (booking is null)
+            {
+                return NotFound();
+			}
+
+            return Ok(booking);
 		}
 
 		[Authorize]
