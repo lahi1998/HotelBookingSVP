@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Hotel_Hyggely_API.Controllers
 {
+	[Authorize(Roles = "Admin")]
 	[Route("api/[controller]")]
     [ApiController]
     public class RoomTypesController : ControllerBase
@@ -21,6 +22,7 @@ namespace Hotel_Hyggely_API.Controllers
             this.imageService = imageService;
         }
 
+		[AllowAnonymous]
 		[HttpGet]
 		public async Task<IActionResult> GetAllAsync()
 		{
@@ -29,7 +31,7 @@ namespace Hotel_Hyggely_API.Controllers
 			return Ok(roomTypes);
 		}
 
-		[Authorize]
+		
 		[HttpGet("{id}")]
 		public async Task<IActionResult> GetAsync(int id)
 		{
@@ -43,7 +45,6 @@ namespace Hotel_Hyggely_API.Controllers
 			return Ok(roomType);
 		}
 
-		[Authorize]
 		[HttpPost]
 		public async Task<IActionResult> PostAsync([FromBody] CreateRoomTypeRequest request)
 		{
@@ -57,7 +58,6 @@ namespace Hotel_Hyggely_API.Controllers
 			return CreatedAtAction(nameof(GetAsync), new { id = createdRoomType.ID }, createdRoomType);
 		}
 
-		[Authorize]
 		[HttpPut]
 		public async Task<IActionResult> PutAsync([FromBody] UpdateRoomTypeRequest request)
 		{
@@ -76,7 +76,6 @@ namespace Hotel_Hyggely_API.Controllers
 			return Ok(updatedRoomType);
 		}
 
-		[Authorize]
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> DeleteAsync(int id)
 		{

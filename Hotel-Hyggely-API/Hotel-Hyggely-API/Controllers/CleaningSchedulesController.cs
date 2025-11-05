@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Hotel_Hyggely_API.Controllers
 {
-	[Authorize]
+	[Authorize(Roles = "Admin, Receptionist, Cleaning")]
 	[Route("api/[controller]")]
     [ApiController]
     public class CleaningSchedulesController : ControllerBase
@@ -18,7 +18,7 @@ namespace Hotel_Hyggely_API.Controllers
             this.cleaningScheduleService = cleaningScheduleService;
         }
 
-		[Authorize]
+		[Authorize(Roles = "Admin, Receptionist")]
 		[HttpGet("/api/bookings/{bookingId}/cleaningschedules")]
 		public async Task<IActionResult> GetForBooking(int bookingId)
 		{
@@ -26,6 +26,7 @@ namespace Hotel_Hyggely_API.Controllers
 
 			return Ok(cleaningSchedules);
 		}
+
 		[HttpGet("pending")]
         public async Task<IActionResult> GetPendingAsync()
         {
@@ -34,7 +35,8 @@ namespace Hotel_Hyggely_API.Controllers
 			return Ok(cleaningSchedules);
 		}
 
-        [HttpGet("{id}")]
+		[Authorize(Roles = "Admin, Receptionist")]
+		[HttpGet("{id}")]
         public async Task<IActionResult> GetAsync(int id)
         {
 			var cleaningSchedule = await cleaningScheduleService.GetByIdAsync(id);
@@ -47,6 +49,7 @@ namespace Hotel_Hyggely_API.Controllers
 			return Ok(cleaningSchedule);
 		}
 
+		[Authorize(Roles = "Admin, Receptionist")]
 		[HttpPost]
         public async Task<IActionResult> PostForRoomAsync([FromBody] CreateCleaningScheduleRequest request)
         {
@@ -73,6 +76,7 @@ namespace Hotel_Hyggely_API.Controllers
 			return NoContent();
 		}
 
+		[Authorize(Roles = "Admin, Receptionist")]
 		[HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAsync(int id)
         {

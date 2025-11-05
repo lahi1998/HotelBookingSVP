@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Hotel_Hyggely_API.Controllers
 {
-	[Authorize]
+	[Authorize(Roles = "Admin")]
 	[Route("api/[controller]")]
     [ApiController]
     public class StaffController : ControllerBase

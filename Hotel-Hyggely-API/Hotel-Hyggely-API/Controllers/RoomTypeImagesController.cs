@@ -8,7 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Hotel_Hyggely_API.Controllers
 {
-    [Route("api/[controller]")]
+	[Authorize(Roles = "Admin")]
+	[Route("api/[controller]")]
     [ApiController]
     public class RoomTypeImagesController : ControllerBase
     {
@@ -19,6 +20,7 @@ namespace Hotel_Hyggely_API.Controllers
             this.imageService = imageService;
         }
 
+		[AllowAnonymous]
 		[HttpGet("/api/roomtypes/{roomTypeId}/images")]
 		public async Task<IActionResult> GetImagesForRoomTypeAsync(int roomTypeId)
 		{
@@ -27,7 +29,6 @@ namespace Hotel_Hyggely_API.Controllers
 			return Ok(roomTypeImages);
 		}
 
-		[Authorize]
 		[HttpPost("/api/roomtypes/images")]
 		public async Task<IActionResult> PostImageAsync([FromForm] RoomTypeImageUploadRequest request)
 		{
@@ -57,7 +58,6 @@ namespace Hotel_Hyggely_API.Controllers
 			return Ok(results);
 		}
 
-		[Authorize]
 		[HttpDelete("/api/roomtypes/images/{id}")]
 		public async Task<IActionResult> DeleteImageAsync(int id)
 		{

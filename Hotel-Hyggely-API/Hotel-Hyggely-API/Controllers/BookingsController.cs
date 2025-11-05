@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Hotel_Hyggely_API.Controllers
 {
+    [Authorize(Roles = "Admin, Receptionist")]
     [Route("api/[controller]")]
     [ApiController]
     public class BookingsController : ControllerBase
@@ -20,7 +21,6 @@ namespace Hotel_Hyggely_API.Controllers
             this.bookingService = bookingService;
         }
 
-        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAllBookingsAsync()
         {
@@ -29,7 +29,6 @@ namespace Hotel_Hyggely_API.Controllers
 			return Ok(bookings);
 		}
 
-		[Authorize]
 		[HttpGet("{id}")]
 		public async Task<IActionResult> GetBookingAsync(int id)
 		{
@@ -43,6 +42,7 @@ namespace Hotel_Hyggely_API.Controllers
 			return Ok(bookingDetails);
 		}
 
+        [AllowAnonymous]
 		[HttpPost]
         public async Task<IActionResult> CreateBookingAsync([FromBody] CreateBookingRequest request)
         {
@@ -56,7 +56,6 @@ namespace Hotel_Hyggely_API.Controllers
             return CreatedAtAction(nameof(GetBookingAsync), new { id = createdBooking.Id }, createdBooking);
         }
 
-        [Authorize]
         [HttpPut]
         public async Task<IActionResult> UpdateBookingAsync([FromBody] UpdateBookingRequest request)
         {
@@ -75,7 +74,6 @@ namespace Hotel_Hyggely_API.Controllers
             return Ok(booking);
 		}
 
-		[Authorize]
 		[HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBookingAsync(int id)
         {
@@ -91,7 +89,6 @@ namespace Hotel_Hyggely_API.Controllers
 			return NoContent();
 		}
 
-		[Authorize]
 		[HttpPatch("{id}/check-in")]
 		public async Task<IActionResult> CheckInAsync(int id)
 		{
@@ -107,7 +104,6 @@ namespace Hotel_Hyggely_API.Controllers
 			return NoContent();
 		}
 
-		[Authorize]
 		[HttpPatch("{id}/check-out")]
 		public async Task<IActionResult> CheckOutAsync(int id)
 		{
