@@ -91,8 +91,10 @@ namespace Application.Services
                 };
             }
 
-            var rooms = await roomRepo.GetByIdsAsync(request.RoomIds);
+            var rooms = await roomRepo.GetByIdsWithRoomTypeAsync(request.RoomIds);
+
             booking.Rooms = rooms.ToList();
+			booking.TotalPrice = CalculateTotalPrice(request.StartDate, request.EndDate, booking.Rooms);
 
 			var createdBooking = await bookingRepo.CreateAsync(booking);
 
@@ -119,6 +121,17 @@ namespace Application.Services
 		public async Task DeleteBookingAsync(int id)
 		{
 			await bookingRepo.DeleteAsync(id);
+		}
+
+		private decimal CalculateTotalPrice(DateTime startDate, DateTime endDate, IEnumerable<Room> rooms)
+		{
+			var totalDays = (endDate - startDate).Days;
+			decimal totalPrice = 0;
+			foreach (var room in rooms)
+			{
+				totalPrice += room.RoomType!.Price * totalDays;
+			}
+			return totalPrice;
 		}
 	}
 }

@@ -18,6 +18,15 @@ namespace Hotel_Hyggely_API.Controllers
 			this.roomService = roomService;
 		}
 
+		[Authorize]
+		[HttpGet]
+		public async Task<IActionResult> GetAllAsync()
+		{
+			var room = await roomService.GetAllAsync();
+
+			return Ok(room);
+		}
+
 		[HttpGet("available")]
 		public async Task<IActionResult> GetAvailableRoomsAsync([FromQuery]DateTime fromDate, DateTime toDate)
 		{
@@ -25,40 +34,74 @@ namespace Hotel_Hyggely_API.Controllers
 
 			return Ok(availableRooms);
 		}
-
 		[Authorize]
-		[HttpGet]
-		public async Task<IActionResult> GetAllAsync()
+		[HttpGet("availabledetailed")]
+		public async Task<IActionResult> GetAvailableRoomsWithDetailsAsync([FromQuery] DateTime fromDate, DateTime toDate)
 		{
-			return StatusCode(501);
+			var availableRooms = await roomService.GetAvailableByPeriodWithDetails(fromDate, toDate);
+
+			return Ok(availableRooms);
 		}
 
 		[Authorize]
 		[HttpGet("{id}")]
 		public async Task<IActionResult> GetAsync(int id)
 		{
-			return StatusCode(501);
+			var room = await roomService.GetByIdAsync(id);
+
+			if(room is null)
+			{
+				return NotFound();
+			}
+
+			return Ok(room);
 		}
 
 		[Authorize]
 		[HttpPost]
 		public async Task<IActionResult> PostAsync([FromBody] CreateRoomRequest request)
 		{
-			return StatusCode(501);
+			if (!ModelState.IsValid)
+			{
+				return BadRequest(ModelState);
+			}
+
+			var room = await roomService.CreateAsync(request);
+
+			return CreatedAtAction(nameof(GetAsync), new { id = room.ID }, room);
 		}
 
 		[Authorize]
 		[HttpPut]
 		public async Task<IActionResult> PutAsync([FromBody] UpdateRoomRequest request)
 		{
-			return StatusCode(501);
+			if (!ModelState.IsValid)
+			{
+				return BadRequest(ModelState);
+			}
+
+			var room = await roomService.UpdateAsync(request);
+
+			if (room is null)
+			{
+				return NotFound();
+			}
+
+			return Ok(room);
 		}
 
 		[Authorize]
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> DeleteAsync(int id)
 		{
-			return StatusCode(501);
+			var result = await roomService.DeleteAsync(id);
+
+			if (!result)
+			{
+				return NotFound();
+			}
+
+			return NoContent();
 		}
 	}
 }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251028154248_RemovedLastCleanedBy")]
-    partial class RemovedLastCleanedBy
+    [Migration("20251104091547_AddedRoomTypeImages")]
+    partial class AddedRoomTypeImages
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -145,9 +145,6 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Floor")
                         .HasColumnType("int");
 
-                    b.Property<int>("LastCleanedById")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("LastCleanedDate")
                         .HasColumnType("datetime(6)");
 
@@ -158,8 +155,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("LastCleanedById");
 
                     b.HasIndex("RoomTypeId");
 
@@ -214,6 +209,37 @@ namespace Infrastructure.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("RoomTypes");
+                });
+
+            modelBuilder.Entity("Domain.Entities.RoomTypeImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("FileType")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("RoomTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UploadedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoomTypeId");
+
+                    b.ToTable("RoomTypeImages");
                 });
 
             modelBuilder.Entity("Domain.Entities.Staff", b =>
@@ -286,19 +312,11 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Room", b =>
                 {
-                    b.HasOne("Domain.Entities.Staff", "LastCleanedBy")
-                        .WithMany("Rooms")
-                        .HasForeignKey("LastCleanedById")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Domain.Entities.RoomType", "RoomType")
                         .WithMany("Rooms")
                         .HasForeignKey("RoomTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("LastCleanedBy");
 
                     b.Navigation("RoomType");
                 });
@@ -312,6 +330,17 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Room");
+                });
+
+            modelBuilder.Entity("Domain.Entities.RoomTypeImage", b =>
+                {
+                    b.HasOne("Domain.Entities.RoomType", "RoomType")
+                        .WithMany("RoomTypeImages")
+                        .HasForeignKey("RoomTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("RoomType");
                 });
 
             modelBuilder.Entity("Domain.Entities.Customer", b =>
@@ -328,11 +357,8 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.RoomType", b =>
                 {
-                    b.Navigation("Rooms");
-                });
+                    b.Navigation("RoomTypeImages");
 
-            modelBuilder.Entity("Domain.Entities.Staff", b =>
-                {
                     b.Navigation("Rooms");
                 });
 #pragma warning restore 612, 618

@@ -7,5 +7,6 @@
         public decimal Price { get; set; }
 
         public ICollection<Room> Rooms { get; set; } = new List<Room>();
-    }
+		public ICollection<RoomTypeImage> RoomTypeImages { get; set; } = [];
+	}
 }
