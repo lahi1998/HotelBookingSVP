@@ -40,7 +40,7 @@ button:hover {
 /* Responsive */
 @media screen and (max-width: 480px) {
     button {
-        font-size: 16px;
+        font-size: 14px;
         padding: 8px 16px;
     }
 }

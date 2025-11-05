@@ -9,9 +9,9 @@ h2 {
 .container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start; /* keeps them together */
+    justify-content: flex-start;
+    /* keeps them together */
     align-items: flex-start;
-    gap: 5%; /* space between table and form */
     padding: 2% 5%;
 }
 
@@ -25,7 +25,8 @@ h2 {
 .table-border {
     border: solid 1px black;
     border-radius: 15px;
-    overflow-x: auto; /* prevents horizontal overflow */
+    overflow-x: auto;
+    /* prevents horizontal overflow */
 }
 
 th {
@@ -51,20 +52,16 @@ button {
 }
 
 
-.edit {
+.edit,
+.create,
+.cleaning {
     background-color: #4EA9E9;
 }
 
-.edit:hover {
-  background-color: #2e8cd6;
-}
-
-.create {
-    background-color: #4EA9E9;
-}
-
-.create:hover {
-  background-color: #2e8cd6;
+.edit:hover,
+.create:hover,
+.cleaning:hover {
+    background-color: #2e8cd6;
 }
 
 .delete {
@@ -75,14 +72,14 @@ button {
     background-color: #e93d3d;
 }
 
-.checkIn{
+.checkIn {
     background-color: #4EA9E9;
     font-size: xx-large;
     padding: 5%;
 }
 
 .checkIn:hover {
-  background-color: #2e8cd6;
+    background-color: #2e8cd6;
 }
 
 .checkOut {
@@ -92,7 +89,7 @@ button {
 }
 
 .checkOut:hover {
-  background-color: #e93d3d;
+    background-color: #e93d3d;
 }
 
 input,
@@ -105,28 +102,29 @@ textarea {
     width: 80%;
 }
 
-textarea{
+textarea {
     height: 10vh;
 }
 
 .edit-booking {
     flex: 1 1 35%;
     min-width: 280px;
-    max-width: 32%;
+    max-width: 35%;
     display: flex;
     flex-direction: column;
-    gap: 8px;
     padding: 15px;
     border: solid 1px black;
     border-radius: 15px;
+    margin-left: 2%;
 }
 
 .edit-booking-inner {
-  display: flex;
-  flex-direction: row; /* side by side */
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 30px;
+    display: flex;
+    flex-direction: row;
+    /* side by side */
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 30px;
 }
 
 .div1 {
@@ -146,13 +144,57 @@ textarea{
 
 
 .update {
-    background-color: #4EA9E9;
+    background-color: #62db52;
     align-self: flex-end;
     margin-top: 12px;
 }
 
 .update:hover {
-  background-color: #2e8cd6;
+    background-color: #52b545;
+}
+
+#modal {
+    border: solid 1px black;
+    border-radius: 15px;
+    padding: 15px;
+    position: absolute;
+    top: 10%;
+    left: -10%;
+    box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.75);
+}
+
+#modal2:popover-open {
+    display: flex;
+    flex-direction: row;
+    /* side by side */
+    justify-content: space-between;
+    /* space between left and right */
+    align-items: flex-start;
+    /* align tops */
+    gap: 20px;
+    /* space between them */
+    border: solid 1px black;
+    border-radius: 15px;
+    padding: 15px;
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.75);
+    background: white;
+    width: 50%;
+
+}
+
+.left {
+    flex: 1;
+    /* form area */
+    min-width: 300px;
+}
+
+.right {
+    flex: 2;
+    /* table area */
+    min-width: 400px;
 }
 
 
@@ -160,18 +202,45 @@ textarea{
 @media screen and (max-width: 900px) {
     .container {
         flex-direction: column;
-        gap: 20px; /* smaller vertical spacing */
+        gap: 20px;
+        /* smaller vertical spacing */
         padding: 2%;
     }
 
-    .table-wrapper,
-    .Create-type-box {
-        flex: 1 1 100%;
+    .table-wrapper {
+        flex: 1 1 90%;
         max-width: none;
     }
+
+    .edit-booking {
+        flex: 1 1 60%;
+        min-width: 280px;
+        max-width: 60%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #modal {
+        position: absolute;
+        top: 200%;
+        left: 0%;
+
+    }
+
+    #modal2:popover-open{
+        left: 0;
+        top: 200%;
+        width: 85%;
+    }
+
+    .cleaningTable{
+        width: 90%;
+    }
+
 }
 
 @media screen and (max-width: 480px) {
+
     th,
     td {
         font-size: 12px;
@@ -182,4 +251,40 @@ textarea{
         font-size: 14px;
         padding: 4px 8px;
     }
+
+    .edit-booking {
+        flex: 1 1 auto;
+        min-width: 280px;
+        max-width: 100%;
+        display: flex;
+        flex-direction: column;
+        margin: 0%;
+    }
+
+    #modal {
+        position: absolute;
+        top: 80%;
+        left: 0%;
+        width: 80vw;
+    }
+
+    .table-wrapper {
+        flex: 1 1 auto;
+        max-width: 95vw;
+        margin-left: 0%;
+    }
+
+        #modal2:popover-open{
+        flex-direction: column;
+        left: 0;
+        top: 40%;
+        width: 90%;
+    }
+
+    .cleaningTable{
+        width: 90%;
+    }
+
+
+
 }

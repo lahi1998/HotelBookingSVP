@@ -54,7 +54,7 @@
                 <ng-container matColumnDef="buttons">
                     <th style="border-right: none;" mat-header-cell *matHeaderCellDef></th>
                     <td style="border-right: none;" mat-cell *matCellDef="let BookingListItem">
-                        <button class="edit" (click)="EditRow(BookingListItem.id)">Rediger</button>
+                        <button class="edit" (click)="OpenEditRow(BookingListItem.id)">Rediger</button>
                         <button class="delete" (click)="DeletebookingRow(BookingListItem.id)">Slet</button>
                     </td>
                 </ng-container>
@@ -63,14 +63,13 @@
                 <tr mat-row *matRowDef="let row; columns: displayedColumnsList;"></tr>
             </table>
 
-            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
-            </mat-paginator>
+            <mat-paginator #paginatorList [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
         </div>
     </div>
 
     <!-- Edit form -->
     <div class="edit-booking" *ngIf="editopen">
-        <div [formGroup]="bookingDetailsForm" (ngSubmit)="onSubmit()" class="edit-booking-inner ">
+        <form [formGroup]="bookingDetailsForm" (ngSubmit)="onSubmit()" class="edit-booking-inner ">
             <div class="div1">
                 <label>Fulde navn</label>
                 <div class="form-group">
@@ -102,7 +101,8 @@
 
                 <label>Start dato</label>
                 <div class="form-group">
-                    <input type="date" formControlName="startDate" autocomplete="off" />
+                    <input type="date" formControlName="startDate" [min]="today"
+                        (change)="OnDateChanged(bookingDetailsForm.get('startDate')?.value, bookingDetailsForm.get('endDate')?.value)">
                     <div class="error"
                         *ngIf="bookingDetailsForm.get('startDate')?.invalid && bookingDetailsForm.get('startDate')?.touched">
                         start dato er påkrævet
@@ -111,7 +111,8 @@
 
                 <label>Slut dato</label>
                 <div class="form-group">
-                    <input type="date" formControlName="endDate" autocomplete="off" />
+                    <input type="date" formControlName="endDate" [min]="endDateMin"
+                        (change)="OnDateChanged(bookingDetailsForm.get('startDate')?.value, bookingDetailsForm.get('endDate')?.value)">
                     <div class="error"
                         *ngIf="bookingDetailsForm.get('endDate')?.invalid && bookingDetailsForm.get('endDate')?.touched">
                         slut dato er påkrævet
@@ -142,7 +143,8 @@
             </div>
 
             <div class="div2">
-                <button class="cleaning" type="button">Opret rengøring</button>
+                <button class="cleaning" type="button" popovertarget="modal2"
+                    (click)="GetCleaningSchedule(bookingid)">Opret rengøring</button>
 
                 <!-- ngClass works like a switch and checks the condtions set and sets class-->
                 <button type="button" (click)="CheckInOut(bookingid)" [ngClass]="{
@@ -153,7 +155,7 @@
                 </button>
                 <button class="update" type="submit">Gem</button>
             </div>
-        </div>
+        </form>
 
         <!-- Table with booke rooms -->
         <div class="table-wrapper" style="max-width: 100%;">
@@ -176,7 +178,7 @@
                     <!-- roomType Column -->
                     <ng-container matColumnDef="roomType">
                         <th mat-header-cell *matHeaderCellDef> Værelses type </th>
-                        <td mat-cell *matCellDef="let BookingDetailsRoom"> {{BookingDetailsRoom.roomType.name}}
+                        <td mat-cell *matCellDef="let BookingDetailsRoom"> {{BookingDetailsRoom.roomTypeName}}
                         </td>
                     </ng-container>
 
@@ -190,12 +192,13 @@
                     <!-- Actions Column -->
                     <ng-container matColumnDef="buttons">
                         <th style="border-right: none;" mat-header-cell *matHeaderCellDef>
-                            <button type="button" class="create" (click)="openAddRoomDialog()"
-                            [hidden]="checkStatus === 'CheckedOut' || checkStatus === 'CheckedIn'">Tilføj</button>
+                            <button type="button" class="create" (click)="OpenAddRoomDialog()"
+                                [hidden]="checkStatus === 'CheckedOut' || checkStatus === 'CheckedIn'"
+                                popovertarget="modal">Tilføj</button>
                         </th>
                         <td style="border-right: none;" mat-cell *matCellDef="let BookingDetailsRoom">
-                            <button type="button" class="delete" (click)="DeleteBookedRoomRow(BookingDetailsRoom.id)" 
-                            [hidden]="checkStatus === 'CheckedOut' || checkStatus === 'CheckedIn'">Slet</button>
+                            <button type="button" class="delete" (click)="DeleteBookedRoomRow(BookingDetailsRoom.id)"
+                                [hidden]="checkStatus === 'CheckedOut' || checkStatus === 'CheckedIn'">Slet</button>
                         </td>
                     </ng-container>
 
@@ -203,55 +206,132 @@
                     <tr mat-row *matRowDef="let row; columns: displayedColumnsDetails;"></tr>
                 </table>
 
-                <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
-                </mat-paginator>
+                <mat-paginator #paginatorRooms [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
             </div>
         </div>
     </div>
 
-    <!-- add room dialog -->
-
+    <!-- add room modal -->
+    <div id="modal" popover>
         <h2>Ledige værelser</h2>
-            <div class="table-border">
-                <table mat-table [dataSource]="dataSourceAvailableRooom" class="mat-elevation-z8">
+        <input style="width: auto; margin: 5px;" matInput [(ngModel)]="filterValue" (ngModelChange)="searchFilter2()"
+            placeholder="Søg" />
+        <div class="table-border">
+            <table mat-table [dataSource]="dataSourceAvailableRooom" class="mat-elevation-z8">
+
+                <!-- number Column -->
+                <ng-container matColumnDef="number">
+                    <th mat-header-cell *matHeaderCellDef> Nummer </th>
+                    <td mat-cell *matCellDef="let AvailableRoom"> {{AvailableRoom.number}} </td>
+                </ng-container>
+
+                <!-- Floor Column -->
+                <ng-container matColumnDef="floor">
+                    <th mat-header-cell *matHeaderCellDef> Etage </th>
+                    <td mat-cell *matCellDef="let AvailableRoom"> {{AvailableRoom.floor}} </td>
+                </ng-container>
+
+                <!-- roomTypeName Column -->
+                <ng-container matColumnDef="roomTypeName">
+                    <th mat-header-cell *matHeaderCellDef> Værelses type </th>
+                    <td mat-cell *matCellDef="let AvailableRoom"> {{AvailableRoom.roomTypeName}} </td>
+                </ng-container>
+
+                <!-- bedAmount Column -->
+                <ng-container matColumnDef="bedAmount">
+                    <th mat-header-cell *matHeaderCellDef> Antal senge </th>
+                    <td mat-cell *matCellDef="let AvailableRoom"> {{AvailableRoom.bedAmount}} </td>
+                </ng-container>
+
+                <!-- Actions Column -->
+                <ng-container matColumnDef="buttons">
+                    <th style="border-right: none;" mat-header-cell *matHeaderCellDef></th>
+                    <td style="border-right: none;" mat-cell *matCellDef="let AvailableRoom">
+                        <button class="edit" (click)="AddRoom(AvailableRoom.id)">Tilføj</button>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumnsAvailable"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumnsAvailable;"></tr>
+            </table>
+            <mat-paginator #paginatorAvailable [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+
+        </div>
+    </div>
+
+    <!-- manage cleaning modal -->
+    <div id="modal2" popover>
+        <div class="right">
+            <input style="width: auto; margin: 5px;" matInput [(ngModel)]="filterValue"
+                (ngModelChange)="searchFilter3()" placeholder="Søg" />
+            <div class="table-border cleaningTable">
+                <table mat-table [dataSource]="dataSourceCleaningSchedule" class="mat-elevation-z8">
 
                     <!-- number Column -->
                     <ng-container matColumnDef="number">
                         <th mat-header-cell *matHeaderCellDef> Nummer </th>
-                        <td mat-cell *matCellDef="let AvailableRoom"> {{AvailableRoom.number}} </td>
+                        <td mat-cell *matCellDef="let CleaningSchedule"> {{CleaningSchedule.roomNumber}} </td>
                     </ng-container>
 
                     <!-- Floor Column -->
                     <ng-container matColumnDef="floor">
                         <th mat-header-cell *matHeaderCellDef> Etage </th>
-                        <td mat-cell *matCellDef="let AvailableRoom"> {{AvailableRoom.floor}} </td>
+                        <td mat-cell *matCellDef="let CleaningSchedule"> {{CleaningSchedule.roomFloor}} </td>
                     </ng-container>
 
-                    <!-- roomType Column -->
-                    <ng-container matColumnDef="roomType">
-                        <th mat-header-cell *matHeaderCellDef> Værelses type </th>
-                        <td mat-cell *matCellDef="let AvailableRoom"> {{AvailableRoom.roomType.name}} </td>
+                    <!-- cleaningDate Column -->
+                    <ng-container matColumnDef="cleaningDate">
+                        <th mat-header-cell *matHeaderCellDef> rengøring dato </th>
+                        <td mat-cell *matCellDef="let CleaningSchedule">
+                            {{ CleaningSchedule.cleaningDate | date:'dd.MM.yyyy HH:mm' }}
+                        </td>
                     </ng-container>
 
-                    <!-- bedAmount Column -->
-                    <ng-container matColumnDef="bedAmount">
-                        <th mat-header-cell *matHeaderCellDef> Antal senge </th>
-                        <td mat-cell *matCellDef="let AvailableRoom"> {{AvailableRoom.bedAmount}} </td>
-                    </ng-container>
 
                     <!-- Actions Column -->
                     <ng-container matColumnDef="buttons">
                         <th style="border-right: none;" mat-header-cell *matHeaderCellDef></th>
-                        <td style="border-right: none;" mat-cell *matCellDef="let AvailableRoom">
-                            <button mat-button color="primary"
-                                (click)="addRoom(AvailableRoom.Id);">Tilføj</button>
+                        <td style="border-right: none;" mat-cell *matCellDef="let CleaningSchedule">
+                            <button type="button" class="delete"
+                                (click)="DeleteCleaningRow(CleaningSchedule.id)">Slet</button>
                         </td>
                     </ng-container>
 
-                    <tr mat-header-row *matHeaderRowDef="displayedColumnsDetails"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumnsDetails;"></tr>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumnsCleaning"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumnsCleaning;"></tr>
                 </table>
-
-                <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                <mat-paginator #paginatorAvailable [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
             </div>
+        </div>
+
+        <div class="left">
+            <form [formGroup]="CleaningForm" (ngSubmit)="CreateCleaningSchedule(bookingid)">
+               
+                    <label>Nummer</label>
+                    <div class="form-group">
+                        <select formControlName="roomId">
+                            <option value="" disabled selected>Vælg værelse</option>
+                            <option *ngFor="let room of DATABookingDetailsRoom" [value]="room.id">
+                                Nummer: {{ room.number }} – Etage: {{ room.floor }}
+                            </option>
+                        </select>
+                        <div class="error"
+                            *ngIf="CleaningForm.get('roomid')?.invalid && CleaningForm.get('roomid')?.touched">
+                            Nummer er påkrævet
+                        </div>
+                    </div>
+
+                    <label>Dato</label>
+                    <div class="form-group">
+                        <input type="date" formControlName="cleaningDate">
+                        <div class="error"
+                            *ngIf="CleaningForm.get('cleaningDate')?.invalid && CleaningForm.get('cleaningDate')?.touched">
+                            start dato er påkrævet
+                        </div>
+                    </div>
+
+                    <button class="update" type="submit">opret</button>
+            </form>
+        </div>
+    </div>
 </div>
