@@ -1,9 +1,12 @@
-﻿namespace Application.Requests.CleaningSchedule
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Application.Requests.CleaningSchedule
 {
     public class CreateCleaningScheduleRequest
     {
+        [Required]
         public int RoomId { get; set; }
-        public bool Cleaned { get; set; }
-        public DateTime CleaningDate { get; set; }
+		[Required]
+		public DateTime CleaningDate { get; set; }
     }
 }

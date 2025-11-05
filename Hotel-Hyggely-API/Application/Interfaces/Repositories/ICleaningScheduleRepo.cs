@@ -1,9 +1,14 @@
-﻿using Domain.Entities;
+﻿using Application.Dtos.CleaningSchedule;
+using Domain.Entities;
 
 namespace Application.Interfaces.Repositories
 {
     public interface ICleaningScheduleRepo
     {
-		Task<IEnumerable<CleaningSchedule>> GetByBookingIdWithRoom(int bookingId);
-	}
+        Task<IEnumerable<CleaningSchedule>> GetPendingWithRoomAsync();
+        Task<CleaningSchedule?> GetByIdAsync(int id);
+        Task<IEnumerable<CleaningSchedule>> GetByBookingIdWithRoomAsync(int bookingId);
+        Task<CleaningSchedule> CreateForRoomAsync(CleaningSchedule cleaningSchedule);
+        Task DeleteAsync(int id);
+    }
 }

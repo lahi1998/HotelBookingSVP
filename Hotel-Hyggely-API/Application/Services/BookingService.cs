@@ -73,13 +73,6 @@ namespace Application.Services
             return mapper.Map<BookingDetailsDto>(booking);
         }
 
-		public async Task<IEnumerable<CleaningScheduleDto>> GetCleaningSchedulesByBookingIdAsync(int bookingId)
-		{
-			var cleaningSchedules = await cleaningScheduleRepo.GetByBookingIdWithRoom(bookingId);
-
-			return mapper.Map<IEnumerable<CleaningScheduleDto>>(cleaningSchedules);
-		}
-
 		public async Task<BookingDto> CreateBookingAsync(CreateBookingRequest request)
 		{
             var existingCustomer = await customerRepo.GetByEmailAsync(request.Email);

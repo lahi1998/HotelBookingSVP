@@ -43,15 +43,6 @@ namespace Hotel_Hyggely_API.Controllers
 			return Ok(bookingDetails);
 		}
 
-		[Authorize]
-		[HttpGet("{id}/cleaningschedules")]
-		public async Task<IActionResult> GetCleaningSchedules(int id)
-		{
-			var cleaningSchedules = await bookingService.GetCleaningSchedulesByBookingIdAsync(id);
-
-            return Ok(cleaningSchedules);
-		}
-
 		[HttpPost]
         public async Task<IActionResult> CreateBookingAsync([FromBody] CreateBookingRequest request)
         {
