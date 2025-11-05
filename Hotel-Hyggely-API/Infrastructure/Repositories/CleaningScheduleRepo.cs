@@ -36,6 +36,11 @@ namespace Infrastructure.Repositories
             return await dbContext.CleaningSchedules.SingleOrDefaultAsync(cs => cs.ID == id);
 		}
 
+		public async Task<CleaningSchedule?> GetByIdWithRoomAsync(int id)
+		{
+			return await dbContext.CleaningSchedules.Include(cs => cs.Room).SingleOrDefaultAsync(cs => cs.ID == id);
+		}
+
 		public async Task<CleaningSchedule> CreateForRoomAsync(CleaningSchedule cleaningSchedule)
 		{
 			var result = await dbContext.CleaningSchedules.AddAsync(cleaningSchedule);

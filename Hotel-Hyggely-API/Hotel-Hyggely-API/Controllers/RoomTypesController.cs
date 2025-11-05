@@ -14,12 +14,10 @@ namespace Hotel_Hyggely_API.Controllers
     public class RoomTypesController : ControllerBase
     {
         private readonly RoomTypeService roomTypeService;
-        private readonly RoomTypeImageService imageService;
 
-        public RoomTypesController(RoomTypeService roomTypeService, RoomTypeImageService imageService)
+        public RoomTypesController(RoomTypeService roomTypeService)
         {
             this.roomTypeService = roomTypeService;
-            this.imageService = imageService;
         }
 
 		[AllowAnonymous]

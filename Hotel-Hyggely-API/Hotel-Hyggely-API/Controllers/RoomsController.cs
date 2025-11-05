@@ -61,11 +61,6 @@ namespace Hotel_Hyggely_API.Controllers
 		[HttpPost]
 		public async Task<IActionResult> PostAsync([FromBody] CreateRoomRequest request)
 		{
-			if (!ModelState.IsValid)
-			{
-				return BadRequest(ModelState);
-			}
-
 			var room = await roomService.CreateAsync(request);
 
 			return CreatedAtAction(nameof(GetAsync), new { id = room.ID }, room);

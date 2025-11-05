@@ -1,7 +1,6 @@
 ﻿using Application.Requests.CleaningSchedule;
 using Application.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Components.Forms.Mapping;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hotel_Hyggely_API.Controllers
@@ -53,11 +52,6 @@ namespace Hotel_Hyggely_API.Controllers
 		[HttpPost]
         public async Task<IActionResult> PostForRoomAsync([FromBody] CreateCleaningScheduleRequest request)
         {
-			if (!ModelState.IsValid)
-			{
-				return BadRequest(ModelState);
-			}
-
 			var createdCleaningSchedule = await cleaningScheduleService.CreateForRoomAsync(request);
 
 			return CreatedAtAction(nameof(GetAsync), new { id = createdCleaningSchedule.Id }, createdCleaningSchedule);

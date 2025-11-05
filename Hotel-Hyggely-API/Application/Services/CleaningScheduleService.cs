@@ -56,7 +56,8 @@ namespace Application.Services
                 return false;
             }
 
-            existingCleaningSchedule.Cleaned = true;
+            existingCleaningSchedule.Room!.LastCleanedDate = DateTime.Now;
+			existingCleaningSchedule.Cleaned = true;
             await cleaningScheduleRepo.UpdateAsync(existingCleaningSchedule);
             return true;
         }
