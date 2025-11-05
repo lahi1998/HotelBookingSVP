@@ -12,32 +12,32 @@ namespace Application.Services
 	public class BookingService
 	{
 		private readonly IBookingRepo bookingRepo;
-        private readonly ICustomerRepo customerRepo;
-        private readonly IMapper mapper;
-        private readonly IRoomRepo roomRepo;
-        private readonly ICleaningScheduleRepo cleaningScheduleRepo;
+		private readonly ICustomerRepo customerRepo;
+		private readonly IMapper mapper;
+		private readonly IRoomRepo roomRepo;
+		private readonly ICleaningScheduleRepo cleaningScheduleRepo;
 
-        public BookingService(IBookingRepo bookingRepo, ICustomerRepo customerRepo, IMapper mapper, IRoomRepo roomRepo, ICleaningScheduleRepo cleaningScheduleRepo)
+		public BookingService(IBookingRepo bookingRepo, ICustomerRepo customerRepo, IMapper mapper, IRoomRepo roomRepo, ICleaningScheduleRepo cleaningScheduleRepo)
 		{
 			this.bookingRepo = bookingRepo;
-            this.customerRepo = customerRepo;
-            this.mapper = mapper;
-            this.roomRepo = roomRepo;
-            this.cleaningScheduleRepo = cleaningScheduleRepo;
-        }
+			this.customerRepo = customerRepo;
+			this.mapper = mapper;
+			this.roomRepo = roomRepo;
+			this.cleaningScheduleRepo = cleaningScheduleRepo;
+		}
 
 		public async Task<IEnumerable<BookingListItemDto>> GetAllBookingsAsync()
 		{
 			var bookings = await bookingRepo.GetAllWithCustomerAndRoomsAsync();
 
-            return mapper.Map<IEnumerable<BookingListItemDto>>(bookings);
+			return mapper.Map<IEnumerable<BookingListItemDto>>(bookings);
 		}
 
 		public async Task CheckInAsync(int id)
 		{
 			var booking = await bookingRepo.GetById(id);
 
-			if(booking!.CheckInStatus == CheckInStatus.CheckedIn)
+			if (booking!.CheckInStatus == CheckInStatus.CheckedIn)
 			{
 				return; // Already checked in
 			}
@@ -70,41 +70,53 @@ namespace Application.Services
 		{
 			var booking = await bookingRepo.GetByIdWithDetails(id);
 
-            return mapper.Map<BookingDetailsDto>(booking);
-        }
+			return mapper.Map<BookingDetailsDto>(booking);
+		}
 
 		public async Task<BookingDto> CreateBookingAsync(CreateBookingRequest request)
 		{
-            var existingCustomer = await customerRepo.GetByEmailAsync(request.Email);
+			var existingCustomer = await customerRepo.GetByEmailAsync(request.Email);
 
-            var booking = mapper.Map<Booking>(request);
+			var booking = mapper.Map<Booking>(request);
 
-            if (existingCustomer != null)
-            {
-                booking.CustomerId = existingCustomer.ID;
+			if (existingCustomer != null)
+			{
+				booking.CustomerId = existingCustomer.ID;
 				booking.Customer = null;
-            }
-            else
-            {
-                booking.Customer = new Customer
-                {
-                    FullName = request.FullName,
-                    Email = request.Email,
-                    PhoneNumber = request.PhoneNumber
-                };
-            }
+			}
+			else
+			{
+				booking.Customer = new Customer
+				{
+					FullName = request.FullName,
+					Email = request.Email,
+					PhoneNumber = request.PhoneNumber
+				};
+			}
 
-            var rooms = await roomRepo.GetByIdsWithRoomTypeAsync(request.RoomIds);
+			var rooms = await roomRepo.GetByIdsWithRoomTypeAsync(request.RoomIds);
 
-            booking.Rooms = rooms.ToList();
+			booking.Rooms = rooms.ToList();
 			booking.TotalPrice = CalculateTotalPrice(request.StartDate, request.EndDate, booking.Rooms);
 
 			var createdBooking = await bookingRepo.CreateAsync(booking);
 
-            return mapper.Map<BookingDto>(createdBooking);
-        }
+			// Schedule cleaning for each booked room on the booking end date
+			var cleaningDate = request.EndDate.Date;
 
-        public async Task<BookingDto?> UpdateBookingAsync(UpdateBookingRequest request)
+			foreach (var room in createdBooking.Rooms)
+			{
+				await cleaningScheduleRepo.CreateForRoomAsync(new CleaningSchedule
+				{
+					RoomId = room.ID,
+					CleaningDate = cleaningDate
+				});
+			}
+
+			return mapper.Map<BookingDto>(createdBooking);
+		}
+
+		public async Task<BookingDto?> UpdateBookingAsync(UpdateBookingRequest request)
 		{
 			var existingBooking = await bookingRepo.GetByIdWithDetails(request.Id);
 
