@@ -14,8 +14,6 @@ namespace Application.Requests.Room
 		public int Floor { get; set; }
 		[Required]
 		public int BedAmount { get; set; }
-		[Required]
-		public DateTime LastCleanedDate { get; set; }
 
 		public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
 		{
@@ -31,7 +29,7 @@ namespace Application.Requests.Room
 					"Floor Number cannot be 0 or lower",
 					new[] { nameof(Floor) });
 			}
-			if (Number >= 0)
+			if (Number <= 0)
 			{
 				yield return new ValidationResult(
 					"BedAmount cannot be 0 or lower",

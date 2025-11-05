@@ -50,5 +50,10 @@ namespace Infrastructure.Repositories
 
             await dbContext.SaveChangesAsync();
 		}
+
+        public async Task<RoomType?> GetByNameAsync(string name)
+        {
+			return await dbContext.RoomTypes.SingleOrDefaultAsync(rt => rt.Name == name);
+		}
     }
 }
