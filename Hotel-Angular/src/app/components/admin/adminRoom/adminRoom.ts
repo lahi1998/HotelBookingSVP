@@ -21,6 +21,7 @@ export class AdminRoom implements AfterViewInit {
   DATA: roomDto[] = [];
   dataSource = new MatTableDataSource<roomDto>(this.DATA);
   roomForm!: FormGroup;
+  roomEditForm!: FormGroup;
 
   constructor(
     private fb: FormBuilder,
@@ -34,6 +35,13 @@ export class AdminRoom implements AfterViewInit {
       roomType: ['', Validators.required],
       bedamount: ['', Validators.required],
     });
+    this.roomEditForm = this.fb.group({
+      id: [''],
+      number: ['', Validators.required],
+      floor: ['', Validators.required],
+      roomTypeName: ['', Validators.required],
+      bedAmount: ['', Validators.required]
+    });
 
     this.getRooms();
   }
@@ -43,7 +51,7 @@ export class AdminRoom implements AfterViewInit {
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
-  
+
   /* search filter */
   searchFilter() {
     this.dataSource.filter = this.filterValue.trim().toLowerCase();
@@ -97,6 +105,32 @@ export class AdminRoom implements AfterViewInit {
     this.adminService.getRooms().subscribe(observer);
   }
 
+  editRoom() {
+
+    const observer: Observer<roomDto> = {
+      next: (response) => {
+        console.log('Room updated');
+        const index = this.dataSource.data.findIndex(r => r.id === response.id);
+        if (index !== -1) {
+          this.dataSource.data[index] = response;
+          this.dataSource._updateChangeSubscription();
+        }
+
+        alert("Værelse opdateret");
+      },
+      error: (err) => {
+        console.error('room update failed:', err);
+        alert('Kunne ikke opdatere værelse');
+      },
+      complete: () => {
+        // optional cleanup or navigation
+      },
+    };
+    debugger;
+    this.adminService.updateRoom(this.roomEditForm.value).subscribe(observer);
+    this.closeEditModal();
+  }
+
   DeleteRow(id: number) {
 
     const observer: Observer<any> = {
@@ -117,4 +151,27 @@ export class AdminRoom implements AfterViewInit {
     this.adminService.deleteRoom(id).subscribe(observer);
   }
 
+  //Modal visibility functions
+  openEditModal(room: any) {
+    debugger;
+    this.roomEditForm.setValue({id: room.id, number: room.number, floor: room.floor, roomTypeName: room.roomTypeName, bedAmount: room.bedAmount})
+    this.toggleModal("editModal", true);
+  }
+
+  closeEditModal() {
+    this.toggleModal("editModal", false);
+  }
+
+  toggleModal(id: string, show: boolean) {
+    document.getElementById(id)?.classList.toggle('hidden', !show);
+  }
+
+  //Closes the modal if the user presses outside the modal
+  onBackdropClick(event: MouseEvent) {
+    const clickedElement = event.target as HTMLElement;
+
+    if (clickedElement.classList.contains('modal')) {
+      this.closeEditModal();
+    }
+  }
 }

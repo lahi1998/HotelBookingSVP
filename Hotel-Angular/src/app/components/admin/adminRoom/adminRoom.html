@@ -36,7 +36,7 @@
                 <ng-container matColumnDef="buttons">
                     <th style="border-right: none;" mat-header-cell *matHeaderCellDef></th>
                     <td style="border-right: none;" mat-cell *matCellDef="let room">
-                        <button class="edit">Rediger</button>
+                        <button class="edit" (click)="openEditModal(room)">Rediger</button>
                         <button class="delete" (click)="DeleteRow(room.id)">Slet</button>
                     </td>
                 </ng-container>
@@ -88,5 +88,31 @@
 
             <button class="create" type="button">Opret</button>
         </div>
+    </div>
+</div>
+
+<div id="editModal" class="modal hidden" (click)="onBackdropClick($event)">
+    <div class="modal-content">
+        <h3>Rediger værelsestype</h3>
+        <form [formGroup]="roomEditForm" (ngSubmit)="editRoom()" id="editForm" >
+            <label>Nummer</label>
+            <div class="form-group">
+                <input type="text" formControlName="number" />
+            </div>
+            <label>Etage</label>
+            <div class="form-group">
+                <input type="text" formControlName="floor" />
+            </div>
+            <label>Værelsestype</label>
+            <div class="form-group">
+                <input type="text" formControlName="roomTypeName" />
+            </div>
+            <label>Antal senge</label>
+            <div class="form-group">
+                <input type="text" formControlName="bedAmount" />
+            </div>
+            <button type="submit">Save</button>
+            <button type="button" (click)="closeEditModal()">Cancel</button>
+        </form>
     </div>
 </div>
