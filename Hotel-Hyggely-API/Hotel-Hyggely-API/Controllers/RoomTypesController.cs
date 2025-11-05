@@ -29,22 +29,6 @@ namespace Hotel_Hyggely_API.Controllers
 			return Ok(roomTypes);
 		}
 
-		[HttpGet("images")]
-		public async Task<IActionResult> GetAllImagesAsync()
-		{
-			var roomTypeImages = await imageService.GetAllAsync();
-
-			return Ok(roomTypeImages);
-		}
-
-		[HttpGet("{id}/images")]
-		public async Task<IActionResult> GetImagesAsync(int id)
-		{
-			var roomTypeImages = await imageService.GetByRoomTypeIdAsync(id);
-
-			return Ok(roomTypeImages);
-		}
-
 		[Authorize]
 		[HttpGet("{id}")]
 		public async Task<IActionResult> GetAsync(int id)
@@ -74,36 +58,6 @@ namespace Hotel_Hyggely_API.Controllers
 		}
 
 		[Authorize]
-		[HttpPost("images")]
-		public async Task<IActionResult> PostImageAsync([FromForm] RoomTypeImageUploadRequest request)
-		{
-			if (!ModelState.IsValid)
-			{
-				return BadRequest(ModelState);
-			}
-
-			var results = new List<RoomTypeImageDto>();
-
-			foreach (var image in request.Images)
-			{
-				using var ms = new MemoryStream();
-				await image.CopyToAsync(ms);
-
-				var createRequest = new CreateImageRequest
-				{
-					RoomTypeId = request.RoomTypeId,
-					ImgData = ms.ToArray(),
-					FileType = Path.GetExtension(image.FileName).TrimStart('.')
-				};
-
-				var createdRoomTypeImage = await imageService.CreateAsync(createRequest);
-				results.Add(createdRoomTypeImage);
-			}
-
-			return Ok(results);
-		}
-
-		[Authorize]
 		[HttpPut]
 		public async Task<IActionResult> PutAsync([FromBody] UpdateRoomTypeRequest request)
 		{
@@ -127,20 +81,6 @@ namespace Hotel_Hyggely_API.Controllers
 		public async Task<IActionResult> DeleteAsync(int id)
 		{
 			var result = await roomTypeService.DeleteAsync(id);
-
-			if (!result)
-			{
-				return NotFound();
-			}
-
-			return NoContent();
-		}
-
-		[Authorize]
-		[HttpDelete("images/{id}")]
-		public async Task<IActionResult> DeleteImageAsync(int id)
-		{
-			var result = await imageService.DeleteAsync(id);
 
 			if (!result)
 			{

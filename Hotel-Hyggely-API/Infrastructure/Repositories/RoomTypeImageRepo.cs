@@ -14,11 +14,6 @@ namespace Infrastructure.Repositories
             this.dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<RoomTypeImage>> GetAllAsync()
-        {
-            return await dbContext.RoomTypeImages.ToListAsync();
-        }
-
         public async Task<RoomTypeImage?> GetByIdAsync(int id)
         {
             return await dbContext.RoomTypeImages.SingleOrDefaultAsync(r => r.Id == id);
