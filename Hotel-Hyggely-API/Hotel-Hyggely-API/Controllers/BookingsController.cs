@@ -47,7 +47,9 @@ namespace Hotel_Hyggely_API.Controllers
 		[HttpGet("{id}/cleaningschedules")]
 		public async Task<IActionResult> GetCleaningSchedules(int id)
 		{
-			return StatusCode(501);
+			var cleaningSchedules = await bookingService.GetCleaningSchedulesByBookingIdAsync(id);
+
+            return Ok(cleaningSchedules);
 		}
 
 		[HttpPost]

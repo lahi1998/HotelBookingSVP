@@ -1,5 +1,6 @@
 ﻿using Application.Dtos;
 using Application.Dtos.Booking;
+using Application.Dtos.CleaningSchedule;
 using Application.Interfaces.Repositories;
 using Application.Requests.Booking;
 using AutoMapper;
@@ -14,13 +15,15 @@ namespace Application.Services
         private readonly ICustomerRepo customerRepo;
         private readonly IMapper mapper;
         private readonly IRoomRepo roomRepo;
+        private readonly ICleaningScheduleRepo cleaningScheduleRepo;
 
-        public BookingService(IBookingRepo bookingRepo, ICustomerRepo customerRepo, IMapper mapper, IRoomRepo roomRepo)
+        public BookingService(IBookingRepo bookingRepo, ICustomerRepo customerRepo, IMapper mapper, IRoomRepo roomRepo, ICleaningScheduleRepo cleaningScheduleRepo)
 		{
 			this.bookingRepo = bookingRepo;
             this.customerRepo = customerRepo;
             this.mapper = mapper;
             this.roomRepo = roomRepo;
+            this.cleaningScheduleRepo = cleaningScheduleRepo;
         }
 
 		public async Task<IEnumerable<BookingListItemDto>> GetAllBookingsAsync()
@@ -69,6 +72,13 @@ namespace Application.Services
 
             return mapper.Map<BookingDetailsDto>(booking);
         }
+
+		public async Task<IEnumerable<CleaningScheduleDto>> GetCleaningSchedulesByBookingIdAsync(int bookingId)
+		{
+			var cleaningSchedules = await cleaningScheduleRepo.GetByBookingIdWithRoom(bookingId);
+
+			return mapper.Map<IEnumerable<CleaningScheduleDto>>(cleaningSchedules);
+		}
 
 		public async Task<BookingDto> CreateBookingAsync(CreateBookingRequest request)
 		{
