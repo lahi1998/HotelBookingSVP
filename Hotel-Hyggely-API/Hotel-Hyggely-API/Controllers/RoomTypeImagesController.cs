@@ -21,6 +21,14 @@ namespace Hotel_Hyggely_API.Controllers
         }
 
 		[AllowAnonymous]
+		[HttpGet("/api/roomtypes/images")]
+		public async Task<IActionResult> GetAllImagesAsync()
+		{
+			var roomTypeImages = await imageService.GetAllAsync();
+
+			return Ok(roomTypeImages);
+		}
+
 		[HttpGet("/api/roomtypes/{roomTypeId}/images")]
 		public async Task<IActionResult> GetImagesForRoomTypeAsync(int roomTypeId)
 		{

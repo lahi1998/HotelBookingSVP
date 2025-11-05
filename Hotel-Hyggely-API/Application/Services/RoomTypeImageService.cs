@@ -19,6 +19,13 @@ namespace Application.Services
 			this.mapper = mapper;
 		}
 
+		public async Task<IEnumerable<RoomTypeImageDto>> GetAllAsync()
+		{
+			var images = await imageRepo.GetAllAsync();
+
+			return mapper.Map<IEnumerable<RoomTypeImageDto>>(images);
+		}
+
 		public async Task<IEnumerable<RoomTypeImageDto>> GetByRoomTypeIdAsync(int id)
 		{
 			var images = await imageRepo.GetByRoomTypeIdAsync(id);

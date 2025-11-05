@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces.Repositories;
 using Domain.Entities;
 using Infrastructure.Persistance;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
@@ -14,7 +15,12 @@ namespace Infrastructure.Repositories
             this.dbContext = dbContext;
         }
 
-        public async Task<RoomTypeImage?> GetByIdAsync(int id)
+		public async Task<IEnumerable<RoomTypeImage>> GetAllAsync()
+		{
+			return await dbContext.RoomTypeImages.ToListAsync();
+		}
+
+		public async Task<RoomTypeImage?> GetByIdAsync(int id)
         {
             return await dbContext.RoomTypeImages.SingleOrDefaultAsync(r => r.Id == id);
 		}

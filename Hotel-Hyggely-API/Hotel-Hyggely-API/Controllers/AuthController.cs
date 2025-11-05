@@ -19,11 +19,6 @@ namespace Hotel_Hyggely_API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             var token = await authService.AuthenticateAsync(request);
 
             if (token == null)
