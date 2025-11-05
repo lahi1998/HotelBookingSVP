@@ -23,7 +23,7 @@ export class StaffCleaning {
     this.dataSource.paginator = this.paginator;
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.getCleaningSchedule();
   }
 
@@ -36,13 +36,23 @@ export class StaffCleaning {
     this.dataSource.filter = this.filterValue.trim().toLowerCase();
   }
 
+  confirmingId: number | null = null;
+
+  confirm(id: number) {
+    this.cleaned(id);        // Kald din eksisterende funktion
+    this.confirmingId = null; // Luk popover
+  }
+
+  cancel() {
+    this.confirmingId = null; // Luk popover uden at gøre noget
+  }
+
   getCleaningSchedule() {
     const observer: Observer<CleaningScheduleDto[]> = {
       next: (cleaningSchedule) => {
         this.DATA = Array.isArray(cleaningSchedule) ? cleaningSchedule : [];
         this.dataSource.data = this.DATA;
         console.log('Cleaning schedule fetched successfully', cleaningSchedule);
-        alert('Cleaning schedule fetched!');
       },
       error: (err) => {
         console.error('Cleaning schedule fetch failed:', err);
@@ -60,19 +70,19 @@ export class StaffCleaning {
 
     const observer: Observer<any> = {
       next: (response) => {
-        console.log('Delete successful.', response);
-        alert('Delete successful!');
+        console.log('patch successful.', response);
+        this.getCleaningSchedule();
       },
       error: (error) => {
-        console.error('Delete error.', error);
-        alert('Delete error!');
+        console.error('patch error.', error);
+        alert('patch error!');
       },
       complete: () => {
         // optional cleanup or navigation
       },
     };
 
-    this.staffService.deleteCleaningSchedule(id).subscribe(observer);
+    this.staffService.MarkCleanedCleaningSchedule(id).subscribe(observer);
   }
 }
 

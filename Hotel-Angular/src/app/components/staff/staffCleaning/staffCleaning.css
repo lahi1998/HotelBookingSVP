@@ -19,7 +19,7 @@ h2 {
 /* Table wrapper */
 .table-wrapper {
     flex: 1 1 60%;
-    max-width: 60%;
+    max-width: 40%;
     margin: 0 auto; /* ensure wrapper is centered */
     display: block;
 }
@@ -43,8 +43,7 @@ button {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-input,
-select {
+input {
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -62,10 +61,94 @@ td {
     border-bottom: 1px solid black !important;
 }
 
-.delete {
+.finish {
     background-color: #FF4646;
 }
 
-.delete:hover {
+.finish:hover {
     background-color: #e93d3d;
+}
+
+.yes, .no {
+    background-color: #4EA9E9;
+}
+
+.yes:hover, .no:hover {
+    background-color: #2e8cd6;
+}
+
+
+
+/* Responsive behavior */
+@media screen and (max-width: 900px) {
+    .container {
+        flex-direction: column;
+        gap: 20px;
+        /* smaller vertical spacing */
+        padding: 2%;
+    }
+
+    .table-wrapper {
+        flex: 1 1 90%;
+        max-width: none;
+    }
+
+
+    .cleaningTable{
+        width: 90%;
+    }
+
+}
+
+@media screen and (max-width: 480px) {
+
+    th,
+    td {
+        font-size: 12px;
+        padding: 4px;
+    }
+
+    button {
+        font-size: 14px;
+        padding: 4px 8px;
+    }
+
+    .table-wrapper {
+        flex: 1 1 auto;
+        max-width: 95vw;
+        margin-left: 0%;
+    }
+
+    .cleaningTable{
+        width: 90%;
+    }
+
+
+
+}
+
+@media screen and (max-width: 480px) {
+
+    th,
+    td {
+        font-size: 12px;
+        padding: 4px;
+    }
+
+    button {
+        font-size: 14px;
+        padding: 4px 8px;
+    }
+
+    .table-wrapper {
+        flex: 1 1 auto;
+        max-width: 100vw;
+        margin-left: 0%;
+    }
+    .cleaningTable{
+        width: 100%;
+    }
+
+
+
 }

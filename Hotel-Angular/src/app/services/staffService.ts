@@ -141,12 +141,24 @@ export class StaffService {
       'Content-Type': 'application/json'
     });
 
-    return this.httpClient.get<CleaningScheduleDto[]>(this.url2, { headers }).pipe(
+    return this.httpClient.get<CleaningScheduleDto[]>(`${this.url2}/pending`, { headers }).pipe(
       tap((cleaningSchedule: CleaningScheduleDto[]) => {
         console.log('Fetched cleaning schedule:', cleaningSchedule);
       })
     );
   }
+
+  MarkCleanedCleaningSchedule(id: number): Observable<any> {
+
+    const token = this.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+    return this.httpClient.patch<any>(`${this.url2}/${id}/finish`, {}, { headers });
+  }
+
 
   deleteCleaningSchedule(id: number): Observable<any> {
 

@@ -1,6 +1,6 @@
 <app-staffNav></app-staffNav>
 <div class="container">
-    <div class="table-wrapper ">
+    <div class="table-wrapper" style="margin-top: 10vh;">
         <h2>Rengøring</h2>
         <input style="width: auto; margin: 5px;" matInput [(ngModel)]="filterValue" (ngModelChange)="searchFilter()"
             placeholder="Søg" />
@@ -29,12 +29,23 @@
                 <ng-container matColumnDef="buttons">
                     <th style="border-right: none;" mat-header-cell *matHeaderCellDef></th>
                     <td style="border-right: none;" mat-cell *matCellDef="let cleaningSchedule">
-                        <button class="delete"
-                            (click)="cleaned(cleaningSchedule.id)">
+
+                        <!-- Normal knap -->
+                        <button class="finish" *ngIf="confirmingId !== cleaningSchedule.id"
+                            (click)="confirmingId = cleaningSchedule.id">
                             Rengjort
                         </button>
+
+                        <!-- Popover der vises ved klik -->
+                        <div *ngIf="confirmingId === cleaningSchedule.id" class="confirm-popover">
+                            <span>Bekræft?</span>
+                            <button class="yes" (click)="confirm(cleaningSchedule.id)">Ja</button>
+                            <button class="no" (click)="cancel()">Nej</button>
+                        </div>
+
                     </td>
                 </ng-container>
+
 
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -44,4 +55,5 @@
             <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
             </mat-paginator>
         </div>
+
     </div>

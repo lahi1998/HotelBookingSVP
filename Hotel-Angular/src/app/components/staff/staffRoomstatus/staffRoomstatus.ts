@@ -12,7 +12,7 @@ import { StaffService } from '../../../services/staffService';
   styleUrl: './staffRoomstatus.css',
 })
 export class StaffRoomstatus {
-  displayedColumns: string[] = ['number', 'floor', 'type', 'bedCount', 'lastCleaned', 'roomStatus'];
+  displayedColumns: string[] = ['number', 'floor', 'type', 'bedAmount', 'lastCleaned', 'roomStatus'];
   filterValue: string = '';
   DATA: roomDto[] = [];
   dataSource = new MatTableDataSource<roomDto>(this.DATA);
@@ -21,6 +21,7 @@ export class StaffRoomstatus {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+    this.getRooms()
   }
 
   constructor(
@@ -37,8 +38,6 @@ export class StaffRoomstatus {
       next: (rooms) => {
         this.DATA = Array.isArray(rooms) ? rooms : [];
         this.dataSource.data = this.DATA;
-        console.log('Rooms fetched successfully', rooms);
-        alert('Rooms fetched!');
       },
       error: (err) => {
         console.error('Rooms fetch failed:', err);
