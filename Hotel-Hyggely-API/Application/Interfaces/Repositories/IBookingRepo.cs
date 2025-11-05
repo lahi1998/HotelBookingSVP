@@ -7,6 +7,7 @@ namespace Application.Interfaces.Repositories
     {
         Task<IEnumerable<Booking>> GetAllWithCustomerAndRoomsAsync();
         Task<Booking?> GetById(int id);
+		Task<Booking?> GetByIdWithRooms(int id);
 		Task<Booking?> GetByIdWithDetails(int id);
 		Task<Booking> CreateAsync(Booking booking);
         Task<Booking?> UpdateAsync(Booking booking);

@@ -19,6 +19,14 @@ namespace Infrastructure.Repositories
 		{
 			return await dbContext.Bookings.SingleOrDefaultAsync(b => b.ID == id);
 		}
+
+		public async Task<Booking?> GetByIdWithRooms(int id)
+		{
+			return await dbContext.Bookings
+                .Include(b => b.Rooms)
+                    .ThenInclude(r => r.CleaningSchedules)
+				.SingleOrDefaultAsync(b => b.ID == id);
+		}
 		public async Task<Booking?> GetByIdWithDetails(int id)
 		{
 			return await dbContext.Bookings

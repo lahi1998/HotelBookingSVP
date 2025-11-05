@@ -65,7 +65,10 @@ namespace Application.Services
 		{
 			return await bookingRepo.GetById(id);
 		}
-
+		public async Task<Booking?> GetByIdWithRooms(int id)
+		{
+			return await bookingRepo.GetByIdWithRooms(id);
+		}
 		public async Task<BookingDetailsDto?> GetByIdWithDetailsAsync(int id)
 		{
 			var booking = await bookingRepo.GetByIdWithDetails(id);
@@ -142,9 +145,21 @@ namespace Application.Services
 			return mapper.Map<BookingDto>(updatedBooking);
 		}
 
-		public async Task DeleteBookingAsync(int id)
+		public async Task DeleteBookingAsync(Booking booking)
 		{
-			await bookingRepo.DeleteAsync(id);
+			await bookingRepo.DeleteAsync(booking.ID);
+
+			// Remove schedule cleaning for each booked room
+			foreach (var room in booking.Rooms)
+			{
+				var schedules = room.CleaningSchedules.ToList();
+
+				foreach (var cleaningSchedule in schedules)
+				{
+					await cleaningScheduleRepo.DeleteAsync(cleaningSchedule.ID);
+				}
+			}
+
 		}
 
 		private decimal CalculateTotalPrice(DateTime startDate, DateTime endDate, IEnumerable<Room> rooms)

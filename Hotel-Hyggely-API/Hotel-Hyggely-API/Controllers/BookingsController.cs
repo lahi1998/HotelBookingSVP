@@ -66,14 +66,14 @@ namespace Hotel_Hyggely_API.Controllers
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> DeleteBookingAsync(int id)
 		{
-			var bookingToDelete = await bookingService.GetByIdAsync(id);
+			var bookingToDelete = await bookingService.GetByIdWithRooms(id);
 
 			if (bookingToDelete == null)
 			{
 				return NotFound();
 			}
 
-			await bookingService.DeleteBookingAsync(id);
+			await bookingService.DeleteBookingAsync(bookingToDelete);
 
 			return NoContent();
 		}
