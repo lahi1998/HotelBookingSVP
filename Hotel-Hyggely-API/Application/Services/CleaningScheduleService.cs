@@ -49,7 +49,7 @@ namespace Application.Services
 
         public async Task<bool> MarkAsCleaned(int id)
         {
-            var existingCleaningSchedule = await cleaningScheduleRepo.GetByIdAsync(id);
+            var existingCleaningSchedule = await cleaningScheduleRepo.GetByIdWithRoomAsync(id);
 
             if (existingCleaningSchedule == null)
             {
