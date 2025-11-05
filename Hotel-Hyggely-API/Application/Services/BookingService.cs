@@ -121,11 +121,9 @@ namespace Application.Services
 			}
 
 			mapper.Map(request, existingBooking);
-			var existingCustomer = await customerRepo.GetByEmailAsync(request.Email);
 
-			if (existingCustomer != null)
+			if (existingBooking.Customer != null)
 			{
-				existingBooking.Customer = existingCustomer;
 				existingBooking.Customer.FullName = request.FullName;
 				existingBooking.Customer.Email = request.Email;
 				existingBooking.Customer.PhoneNumber = request.PhoneNumber;
