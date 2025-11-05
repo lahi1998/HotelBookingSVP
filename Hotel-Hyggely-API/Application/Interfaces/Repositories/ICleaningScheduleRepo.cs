@@ -9,6 +9,7 @@ namespace Application.Interfaces.Repositories
         Task<CleaningSchedule?> GetByIdAsync(int id);
         Task<IEnumerable<CleaningSchedule>> GetByBookingIdWithRoomAsync(int bookingId);
         Task<CleaningSchedule> CreateForRoomAsync(CleaningSchedule cleaningSchedule);
-        Task DeleteAsync(int id);
+        Task<CleaningSchedule> UpdateAsync(CleaningSchedule cleaningSchedule);
+		Task DeleteAsync(int id);
     }
 }

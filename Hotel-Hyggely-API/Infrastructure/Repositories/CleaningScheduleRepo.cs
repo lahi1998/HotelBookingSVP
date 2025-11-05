@@ -46,7 +46,14 @@ namespace Infrastructure.Repositories
 
 		}
 
-        public async Task DeleteAsync(int id)
+        public async Task<CleaningSchedule> UpdateAsync(CleaningSchedule cleaningSchedule)
+        {
+            var result = dbContext.CleaningSchedules.Update(cleaningSchedule);
+            await dbContext.SaveChangesAsync();
+            return result.Entity;
+        }
+
+		public async Task DeleteAsync(int id)
         {
             var cleaningScheduleToDelete = await dbContext.CleaningSchedules.SingleAsync(cs => cs.ID == id);
 

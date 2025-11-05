@@ -1,6 +1,7 @@
 ﻿using Application.Requests.CleaningSchedule;
 using Application.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components.Forms.Mapping;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hotel_Hyggely_API.Controllers
@@ -59,7 +60,20 @@ namespace Hotel_Hyggely_API.Controllers
 			return CreatedAtAction(nameof(GetAsync), new { id = createdCleaningSchedule.Id }, createdCleaningSchedule);
 		}
 
-        [HttpDelete("{id}")]
+		[HttpPatch("{id}/finish")]
+		public async Task<IActionResult> Finish(int id)
+		{
+			var succes = await cleaningScheduleService.MarkAsCleaned(id);
+
+			if(!succes)
+			{
+				return NotFound();
+			}
+
+			return NoContent();
+		}
+
+		[HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAsync(int id)
         {
 			var result = await cleaningScheduleService.DeleteAsync(id);

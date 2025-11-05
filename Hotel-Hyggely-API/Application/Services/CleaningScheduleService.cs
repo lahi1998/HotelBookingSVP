@@ -47,6 +47,20 @@ namespace Application.Services
             return mapper.Map<CleaningScheduleDto>(createdCleaningSchedule);
 		}
 
+        public async Task<bool> MarkAsCleaned(int id)
+        {
+            var existingCleaningSchedule = await cleaningScheduleRepo.GetByIdAsync(id);
+
+            if (existingCleaningSchedule == null)
+            {
+                return false;
+            }
+
+            existingCleaningSchedule.Cleaned = true;
+            await cleaningScheduleRepo.UpdateAsync(existingCleaningSchedule);
+            return true;
+        }
+
 		public async Task<bool> DeleteAsync(int id)
         {
             var existingCleaningSchedule = await cleaningScheduleRepo.GetByIdAsync(id);
