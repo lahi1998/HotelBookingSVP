@@ -1,7 +1,9 @@
-﻿using Application.Interfaces.Repositories;
+﻿using Application.Exeptions;
+using Application.Interfaces.Repositories;
 using Domain.Entities;
 using Domain.Enums;
 using Infrastructure.Persistance;
+using Infrastructure.Persistance.Configurations;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
@@ -38,12 +40,32 @@ namespace Infrastructure.Repositories
 
 		public async Task<Booking> CreateAsync(Booking booking)
         {
-            var result = await dbContext.Bookings.AddAsync(booking);
+			await using var transaction = await dbContext.Database.BeginTransactionAsync(System.Data.IsolationLevel.Serializable);
 
-            await dbContext.SaveChangesAsync();
+			var roomIds = booking.Rooms.Select(r => r.ID).ToList();
+			var startDate = booking.StartDate;
+			var endDate = booking.EndDate;
 
-            return result.Entity;
-        }
+			// Check if any of the rooms are already booked or in maintenance
+			var conflictExists = await dbContext.Rooms
+				.Where(r => roomIds.Contains(r.ID))
+				.AnyAsync(r =>
+					r.Bookings.Any(b => b.StartDate < endDate && startDate < b.EndDate) ||
+					r.MaintenancePeriods.Any(m => m.StartDate < endDate && startDate < m.EndDate)
+				);
+
+			if (conflictExists)
+				throw new BookingConflictExeption("Room is already booked in the selected date range.");
+
+			// Add the booking
+			var result = await dbContext.Bookings.AddAsync(booking);
+			await dbContext.SaveChangesAsync();
+
+			// Commit the transaction
+			await transaction.CommitAsync();
+
+			return result.Entity;
+		}
 
         public async Task DeleteAsync(int id)
         {

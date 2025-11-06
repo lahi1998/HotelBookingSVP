@@ -1,4 +1,5 @@
-﻿using Application.Requests.Booking;
+﻿using Application.Exeptions;
+using Application.Requests.Booking;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,9 +41,15 @@ namespace Hotel_Hyggely_API.Controllers
 		[HttpPost]
 		public async Task<IActionResult> CreateBookingAsync([FromBody] CreateBookingRequest request)
 		{
-			var createdBooking = await bookingService.CreateBookingAsync(request);
-
-			return CreatedAtAction(nameof(GetBookingAsync), new { id = createdBooking.Id }, createdBooking);
+			try
+			{
+				var createdBooking = await bookingService.CreateBookingAsync(request);
+				return CreatedAtAction(nameof(GetBookingAsync), new { id = createdBooking.Id }, createdBooking);
+			}
+			catch (BookingConflictExeption ex)
+			{
+				return Conflict(new { Message = ex.Message });
+			}
 		}
 
 		[HttpPut]

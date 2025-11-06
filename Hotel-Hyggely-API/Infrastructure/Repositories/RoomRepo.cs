@@ -60,7 +60,6 @@ namespace Infrastructure.Repositories
 			return rooms;
 		}
 
-
 		public async Task<Room> CreateAsync(Room room)
         {
             var result = await dbContext.Rooms.AddAsync(room);

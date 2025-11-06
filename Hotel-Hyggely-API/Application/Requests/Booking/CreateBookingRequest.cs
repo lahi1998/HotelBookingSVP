@@ -8,7 +8,7 @@ namespace Application.Requests.Booking
 		public DateTime StartDate { get; set; }
 		[Required]
 		public DateTime EndDate { get; set; }
-		[Required, Range(1, 10)]
+		[Required, Range(1, 50)]
 		public int PersonCount { get; set; }
 		public string? Comment { get; set; }
 		[Required]
