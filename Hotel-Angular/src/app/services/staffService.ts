@@ -1,10 +1,12 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 import { roomDto } from '../interfaces/roomDto';
 import { CleaningScheduleDto } from '../interfaces/cleaningScheduleDto';
 import { BookingListItemDto } from '../interfaces/bookingListItemDto';
 import { BookingDetailsDto } from '../interfaces/bookingDetailsDto';
+import { UpdateBookingRequest } from '../interfaces/updateBookingRequest';
+import { CreateCleaningScheduleRequest } from '../interfaces/createCleaningScheduleRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +16,7 @@ export class StaffService {
   url: string = "https://hotel-hyggely.dk/api/rooms";
   url2: string = "https://hotel-hyggely.dk/api/cleaningschedules";
   url3: string = "https://hotel-hyggely.dk/api/bookings";
+  url4: string = "https://hotel-hyggely.dk/api/rooms/availabledetailed";
 
   constructor(private httpClient: HttpClient) { }
 
@@ -40,7 +43,23 @@ export class StaffService {
     );
   }
 
+  getAvailableRoomsDetailed(startDate: string, endDate: string): Observable<roomDto[]> {
+    const params = new HttpParams()
+      .set('FromDate', startDate)
+      .set('ToDate', endDate);
 
+    const token = this.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+    return this.httpClient.get<roomDto[]>(`${this.url4}`, { params, headers }).pipe(
+      tap(rooms => {
+        console.log('Fetched available rooms:', rooms);
+      })
+    );
+  }
   getBookingDetails(id: number): Observable<BookingDetailsDto> {
 
     const token = this.getToken();
@@ -74,13 +93,26 @@ export class StaffService {
       'Content-Type': 'application/json'
     });
 
-    if (checkstatus = "CheckedIn") {
-      return this.httpClient.patch<any>(`${this.url3}/${id}/check-in`, { headers });
+    if (checkstatus === "NotCheckedIn") {
+      return this.httpClient.patch<any>(`${this.url3}/${id}/check-in`, {}, { headers });
     }
-    else{
-      return this.httpClient.patch<any>(`${this.url3}/${id}/check-out`, { headers });
+    else {
+      return this.httpClient.patch<any>(`${this.url3}/${id}/check-out`, {}, { headers });
     }
   }
+
+  putbookingdetails(updatedBooking: UpdateBookingRequest): Observable<UpdateBookingRequest> {
+
+    const token = this.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+    // Send a POST request to the API for room creation
+    return this.httpClient.put<UpdateBookingRequest>(`${this.url3}`, updatedBooking, { headers })
+  }
+
+
 
   /* staff room status */
   getRooms(): Observable<roomDto[]> {
@@ -99,6 +131,7 @@ export class StaffService {
   }
 
 
+
   /* staff cleaning schedule */
   getCleaningSchedule(): Observable<CleaningScheduleDto[]> {
 
@@ -108,12 +141,24 @@ export class StaffService {
       'Content-Type': 'application/json'
     });
 
-    return this.httpClient.get<CleaningScheduleDto[]>(this.url2, { headers }).pipe(
+    return this.httpClient.get<CleaningScheduleDto[]>(`${this.url2}/pending`, { headers }).pipe(
       tap((cleaningSchedule: CleaningScheduleDto[]) => {
         console.log('Fetched cleaning schedule:', cleaningSchedule);
       })
     );
   }
+
+  MarkCleanedCleaningSchedule(id: number): Observable<any> {
+
+    const token = this.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+    return this.httpClient.patch<any>(`${this.url2}/${id}/finish`, {}, { headers });
+  }
+
 
   deleteCleaningSchedule(id: number): Observable<any> {
 
@@ -126,5 +171,31 @@ export class StaffService {
     return this.httpClient.delete<any>(`${this.url2}/${id}`, { headers });
   }
 
+  /* cleaning for booking*/
+  getCleaningScheduleBooking(bookingid: number): Observable<CleaningScheduleDto[]> {
 
+    const token = this.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+
+    return this.httpClient.get<CleaningScheduleDto[]>(`${this.url3}/${bookingid}/CleaningSchedules`, { headers }).pipe(
+      tap((cleaningSchedule: CleaningScheduleDto[]) => {
+        console.log('Fetched cleaning schedule:', cleaningSchedule);
+      })
+    );
+  }
+
+  postCleaningScheduleBooking(newCleaning: CreateCleaningScheduleRequest): Observable<CreateCleaningScheduleRequest> {
+
+    const token = this.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+    // Send a POST request to the API for room creation
+    return this.httpClient.post<CreateCleaningScheduleRequest>(`${this.url2}`, newCleaning, { headers })
+  }
 }

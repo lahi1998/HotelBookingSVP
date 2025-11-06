@@ -48,7 +48,7 @@ export class Login implements OnInit {
           } else if (role === 'Receptionist') {
             this.router.navigate(['/staff/check-in-out']);
           } else if (role === 'Cleaning') {
-            this.router.navigate(['/staff/cleaning']);
+            this.router.navigate(['/cleaning/cleaningSchedule']);
           }
       },
       error: (error) => {

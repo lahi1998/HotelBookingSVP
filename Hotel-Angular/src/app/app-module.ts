@@ -50,9 +50,8 @@ import { Frontpage } from './components/guest/frontpage/frontpage';
     MatTableModule,
     MatPaginator,
     MatPaginatorModule,
-    ReactiveFormsModule
-    
-  ],
+    ReactiveFormsModule,
+],
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideHttpClient()

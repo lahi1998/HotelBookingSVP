@@ -1,8 +1,11 @@
 <div class="navbar">
   <div class="nav-buttons">
-    <button type="button" routerLink="/staff/room-status">Værelser</button>
-    <button type="button" routerLink="/staff/booking">Booking</button>
-    <button type="button" routerLink="/staff/check-in-out">Tjek ind/ud</button>
+    <ng-container *ngIf="!cleaner">
+      <button type="button" routerLink="/staff/room-status">Værelser</button>
+      <button type="button" routerLink="/staff/booking">Booking</button>
+      <button type="button" routerLink="/staff/check-in-out">Tjek ind/ud</button>
+    </ng-container>
   </div>
+
   <button type="button" class="logout-btn" (click)="logout()">Log ud</button>
 </div>

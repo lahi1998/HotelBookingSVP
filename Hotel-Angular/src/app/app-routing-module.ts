@@ -100,10 +100,10 @@ const routes: Routes = [
     ],
   },
   {
-    path: 'staff',
+    path: 'cleaning',
     canActivateChild: [CleaningAuthGuard],
     children: [
-      { path: 'cleaning', component: StaffCleaning },
+      { path: 'cleaningSchedule', component: StaffCleaning },
     ],
   },
   // --- Default redirects ---
