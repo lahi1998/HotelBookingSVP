@@ -13,6 +13,7 @@ import { StaffNav } from './components/staff/staffNav/staffNav';
 import { LoginService } from './services/loginService';
 import { Contact } from './components/guest/contact/contact';
 import { Frontpage } from './components/guest/frontpage/frontpage';
+import { GuestBooking } from './components/guest/guest-booking/guest-booking';
 
 
 // --- Simple AuthService ---
@@ -72,7 +73,7 @@ export class CleaningAuthGuard implements CanActivateChild {
 // --- Routes ---
 const routes: Routes = [
   { path: 'login', component: Login },
-  { path: 'booking', component: Booking },
+  { path: 'booking', component: GuestBooking },
   { path: 'frontpage', component: Frontpage },
   { path: 'contact', component: Contact },
   
