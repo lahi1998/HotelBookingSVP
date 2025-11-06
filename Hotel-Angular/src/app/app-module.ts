@@ -22,6 +22,7 @@ import { StaffRoomstatus } from './components/staff/staffRoomstatus/staffRoomsta
 import { GuestNav } from './components/guest/guest-nav/guest-nav';
 import { Contact } from './components/guest/contact/contact';
 import { Frontpage } from './components/guest/frontpage/frontpage';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { Frontpage } from './components/guest/frontpage/frontpage';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    CommonModule,
     FormsModule,
     MatButtonModule,
     MatCardModule,

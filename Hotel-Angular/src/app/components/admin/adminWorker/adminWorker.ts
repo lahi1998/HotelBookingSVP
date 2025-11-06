@@ -3,10 +3,10 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { staffDto } from '../../../interfaces/staffDto';
 import { Observer } from 'rxjs';
-import { Router } from '@angular/router';
 import { AdminService } from '../../../services/adminService';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CreateStaffRequest } from '../../../interfaces/createStaffRequest';
+import { UpdateStaffRequest } from '../../../interfaces/updateStaffRequest';
 
 @Component({
   selector: 'app-adminWorker',
@@ -15,12 +15,15 @@ import { CreateStaffRequest } from '../../../interfaces/createStaffRequest';
   styleUrl: './adminWorker.css',
 })
 export class AdminWorker implements AfterViewInit {
-  roles: string[] = ['Receptionist', 'Cleaning'];
+  roles: string[] = ['Admin','Receptionist', 'Cleaning'];
   displayedColumns: string[] = ['role', 'username', 'fullname', 'buttons'];
   filterValue: string = '';
   DATA: staffDto[] = [];
   dataSource = new MatTableDataSource<staffDto>(this.DATA);
-  workerForm!: FormGroup;
+  newWorkerForm!: FormGroup;
+  editWorkerForm!: FormGroup;
+  editopen = false;
+  editId: number = 0;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -30,11 +33,21 @@ export class AdminWorker implements AfterViewInit {
   ) { }
 
   ngOnInit() {
-    this.workerForm = this.fb.group({
+    this.newWorkerForm = this.fb.group({
       role: ['', Validators.required],
       userName: ['', Validators.required],
       password: ['', Validators.required],
       passwordConfirm: ['', Validators.required],
+      fullName: ['', Validators.required],
+    },
+      { validators: this.passwordsMatchValidator }
+    );
+
+    this.editWorkerForm = this.fb.group({
+      role: ['', Validators.required],
+      userName: ['', Validators.required],
+      password: [''],
+      passwordConfirm: [''],
       fullName: ['', Validators.required],
     },
       { validators: this.passwordsMatchValidator }
@@ -66,20 +79,19 @@ export class AdminWorker implements AfterViewInit {
     this.dataSource.filter = this.filterValue.trim().toLowerCase();
   }
 
-  onSubmit(): void {
-    if (this.workerForm.valid) {
+  createSubmit(): void {
+    if (this.newWorkerForm.valid) {
       const newWorker: CreateStaffRequest = {
-        role: this.workerForm.value.role,
-        userName: this.workerForm.value.userName,
-        password: this.workerForm.value.password,
-        fullName: this.workerForm.value.fullName,
+        role: this.newWorkerForm.value.role,
+        userName: this.newWorkerForm.value.userName,
+        password: this.newWorkerForm.value.password,
+        fullName: this.newWorkerForm.value.fullName,
       };
 
       const observer: Observer<any> = {
         next: (response) => {
           console.log('Create successful.', response);
-          alert('Create successful!');
-
+          this.getWorkers();
         },
         error: (error) => {
           console.error('Create error.', error);
@@ -100,7 +112,6 @@ export class AdminWorker implements AfterViewInit {
         this.DATA = Array.isArray(worker) ? worker : [];
         this.dataSource.data = this.DATA;
         console.log('Workers fetched successfully', worker);
-        alert('Workers fetched!');
       },
       error: (err) => {
         console.error('Workers fetch failed:', err);
@@ -119,7 +130,6 @@ export class AdminWorker implements AfterViewInit {
     const observer: Observer<any> = {
       next: (response) => {
         console.log('Delete successful.', response);
-        alert('Delete successful!');
         this.getWorkers();
       },
       error: (error) => {
@@ -133,5 +143,70 @@ export class AdminWorker implements AfterViewInit {
 
     this.adminService.deleteWorker(id).subscribe(observer);
   }
+
+
+
+  /* edit workers */
+  editSubmit() {
+    if (this.editWorkerForm.valid) {
+      const editWorker: UpdateStaffRequest = {
+        id: this.editId,
+        role: this.editWorkerForm.value.role,
+        userName: this.editWorkerForm.value.userName,
+        password: this.editWorkerForm.value.password,
+        fullName: this.editWorkerForm.value.fullName,
+      };
+
+      const observer: Observer<any> = {
+        next: (response) => {
+          console.log('Create successful.', response);
+          this.getWorkers();
+        },
+        error: (error) => {
+          console.error('Create error.', error);
+          alert('Create error!');
+        },
+        complete: () => {
+          // optional cleanup or navigation
+        },
+      };
+
+      this.adminService.putWorker(editWorker).subscribe(observer);
+    }
+  }
+
+
+  openEdit(id: number) {
+    /* Assuming you have a flag to toggle the edit form visibility */
+    this.editopen = true;
+    this.editId = id;
+
+    /* Find the worker with the matching id from the current DATA array */
+    const workerEdit = this.DATA.find(w => w.id === id);
+
+    if (!workerEdit) {
+      console.error('Worker not found for edit:', id);
+      alert('Worker not found!');
+      return;
+    }
+
+    /* Patch form values with existing worker data */
+    this.editWorkerForm.patchValue({
+      role: workerEdit.role,
+      userName: workerEdit.userName,
+      fullName: workerEdit.fullName,
+      /* Password fields left blank intentionally (for security) */
+      password: '',
+      passwordConfirm: ''
+    });
+
+    /* Set edit */
+  }
+
+  closeEdit(){
+    this.editopen = false;
+    this.editId = 0;
+  }
 }
+
 
