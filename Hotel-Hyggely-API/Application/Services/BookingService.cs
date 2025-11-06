@@ -1,6 +1,7 @@
 ﻿using Application.Dtos;
 using Application.Dtos.Booking;
 using Application.Dtos.CleaningSchedule;
+using Application.Interfaces;
 using Application.Interfaces.Repositories;
 using Application.Requests.Booking;
 using AutoMapper;
@@ -16,15 +17,17 @@ namespace Application.Services
 		private readonly IMapper mapper;
 		private readonly IRoomRepo roomRepo;
 		private readonly ICleaningScheduleRepo cleaningScheduleRepo;
+        private readonly IEmailService emailService;
 
-		public BookingService(IBookingRepo bookingRepo, ICustomerRepo customerRepo, IMapper mapper, IRoomRepo roomRepo, ICleaningScheduleRepo cleaningScheduleRepo)
+        public BookingService(IBookingRepo bookingRepo, ICustomerRepo customerRepo, IMapper mapper, IRoomRepo roomRepo, ICleaningScheduleRepo cleaningScheduleRepo, IEmailService emailService)
 		{
 			this.bookingRepo = bookingRepo;
 			this.customerRepo = customerRepo;
 			this.mapper = mapper;
 			this.roomRepo = roomRepo;
 			this.cleaningScheduleRepo = cleaningScheduleRepo;
-		}
+            this.emailService = emailService;
+        }
 
 		public async Task<IEnumerable<BookingListItemDto>> GetAllBookingsAsync()
 		{
@@ -103,6 +106,8 @@ namespace Application.Services
 			booking.TotalPrice = CalculateTotalPrice(request.StartDate, request.EndDate, booking.Rooms);
 
 			var createdBooking = await bookingRepo.CreateAsync(booking);
+
+			await emailService.SendEmailAsync(createdBooking);
 
 			// Schedule cleaning for each booked room on the booking end date
 			var cleaningDate = request.EndDate.Date;

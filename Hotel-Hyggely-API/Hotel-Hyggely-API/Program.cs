@@ -40,6 +40,7 @@ builder.Services.AddScoped<IRoomTypeImageRepo, RoomTypeImageRepo>();
 builder.Services.AddScoped<RoomTypeImageService>();
 builder.Services.AddScoped<ICleaningScheduleRepo, CleaningScheduleRepo>();
 builder.Services.AddScoped<CleaningScheduleService>();
+builder.Services.AddScoped<IEmailService, SendGridEmailService>();
 
 builder.Services.AddCors(options =>
 {
