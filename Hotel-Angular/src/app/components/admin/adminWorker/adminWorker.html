@@ -29,7 +29,7 @@
                 <ng-container matColumnDef="buttons">
                     <th style="border-right: none;" mat-header-cell *matHeaderCellDef></th>
                     <td style="border-right: none;" mat-cell *matCellDef="let worker">
-                        <button class="edit" (click)="openEdit(worker.id)">Rediger</button>
+                        <button class="edit" (click)="openEdit(worker.id, worker.userName)">Rediger</button>
                         <button class="delete" (click)="DeleteRow(worker.id)" *ngIf="worker.userName != 'admin'">Slet</button>
                     </td>
                 </ng-container>

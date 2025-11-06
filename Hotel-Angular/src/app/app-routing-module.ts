@@ -1,5 +1,5 @@
 import { NgModule, Injectable } from '@angular/core';
-import { RouterModule, Routes, CanActivateChild, ActivatedRouteSnapshot, RouterStateSnapshot, Router, UrlTree } from '@angular/router';
+import { RouterModule, Routes, CanActivateChild, Router, UrlTree } from '@angular/router';
 import { Login } from './components/login/login';
 import { AdminRoom } from './components/admin/adminRoom/adminRoom';
 import { AdminRoomType } from './components/admin/adminRoomType/adminRoomType';
@@ -7,7 +7,6 @@ import { AdminWorker } from './components/admin/adminWorker/adminWorker';
 import { StaffBooking } from './components/staff/staffBooking/staffBooking';
 import { StaffCheckInOut } from './components/staff/staffCheckInOut/staffCheckInOut';
 import { StaffCleaning } from './components/staff/staffCleaning/staffCleaning';
-import { Booking } from './components/booking/booking'
 import { StaffRoomstatus } from './components/staff/staffRoomstatus/staffRoomstatus';
 import { StaffNav } from './components/staff/staffNav/staffNav';
 import { LoginService } from './services/loginService';
