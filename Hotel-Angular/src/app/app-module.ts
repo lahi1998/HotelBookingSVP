@@ -19,7 +19,6 @@ import { Booking } from './components/booking/booking';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { StaffRoomstatus } from './components/staff/staffRoomstatus/staffRoomstatus';
-import { MatDialogActions, MatDialogContent } from "@angular/material/dialog";
 
 @NgModule({
   declarations: [
@@ -46,8 +45,6 @@ import { MatDialogActions, MatDialogContent } from "@angular/material/dialog";
     MatPaginator,
     MatPaginatorModule,
     ReactiveFormsModule,
-    MatDialogActions,
-    MatDialogContent
 ],
   providers: [
     provideBrowserGlobalErrorListeners(),
