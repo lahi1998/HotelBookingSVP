@@ -22,7 +22,7 @@
                 <!-- type Column -->
                 <ng-container matColumnDef="cleaningDate">
                     <th mat-header-cell *matHeaderCellDef> Rengørings dato </th>
-                    <td mat-cell *matCellDef="let cleaningSchedule"> {{cleaningSchedule.cleaningDate}} </td>
+                    <td mat-cell *matCellDef="let cleaningSchedule"> {{cleaningSchedule.cleaningDate | date:'dd.MM.yyyy'}} </td>
                 </ng-container>
 
                 <!-- Actions Column -->
