@@ -13,6 +13,12 @@ export class AdminNav {
     private router: Router,
   ) { }
 
+  menuOpen = false;
+
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
+  }
+
   logout(): void {
     const storedKey = sessionStorage.getItem('authKey');
     if (storedKey) {

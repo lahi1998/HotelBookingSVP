@@ -7,6 +7,7 @@ import { CreateStaffRequest } from '../interfaces/createStaffRequest';
 import { CreateRoomRequest } from '../interfaces/createRoomRequest';
 import { CreateRoomTypeRequest } from '../interfaces/createRoomTypeRequest';
 import { roomTypeDto } from '../interfaces/roomTypeDto';
+import { UpdateStaffRequest } from '../interfaces/updateStaffRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -87,7 +88,6 @@ export class AdminService {
       'Content-Type': 'application/json'
     });
 
-    // Send a POST request to the API for room creation
     return this.httpClient.post<CreateRoomTypeRequest>(`${this.url4}`, newRoomType, { headers })
   }
 
@@ -130,7 +130,6 @@ export class AdminService {
       'Content-Type': 'application/json'
     });
 
-    // Send a POST request to the API for room creation
     return this.httpClient.post<CreateStaffRequest>(`${this.url3}`, newWorker, { headers })
   }
 
@@ -161,5 +160,15 @@ export class AdminService {
     return this.httpClient.delete<any>(`${this.url3}/${id}`, { headers });
   }
 
+  putWorker(editWorker: UpdateStaffRequest): Observable<UpdateStaffRequest> {
+
+    const token = this.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+    return this.httpClient.put<UpdateStaffRequest>(`${this.url3}`, editWorker, { headers })
+  }
 
 }

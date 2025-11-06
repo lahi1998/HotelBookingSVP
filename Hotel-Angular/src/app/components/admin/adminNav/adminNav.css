@@ -5,16 +5,37 @@
   background-color: #3D7DAA;
   padding: 10px;
   position: relative;
+  min-height: 5vh;
 }
 
+/* Menu icon hidden by default */
+.menu-icon {
+  display: none;
+  font-size: 30px;
+  color: white;
+  cursor: pointer;
+  position: absolute;
+  left: 10px;
+}
+
+/* Wrapper for nav buttons + logout */
+.nav-buttons-wrapper {
+  display: flex;
+  justify-content: center; /* centers main buttons */
+  align-items: center;
+  flex: 1;
+  position: relative;
+}
+
+/* Main nav buttons centered */
 .nav-buttons {
   display: flex;
   justify-content: center;
-  flex: 1;
+  gap: 10px;
 }
 
+/* Buttons styling */
 button {
-  margin: 10px;
   padding: 10px 20px;
   background-color: #4EA9E9;
   border: none;
@@ -30,17 +51,50 @@ button:hover {
   background-color: #2e8cd6;
 }
 
+/* Logout button far right */
 .logout-btn {
-  margin-left: auto;
-  margin-right: 20px;
+  position: absolute;
+  right: 20px;
 }
 
-
-
-/* Responsive */
+/* Responsive: below 480px, show burger menu */
 @media screen and (max-width: 480px) {
-    button {
-        font-size: 16px;
-        padding: 8px 16px;
-    }
+  .menu-icon {
+    display: block;
+  }
+
+  .nav-buttons-wrapper {
+    flex-direction: column;
+    align-items: center
+  }
+
+  .nav-buttons {
+    display: none;
+    flex-direction: column;
+    width: 40%;
+    text-align: center;
+    background-color: #3D7DAA;
+    position: absolute;
+    top: 50px;
+    left: 22%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    padding: 10px;
+    border-radius: 15px;
+  }
+
+  .nav-buttons.show {
+    display: flex;
+  }
+
+  button {
+    font-size: 14px;       
+    padding: 6px 12px;     
+    margin: 4px 0;         
+  }
+
+  .logout-btn {
+    position: static;
+    margin: 4px 0;
+  }
 }
