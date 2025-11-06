@@ -8,6 +8,7 @@ import { Observer } from 'rxjs';
 import { AdminService } from '../../../services/adminService';
 import { Router } from '@angular/router';
 import { CreateRoomRequest } from '../../../interfaces/createRoomRequest';
+import { roomTypeDto } from '../../../interfaces/roomTypeDto';
 
 @Component({
   selector: 'app-adminRoom',
@@ -22,6 +23,7 @@ export class AdminRoom implements AfterViewInit {
   dataSource = new MatTableDataSource<roomDto>(this.DATA);
   roomForm!: FormGroup;
   roomEditForm!: FormGroup;
+  roomTypes: roomTypeDto[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -32,9 +34,10 @@ export class AdminRoom implements AfterViewInit {
     this.roomForm = this.fb.group({
       number: ['', Validators.required],
       floor: ['', Validators.required],
-      roomType: ['', Validators.required],
-      bedamount: ['', Validators.required],
+      roomTypeName: ['', Validators.required],
+      bedAmount: ['', Validators.required],
     });
+
     this.roomEditForm = this.fb.group({
       id: [''],
       number: ['', Validators.required],
@@ -44,6 +47,7 @@ export class AdminRoom implements AfterViewInit {
     });
 
     this.getRooms();
+    this.getRoomTypes();
   }
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -58,13 +62,13 @@ export class AdminRoom implements AfterViewInit {
   }
 
   onSubmit(): void {
+    debugger;
     if (this.roomForm.valid) {
       const newRoom: CreateRoomRequest = {
-        roomType: this.roomForm.value.roomTypeName,
-        lastCleaned: new Date(),
+        roomTypeName: this.roomForm.value.roomTypeName,
         number: this.roomForm.value.number,
         floor: this.roomForm.value.floor,
-        bedAmount: this.roomForm.value.bedamount,
+        bedAmount: this.roomForm.value.bedAmount,
       };
 
 
@@ -78,7 +82,7 @@ export class AdminRoom implements AfterViewInit {
           alert('Kunne ikke oprette værelse');
         },
         complete: () => {
-          // optional cleanup or navigation
+          
         },
       };
 
@@ -103,6 +107,26 @@ export class AdminRoom implements AfterViewInit {
     };
 
     this.adminService.getRooms().subscribe(observer);
+  }
+
+  getRoomTypes(){
+    const observer: Observer<roomTypeDto[]> = {
+      next: (roomTypes) => {
+        this.roomTypes = roomTypes
+        console.log('Roomtypes fetched successfully', roomTypes);
+        debugger;
+        this.roomForm.patchValue({roomTypeName: roomTypes[0].name})
+      },
+      error: (err) => {
+        console.error('Roomtypes fetch failed:', err);
+        alert('Kunne ikke hente værelsestyperne');
+      },
+      complete: () => {
+        // optional cleanup or navigation
+      },
+    };
+
+    this.adminService.getRoomTypes().subscribe(observer);
   }
 
   editRoom() {

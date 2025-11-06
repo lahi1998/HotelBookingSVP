@@ -37,6 +37,7 @@ export class AdminService {
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'
     });
+    debugger;
     // Send a POST request to the API for room creation
     return this.httpClient.post<CreateRoomRequest>(`${this.url}`, newRoom, { headers })
   }
