@@ -6,6 +6,10 @@ p {
     margin-bottom: 0px;
 }
 
+.booking-container {
+        margin-top: 20px;
+    }
+
 label.required::after {
     content: " *";
     color: red;

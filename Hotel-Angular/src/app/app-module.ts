@@ -23,6 +23,7 @@ import { GuestNav } from './components/guest/guest-nav/guest-nav';
 import { Contact } from './components/guest/contact/contact';
 import { Frontpage } from './components/guest/frontpage/frontpage';
 import { CommonModule } from '@angular/common';
+import { GuestBooking } from './components/guest/guest-booking/guest-booking';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { CommonModule } from '@angular/common';
     StaffRoomstatus,
     GuestNav,
     Contact,
-    Frontpage
+    Frontpage,
+    GuestBooking
   ],
   imports: [
     BrowserModule,
