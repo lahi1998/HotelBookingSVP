@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { roomDto } from '../interfaces/roomDto';
@@ -37,6 +37,7 @@ export class AdminService {
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'
     });
+    debugger;
     // Send a POST request to the API for room creation
     return this.httpClient.post<CreateRoomRequest>(`${this.url}`, newRoom, { headers })
   }
@@ -67,6 +68,21 @@ export class AdminService {
     );
   }
 
+  updateRoom(formData: FormData): Observable<roomDto>{
+    const token = this.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+    debugger;
+
+    return this.httpClient.put<roomDto>(this.url, formData, { headers }).pipe(
+      tap((room: roomDto) => {
+        console.log('updated room:', room);
+      })
+    );
+  }
+
   deleteRoom(id: number): Observable<any> {
 
     const token = this.getToken();
@@ -89,6 +105,21 @@ export class AdminService {
 
     // Send a POST request to the API for room creation
     return this.httpClient.post<CreateRoomTypeRequest>(`${this.url4}`, newRoomType, { headers })
+  }
+
+  updateRoomType(formData: FormData): Observable<roomTypeDto>{
+    const token = this.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+    debugger;
+
+    return this.httpClient.put<roomTypeDto>(this.url4, formData, { headers }).pipe(
+      tap((roomType: roomTypeDto) => {
+        console.log('updated roomType:', roomType);
+      })
+    );
   }
 
   getRoomTypes(): Observable<roomTypeDto[]> {

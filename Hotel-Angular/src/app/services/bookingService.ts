@@ -25,22 +25,17 @@ export class BookingService {
     const params = new HttpParams()
       .set('FromDate', startDate)
       .set('ToDate', endDate);
+      debugger;
 
     return this.httpClient.get<any[]>(`${this.baseUrl}/rooms/available`, { params }).pipe(
       //group items by roomtype id
-      map((items: any[]) => this.groupBy(items, 'roomTypeId')),
-      tap((rooms: any[][]) => {
-        console.log('Fetched rooms:', rooms);
-      }));
+      map((items: any[]) => this.groupBy(items, 'roomTypeId')));
   }
 
   getImages() {
     return this.httpClient.get<RoomTypeImageDto[]>(`${this.baseUrl}/roomtypes/images`).pipe(
       //group items by roomtype id
-      map((items: RoomTypeImageDto[]) => this.groupBy(items, 'roomTypeId')),
-      tap((images: RoomTypeImageDto[]) => {
-        console.log('Fetched images:', images);
-      }));
+      map((items: RoomTypeImageDto[]) => this.groupBy(items, 'roomTypeId')));
   }
 
   createBooking(booking: BookingInterface): Observable<BookingInterface> {

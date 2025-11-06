@@ -22,10 +22,13 @@ export class AdminRoomType implements AfterViewInit {
   DATA: roomTypeDto[] = [];
   dataSource = new MatTableDataSource<roomTypeDto>(this.DATA);
   roomTypeForm!: FormGroup;
+  
+  roomTypeEditForm!: FormGroup;
+
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   images: ImageData[] = [];
-    currentImageIndex = 0;
+  currentImageIndex = 0;
 
   constructor(
     private fb: FormBuilder,
@@ -41,6 +44,12 @@ export class AdminRoomType implements AfterViewInit {
       name: [''],
       price: [''],
     });
+
+    this.roomTypeEditForm = this.fb.group({
+      id: [''],
+      name: [''],
+      price: ['']
+    })
 
     this.getRoomtypes()
 
@@ -174,9 +183,9 @@ export class AdminRoomType implements AfterViewInit {
     if (this.images.length === 0) return;
 
     const formData = new FormData();
-debugger;
+    debugger;
     this.images.forEach((image) => {
-      
+
       formData.append('images', image.file);
     });
     formData.append('roomTypeId', roomTypeId);
@@ -197,5 +206,52 @@ debugger;
     this.adminService.uploadRoomImages(formData).subscribe(observer);
   }
 
+  editRoomType(){
+
+    const observer: Observer<roomTypeDto> = {
+      next: (response) => {
+        console.log('RoomType updated');
+        const index = this.dataSource.data.findIndex(r => r.id === response.id);
+        if (index !== -1) this.dataSource.data[index] = response;
+        this.dataSource._updateChangeSubscription(); 
+        
+        alert("Værelsestype opdateret");
+      },
+      error: (err) => {
+        console.error('roomtype update failed:', err);
+        alert('Kunne ikke opdatere værelsestype');
+      },
+      complete: () => {
+        // optional cleanup or navigation
+      },
+    };
+    debugger;
+    this.adminService.updateRoomType(this.roomTypeEditForm.value).subscribe(observer);
+    this.closeEditModal();
+  }
+
+  //Modal visibility functions
+  openEditModal(roomType: any) {
+    debugger;
+    this.roomTypeEditForm.setValue(roomType)
+    this.toggleModal("editModal", true);
+  }
+
+  closeEditModal() {
+    this.toggleModal("editModal", false);
+  }
+
+  toggleModal(id: string, show: boolean) {
+    document.getElementById(id)?.classList.toggle('hidden', !show);
+  }
+
+  //Closes the modal if the user presses outside the modal
+  onBackdropClick(event: MouseEvent) {
+    const clickedElement = event.target as HTMLElement;
+
+    if (clickedElement.classList.contains('modal')) {
+      this.closeEditModal();
+    }
+  }
 }
 

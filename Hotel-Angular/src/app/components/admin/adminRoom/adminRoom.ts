@@ -8,6 +8,7 @@ import { Observer } from 'rxjs';
 import { AdminService } from '../../../services/adminService';
 import { Router } from '@angular/router';
 import { CreateRoomRequest } from '../../../interfaces/createRoomRequest';
+import { roomTypeDto } from '../../../interfaces/roomTypeDto';
 
 @Component({
   selector: 'app-adminRoom',
@@ -21,6 +22,8 @@ export class AdminRoom implements AfterViewInit {
   DATA: roomDto[] = [];
   dataSource = new MatTableDataSource<roomDto>(this.DATA);
   roomForm!: FormGroup;
+  roomEditForm!: FormGroup;
+  roomTypes: roomTypeDto[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -31,11 +34,20 @@ export class AdminRoom implements AfterViewInit {
     this.roomForm = this.fb.group({
       number: ['', Validators.required],
       floor: ['', Validators.required],
-      roomType: ['', Validators.required],
-      bedamount: ['', Validators.required],
+      roomTypeName: ['', Validators.required],
+      bedAmount: ['', Validators.required],
+    });
+
+    this.roomEditForm = this.fb.group({
+      id: [''],
+      number: ['', Validators.required],
+      floor: ['', Validators.required],
+      roomTypeName: ['', Validators.required],
+      bedAmount: ['', Validators.required]
     });
 
     this.getRooms();
+    this.getRoomTypes();
   }
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -43,20 +55,20 @@ export class AdminRoom implements AfterViewInit {
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
-  
+
   /* search filter */
   searchFilter() {
     this.dataSource.filter = this.filterValue.trim().toLowerCase();
   }
 
   onSubmit(): void {
+    debugger;
     if (this.roomForm.valid) {
       const newRoom: CreateRoomRequest = {
-        roomType: this.roomForm.value.roomTypeName,
-        lastCleaned: new Date(),
+        roomTypeName: this.roomForm.value.roomTypeName,
         number: this.roomForm.value.number,
         floor: this.roomForm.value.floor,
-        bedAmount: this.roomForm.value.bedamount,
+        bedAmount: this.roomForm.value.bedAmount,
       };
 
 
@@ -70,7 +82,7 @@ export class AdminRoom implements AfterViewInit {
           alert('Kunne ikke oprette værelse');
         },
         complete: () => {
-          // optional cleanup or navigation
+          
         },
       };
 
@@ -97,6 +109,52 @@ export class AdminRoom implements AfterViewInit {
     this.adminService.getRooms().subscribe(observer);
   }
 
+  getRoomTypes(){
+    const observer: Observer<roomTypeDto[]> = {
+      next: (roomTypes) => {
+        this.roomTypes = roomTypes
+        console.log('Roomtypes fetched successfully', roomTypes);
+        debugger;
+        this.roomForm.patchValue({roomTypeName: roomTypes[0].name})
+      },
+      error: (err) => {
+        console.error('Roomtypes fetch failed:', err);
+        alert('Kunne ikke hente værelsestyperne');
+      },
+      complete: () => {
+        // optional cleanup or navigation
+      },
+    };
+
+    this.adminService.getRoomTypes().subscribe(observer);
+  }
+
+  editRoom() {
+
+    const observer: Observer<roomDto> = {
+      next: (response) => {
+        console.log('Room updated');
+        const index = this.dataSource.data.findIndex(r => r.id === response.id);
+        if (index !== -1) {
+          this.dataSource.data[index] = response;
+          this.dataSource._updateChangeSubscription();
+        }
+
+        alert("Værelse opdateret");
+      },
+      error: (err) => {
+        console.error('room update failed:', err);
+        alert('Kunne ikke opdatere værelse');
+      },
+      complete: () => {
+        // optional cleanup or navigation
+      },
+    };
+    debugger;
+    this.adminService.updateRoom(this.roomEditForm.value).subscribe(observer);
+    this.closeEditModal();
+  }
+
   DeleteRow(id: number) {
 
     const observer: Observer<any> = {
@@ -117,4 +175,27 @@ export class AdminRoom implements AfterViewInit {
     this.adminService.deleteRoom(id).subscribe(observer);
   }
 
+  //Modal visibility functions
+  openEditModal(room: any) {
+    debugger;
+    this.roomEditForm.setValue({id: room.id, number: room.number, floor: room.floor, roomTypeName: room.roomTypeName, bedAmount: room.bedAmount})
+    this.toggleModal("editModal", true);
+  }
+
+  closeEditModal() {
+    this.toggleModal("editModal", false);
+  }
+
+  toggleModal(id: string, show: boolean) {
+    document.getElementById(id)?.classList.toggle('hidden', !show);
+  }
+
+  //Closes the modal if the user presses outside the modal
+  onBackdropClick(event: MouseEvent) {
+    const clickedElement = event.target as HTMLElement;
+
+    if (clickedElement.classList.contains('modal')) {
+      this.closeEditModal();
+    }
+  }
 }

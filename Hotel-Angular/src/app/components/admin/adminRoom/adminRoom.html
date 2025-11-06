@@ -36,7 +36,7 @@
                 <ng-container matColumnDef="buttons">
                     <th style="border-right: none;" mat-header-cell *matHeaderCellDef></th>
                     <td style="border-right: none;" mat-cell *matCellDef="let room">
-                        <button class="edit">Rediger</button>
+                        <button class="edit" (click)="openEditModal(room)">Rediger</button>
                         <button class="delete" (click)="DeleteRow(room.id)">Slet</button>
                     </td>
                 </ng-container>
@@ -52,7 +52,7 @@
 
 
     <div class="create-container">
-        <div [formGroup]="roomForm" (ngSubmit)="onSubmit()" class="Create-room-inputs" style="flex:1;">
+        <form [formGroup]="roomForm" (ngSubmit)="onSubmit()" class="Create-room-inputs" style="flex:1;">
             <label>Nummer</label>
             <div class="form-group">
                 <input type="number" formControlName="number" placeholder="Indtast nummer" autocomplete="off" />
@@ -69,24 +69,54 @@
                     Etage er påkrævet
                 </div>
             </div>
-            <label>Værelses type #ikke færdig skal laves om til drop down</label>
+            <label>Værelses type</label>
             <div class="form-group">
-                <input type="text" formControlName="number" placeholder="Indtast Nummer" autocomplete="off" />
+                <select id="status" formControlName="roomTypeName">
+                    <option *ngFor="let roomType of roomTypes" [value]="roomType.name">{{ roomType.name }}</option>
+                </select>
                 <div class="error"
-                    *ngIf="roomForm.get('number')?.invalid && (roomForm.get('number')?.touched || roomForm.get('number')?.dirty)">
+                    *ngIf="roomForm.get('roomTypeName')?.invalid && (roomForm.get('roomTypeName')?.touched || roomForm.get('roomTypeName')?.dirty)">
                     Værelses type er påkrævet
                 </div>
             </div>
             <label>Antal senge</label>
             <div class="form-group">
-                <input type="text" formControlName="number" placeholder="Indtast Nummer" autocomplete="off" />
+                <input type="number" formControlName="bedAmount" placeholder="Indtast Nummer" autocomplete="off" />
                 <div class="error"
-                    *ngIf="roomForm.get('number')?.invalid && (roomForm.get('number')?.touched || roomForm.get('number')?.dirty)">
+                    *ngIf="roomForm.get('bedAmount')?.invalid && (roomForm.get('bedAmount')?.touched || roomForm.get('bedAmount')?.dirty)">
                     Antal senge er påkrævet
                 </div>
             </div>
 
-            <button class="create" type="button">Opret</button>
-        </div>
+            <button class="create" type="submit">Opret</button>
+        </form>
+    </div>
+</div>
+
+<div id="editModal" class="modal hidden" (click)="onBackdropClick($event)">
+    <div class="modal-content">
+        <h3>Rediger værelsestype</h3>
+        <form [formGroup]="roomEditForm" (ngSubmit)="editRoom()" id="editForm">
+            <label>Nummer</label>
+            <div class="form-group">
+                <input type="text" formControlName="number" />
+            </div>
+            <label>Etage</label>
+            <div class="form-group">
+                <input type="text" formControlName="floor" />
+            </div>
+            <label>Værelsestype</label>
+            <div class="form-group">
+                <select id="status" formControlName="roomTypeName">
+                    <option *ngFor="let roomType of roomTypes" [value]="roomType.name">{{ roomType.name }}</option>
+                </select>
+            </div>
+            <label>Antal senge</label>
+            <div class="form-group">
+                <input type="text" formControlName="bedAmount" />
+            </div>
+            <button type="submit">Save</button>
+            <button type="button" (click)="closeEditModal()">Cancel</button>
+        </form>
     </div>
 </div>
