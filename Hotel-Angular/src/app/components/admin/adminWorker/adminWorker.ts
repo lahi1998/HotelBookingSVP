@@ -15,14 +15,15 @@ import { UpdateStaffRequest } from '../../../interfaces/updateStaffRequest';
   styleUrl: './adminWorker.css',
 })
 export class AdminWorker implements AfterViewInit {
-  roles: string[] = ['Admin','Receptionist', 'Cleaning'];
+  roles: string[] = ['Admin', 'Receptionist', 'Cleaning'];
   displayedColumns: string[] = ['role', 'username', 'fullname', 'buttons'];
   filterValue: string = '';
   DATA: staffDto[] = [];
   dataSource = new MatTableDataSource<staffDto>(this.DATA);
   newWorkerForm!: FormGroup;
   editWorkerForm!: FormGroup;
-  editopen = false;
+  editopen: boolean = false;
+  noEdit: boolean = false;
   editId: number = 0;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -44,11 +45,11 @@ export class AdminWorker implements AfterViewInit {
     );
 
     this.editWorkerForm = this.fb.group({
-      role: ['', Validators.required],
-      userName: ['', Validators.required],
+      role: [{ value: '', disabled: this.noEdit }, Validators.required,],
+      userName: [{ value: '', disabled: this.noEdit }, Validators.required],
       password: [''],
       passwordConfirm: [''],
-      fullName: ['', Validators.required],
+      fullName: [{ value: '', disabled: this.noEdit }, Validators.required],
     },
       { validators: this.passwordsMatchValidator }
     );
@@ -151,20 +152,20 @@ export class AdminWorker implements AfterViewInit {
     if (this.editWorkerForm.valid) {
       const editWorker: UpdateStaffRequest = {
         id: this.editId,
-        role: this.editWorkerForm.value.role,
-        userName: this.editWorkerForm.value.userName,
+        role: this.editWorkerForm.getRawValue().role,
+        userName: this.editWorkerForm.getRawValue().userName,
         password: this.editWorkerForm.value.password,
-        fullName: this.editWorkerForm.value.fullName,
+        fullName: this.editWorkerForm.getRawValue().fullName,
       };
 
       const observer: Observer<any> = {
         next: (response) => {
-          console.log('Create successful.', response);
+          //console.log('Create successful.', response);
           this.getWorkers();
         },
         error: (error) => {
           console.error('Create error.', error);
-          alert('Create error!');
+          alert('Redigereing fejlede!');
         },
         complete: () => {
           // optional cleanup or navigation
@@ -176,10 +177,13 @@ export class AdminWorker implements AfterViewInit {
   }
 
 
-  openEdit(id: number) {
+  openEdit(id: number, userName: string) {
     /* Assuming you have a flag to toggle the edit form visibility */
     this.editopen = true;
     this.editId = id;
+    if (userName === "admin") {
+      this.noEdit = true
+    }
 
     /* Find the worker with the matching id from the current DATA array */
     const workerEdit = this.DATA.find(w => w.id === id);
@@ -200,10 +204,20 @@ export class AdminWorker implements AfterViewInit {
       passwordConfirm: ''
     });
 
-    /* Set edit */
+          /* Disable ui input if noEdit is true */
+      if (this.noEdit) {
+        this.editWorkerForm.get('role')?.disable();
+        this.editWorkerForm.get('userName')?.disable();
+        this.editWorkerForm.get('fullName')?.disable();
+      } else {
+        this.editWorkerForm.get('role')?.enable();
+        this.editWorkerForm.get('userName')?.enable();
+        this.editWorkerForm.get('fullName')?.enable();
+      }
+
   }
 
-  closeEdit(){
+  closeEdit() {
     this.editopen = false;
     this.editId = 0;
   }
