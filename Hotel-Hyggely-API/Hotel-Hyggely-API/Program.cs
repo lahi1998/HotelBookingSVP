@@ -34,7 +34,10 @@ builder.Services.AddScoped<RoomTypeService>();
 builder.Services.AddScoped<IRoomRepo, RoomRepo>();
 builder.Services.AddScoped<RoomService>();
 builder.Services.AddAutoMapper(cf => { }, typeof(BookingProfile).Assembly);
-
+builder.Services.AddScoped<IStaffRepo, StaffRepo>();
+builder.Services.AddScoped<StaffService>();
+builder.Services.AddScoped<IRoomTypeImageRepo, RoomTypeImageRepo>();
+builder.Services.AddScoped<RoomTypeImageService>();
 builder.Services.AddCors(options =>
 {
 	options.AddPolicy(name: "allowall",

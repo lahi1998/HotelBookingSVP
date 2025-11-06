@@ -10,7 +10,7 @@ namespace Application.Dtos.Booking
         public int CustomerId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public CheckInStatus CheckInStatus { get; set; }
+        public required string CheckInStatus { get; set; }
         public decimal TotalPrice { get; set; }
         public int PersonCount { get; set; }
         public string? Comment { get; set; }

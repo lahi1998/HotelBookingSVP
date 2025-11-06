@@ -158,16 +158,21 @@ namespace Infrastructure.Migrations
                     b.ToTable("Rooms");
                 });
 
-            modelBuilder.Entity("Domain.Entities.RoomStatus", b =>
+            modelBuilder.Entity("Domain.Entities.RoomMaintenance", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("ID"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
 
                     b.Property<int>("RoomId")
                         .HasColumnType("int");
@@ -175,16 +180,11 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
-
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.HasIndex("RoomId");
 
-                    b.ToTable("RoomStatuses");
+                    b.ToTable("RoomMaintenances");
                 });
 
             modelBuilder.Entity("Domain.Entities.RoomType", b =>
@@ -206,6 +206,37 @@ namespace Infrastructure.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("RoomTypes");
+                });
+
+            modelBuilder.Entity("Domain.Entities.RoomTypeImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("FileType")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("RoomTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UploadedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoomTypeId");
+
+                    b.ToTable("RoomTypeImages");
                 });
 
             modelBuilder.Entity("Domain.Entities.Staff", b =>
@@ -287,15 +318,26 @@ namespace Infrastructure.Migrations
                     b.Navigation("RoomType");
                 });
 
-            modelBuilder.Entity("Domain.Entities.RoomStatus", b =>
+            modelBuilder.Entity("Domain.Entities.RoomMaintenance", b =>
                 {
                     b.HasOne("Domain.Entities.Room", "Room")
-                        .WithMany("RoomStatuses")
+                        .WithMany("MaintenancePeriods")
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Room");
+                });
+
+            modelBuilder.Entity("Domain.Entities.RoomTypeImage", b =>
+                {
+                    b.HasOne("Domain.Entities.RoomType", "RoomType")
+                        .WithMany("RoomTypeImages")
+                        .HasForeignKey("RoomTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("RoomType");
                 });
 
             modelBuilder.Entity("Domain.Entities.Customer", b =>
@@ -307,11 +349,13 @@ namespace Infrastructure.Migrations
                 {
                     b.Navigation("CleaningSchedules");
 
-                    b.Navigation("RoomStatuses");
+                    b.Navigation("MaintenancePeriods");
                 });
 
             modelBuilder.Entity("Domain.Entities.RoomType", b =>
                 {
+                    b.Navigation("RoomTypeImages");
+
                     b.Navigation("Rooms");
                 });
 #pragma warning restore 612, 618

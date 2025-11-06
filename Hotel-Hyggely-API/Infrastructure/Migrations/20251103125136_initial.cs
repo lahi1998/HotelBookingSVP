@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -21,11 +21,11 @@ namespace Infrastructure.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    FullName = table.Column<string>(type: "longtext", nullable: false)
+                    FullName = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Email = table.Column<string>(type: "longtext", nullable: false)
+                    Email = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    PhoneNumber = table.Column<string>(type: "longtext", nullable: false)
+                    PhoneNumber = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -40,7 +40,7 @@ namespace Infrastructure.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: false)
+                    Name = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Price = table.Column<decimal>(type: "decimal(65,30)", nullable: false)
                 },
@@ -57,11 +57,11 @@ namespace Infrastructure.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Role = table.Column<int>(type: "int", nullable: false),
-                    UserName = table.Column<string>(type: "longtext", nullable: false)
+                    UserName = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Password = table.Column<string>(type: "longtext", nullable: false)
+                    Password = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    FullName = table.Column<string>(type: "longtext", nullable: false)
+                    FullName = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -79,10 +79,11 @@ namespace Infrastructure.Migrations
                     CustomerId = table.Column<int>(type: "int", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    CheckInStatus = table.Column<int>(type: "int", nullable: false),
+                    CheckInStatus = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     TotalPrice = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
                     PersonCount = table.Column<int>(type: "int", nullable: false),
-                    Comment = table.Column<string>(type: "longtext", nullable: true)
+                    Comment = table.Column<string>(type: "varchar(1000)", maxLength: 1000, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -104,7 +105,6 @@ namespace Infrastructure.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     RoomTypeId = table.Column<int>(type: "int", nullable: false),
-                    LastCleanedById = table.Column<int>(type: "int", nullable: false),
                     LastCleanedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     Number = table.Column<int>(type: "int", nullable: false),
                     Floor = table.Column<int>(type: "int", nullable: false),
@@ -117,12 +117,6 @@ namespace Infrastructure.Migrations
                         name: "FK_Rooms_RoomTypes_RoomTypeId",
                         column: x => x.RoomTypeId,
                         principalTable: "RoomTypes",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Rooms_Staff_LastCleanedById",
-                        column: x => x.LastCleanedById,
-                        principalTable: "Staff",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -160,6 +154,7 @@ namespace Infrastructure.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     RoomId = table.Column<int>(type: "int", nullable: false),
+                    CleaningDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     Cleaned = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
                 constraints: table =>
@@ -181,7 +176,8 @@ namespace Infrastructure.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     RoomId = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     StartDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
@@ -213,11 +209,6 @@ namespace Infrastructure.Migrations
                 column: "RoomId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Rooms_LastCleanedById",
-                table: "Rooms",
-                column: "LastCleanedById");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Rooms_RoomTypeId",
                 table: "Rooms",
                 column: "RoomTypeId");
@@ -241,6 +232,9 @@ namespace Infrastructure.Migrations
                 name: "RoomStatuses");
 
             migrationBuilder.DropTable(
+                name: "Staff");
+
+            migrationBuilder.DropTable(
                 name: "Bookings");
 
             migrationBuilder.DropTable(
@@ -251,9 +245,6 @@ namespace Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "RoomTypes");
-
-            migrationBuilder.DropTable(
-                name: "Staff");
         }
     }
 }

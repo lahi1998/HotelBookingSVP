@@ -19,6 +19,9 @@ import { Booking } from './components/booking/booking';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { StaffRoomstatus } from './components/staff/staffRoomstatus/staffRoomstatus';
+import { GuestNav } from './components/guest/guest-nav/guest-nav';
+import { Contact } from './components/guest/contact/contact';
+import { Frontpage } from './components/guest/frontpage/frontpage';
 
 @NgModule({
   declarations: [
@@ -33,7 +36,10 @@ import { StaffRoomstatus } from './components/staff/staffRoomstatus/staffRoomsta
     AdminNav,
     StaffNav,
     Booking,
-    StaffRoomstatus
+    StaffRoomstatus,
+    GuestNav,
+    Contact,
+    Frontpage
   ],
   imports: [
     BrowserModule,

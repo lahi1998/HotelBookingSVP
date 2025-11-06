@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251028152658_AppliedConfs")]
-    partial class AppliedConfs
+    [Migration("20251103125136_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,8 +54,8 @@ namespace Infrastructure.Migrations
                         .HasColumnType("varchar(50)");
 
                     b.Property<string>("Comment")
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("varchar(1000)");
 
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
@@ -145,9 +145,6 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Floor")
                         .HasColumnType("int");
 
-                    b.Property<int>("LastCleanedById")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("LastCleanedDate")
                         .HasColumnType("datetime(6)");
 
@@ -158,8 +155,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("LastCleanedById");
 
                     b.HasIndex("RoomTypeId");
 
@@ -286,19 +281,11 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Room", b =>
                 {
-                    b.HasOne("Domain.Entities.Staff", "LastCleanedBy")
-                        .WithMany("Rooms")
-                        .HasForeignKey("LastCleanedById")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Domain.Entities.RoomType", "RoomType")
                         .WithMany("Rooms")
                         .HasForeignKey("RoomTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("LastCleanedBy");
 
                     b.Navigation("RoomType");
                 });
@@ -327,11 +314,6 @@ namespace Infrastructure.Migrations
                 });
 
             modelBuilder.Entity("Domain.Entities.RoomType", b =>
-                {
-                    b.Navigation("Rooms");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Staff", b =>
                 {
                     b.Navigation("Rooms");
                 });

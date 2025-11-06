@@ -14,7 +14,7 @@ import { roomTypeDto } from '../interfaces/roomTypeDto';
 export class AdminService {
   /* Api endpoints */
   url: string = "https://hotel-hyggely.dk/api/rooms";
-  url2: string = "https://hotel-hyggely.dk/api/roomImages";
+  url2: string = "https://hotel-hyggely.dk/api/roomTypes/images";
   url3: string = "https://hotel-hyggely.dk/api/staff";
   url4: string = "https://hotel-hyggely.dk/api/roomtypes";
   url5: string = "https://hotel-hyggely.dk/api/roomstatuses";
@@ -45,8 +45,7 @@ export class AdminService {
 
     const token = this.getToken();
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      'Authorization': `Bearer ${token}`
     });
 
     // Send a POST request to the API for image upload
@@ -56,9 +55,12 @@ export class AdminService {
   getRooms(): Observable<roomDto[]> {
 
     const token = this.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
 
-
-    return this.httpClient.get<roomDto[]>(this.url).pipe(
+    return this.httpClient.get<roomDto[]>(this.url, {headers}).pipe(
       tap((rooms: roomDto[]) => {
         console.log('Fetched rooms:', rooms);
       })
