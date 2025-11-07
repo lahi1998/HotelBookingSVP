@@ -22,7 +22,7 @@ export class AdminRoomType implements AfterViewInit {
   DATA: roomTypeDto[] = [];
   dataSource = new MatTableDataSource<roomTypeDto>(this.DATA);
   roomTypeForm!: FormGroup;
-  
+  fetchFailed: boolean = false
   roomTypeEditForm!: FormGroup;
 
 
@@ -70,12 +70,12 @@ export class AdminRoomType implements AfterViewInit {
 
       const observer: Observer<any> = {
         next: (response) => {
-          console.log('Create successful.', response);
+          //console.log('Create successful.', response);
           alert('Værelsestype oprettet');
           this.uploadRoomImages(response.id);
         },
         error: (error) => {
-          console.error('Create error.', error);
+          //console.error('Create error.', error);
           alert('Kunne ikke oprettet værelsestype');
         },
         complete: () => {
@@ -92,11 +92,11 @@ export class AdminRoomType implements AfterViewInit {
       next: (roomType) => {
         this.DATA = Array.isArray(roomType) ? roomType : [];
         this.dataSource.data = this.DATA;
-        console.log('Room types fetched successfully', roomType);
+        //console.log('Room types fetched successfully', roomType);
       },
       error: (err) => {
-        console.error('Room types fetch failed:', err);
-        alert('Kunne ikke hente værelsestyper');
+        //console.error('Room types fetch failed:', err);
+        this.fetchFailed = true;
       },
       complete: () => {
         // optional cleanup or navigation
@@ -110,12 +110,12 @@ export class AdminRoomType implements AfterViewInit {
 
     const observer: Observer<any> = {
       next: (response) => {
-        console.log('Delete successful.', response);
+        //console.log('Delete successful.', response);
         alert('Værelsestype slettet');
         this.getRoomtypes();
       },
       error: (error) => {
-        console.error('Delete error.', error);
+        //console.error('Delete error.', error);
         alert('Kunne ikke slette værelsestype');
       },
       complete: () => {
@@ -192,10 +192,10 @@ export class AdminRoomType implements AfterViewInit {
 
     const observer: Observer<any> = {
       next: () => {
-        console.log('Images uploaded successfully');
+        //console.log('Images uploaded successfully');
       },
       error: (err) => {
-        console.error('Image upload failed:', err);
+        //console.error('Image upload failed:', err);
         alert('Kunne ikke uploade billeder');
       },
       complete: () => {
@@ -210,7 +210,7 @@ export class AdminRoomType implements AfterViewInit {
 
     const observer: Observer<roomTypeDto> = {
       next: (response) => {
-        console.log('RoomType updated');
+        //console.log('RoomType updated');
         const index = this.dataSource.data.findIndex(r => r.id === response.id);
         if (index !== -1) this.dataSource.data[index] = response;
         this.dataSource._updateChangeSubscription(); 
@@ -218,7 +218,7 @@ export class AdminRoomType implements AfterViewInit {
         alert("Værelsestype opdateret");
       },
       error: (err) => {
-        console.error('roomtype update failed:', err);
+        //console.error('roomtype update failed:', err);
         alert('Kunne ikke opdatere værelsestype');
       },
       complete: () => {

@@ -62,7 +62,7 @@
                 <tr mat-header-row *matHeaderRowDef="displayedColumnsList"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumnsList;"></tr>
             </table>
-
+            <p *ngIf="fetchFailed1" class="fetch-error">Hentning fejlede</p>
             <mat-paginator #paginatorList [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
         </div>
     </div>
@@ -157,7 +157,7 @@
             </div>
         </form>
 
-        <!-- Table with booke rooms -->
+        <!-- Table with booked rooms -->
         <div class="table-wrapper" style="max-width: 100%;">
             <h2>Booked værelser</h2>
             <div class="table-border">
@@ -205,7 +205,7 @@
                     <tr mat-header-row *matHeaderRowDef="displayedColumnsDetails"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumnsDetails;"></tr>
                 </table>
-
+                <p *ngIf="fetchFailed2" class="fetch-error">Hentning fejlede</p>
                 <mat-paginator #paginatorRooms [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
             </div>
         </div>
@@ -254,6 +254,7 @@
                 <tr mat-header-row *matHeaderRowDef="displayedColumnsAvailable"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumnsAvailable;"></tr>
             </table>
+            <p *ngIf="fetchFailed3" class="fetch-error">Hentning fejlede</p>
             <mat-paginator #paginatorAvailable [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 
         </div>
@@ -300,6 +301,7 @@
                     <tr mat-header-row *matHeaderRowDef="displayedColumnsCleaning"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumnsCleaning;"></tr>
                 </table>
+                <p *ngIf="fetchFailed4" class="fetch-error">Hentning fejlede</p>
                 <mat-paginator #paginatorAvailable [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
             </div>
         </div>

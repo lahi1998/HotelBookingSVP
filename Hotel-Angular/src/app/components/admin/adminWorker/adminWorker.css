@@ -146,6 +146,13 @@ select {
   margin-top: 12px;
 }
 
+.fetch-error {
+  text-align: center;
+  color: #d32f2f; /* Material red tone for errors */
+  font-weight: 500;
+  padding: 20px;
+}
+
 /* Responsive behavior */
 @media screen and (max-width: 900px) {
     .container {

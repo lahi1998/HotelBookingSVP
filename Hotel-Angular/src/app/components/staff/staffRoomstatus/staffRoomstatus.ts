@@ -14,6 +14,7 @@ import { StaffService } from '../../../services/staffService';
 export class StaffRoomstatus {
   displayedColumns: string[] = ['number', 'floor', 'type', 'bedAmount', 'lastCleaned', 'roomStatus'];
   filterValue: string = '';
+  fetchFailed: boolean = false
   DATA: roomDto[] = [];
   dataSource = new MatTableDataSource<roomDto>(this.DATA);
 
@@ -40,8 +41,8 @@ export class StaffRoomstatus {
         this.dataSource.data = this.DATA;
       },
       error: (err) => {
-        console.error('Rooms fetch failed:', err);
-        alert('Rooms fetch failed!');
+        //console.error('Rooms fetch failed:', err);
+        this.fetchFailed = true;
       },
       complete: () => {
         // optional cleanup or navigation

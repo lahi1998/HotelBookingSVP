@@ -96,11 +96,12 @@ select {
     width: 70%;
 }
 
-
-
-
-
-
+.fetch-error {
+  text-align: center;
+  color: #d32f2f; /* Material red tone for errors */
+  font-weight: 500;
+  padding: 20px;
+}
 
 /*Modal*/
 .modal {

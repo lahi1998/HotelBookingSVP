@@ -25,6 +25,7 @@ export class AdminWorker implements AfterViewInit {
   editopen: boolean = false;
   noEdit: boolean = false;
   editId: number = 0;
+  fetchFailed: boolean = false
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -91,12 +92,12 @@ export class AdminWorker implements AfterViewInit {
 
       const observer: Observer<any> = {
         next: (response) => {
-          console.log('Create successful.', response);
+          //console.log('Create successful.', response);
           this.getWorkers();
         },
         error: (error) => {
-          console.error('Create error.', error);
-          alert('Create error!');
+          //console.error('Create error.', error);
+          alert('Opret fejlede!');
         },
         complete: () => {
           // optional cleanup or navigation
@@ -112,11 +113,11 @@ export class AdminWorker implements AfterViewInit {
       next: (worker) => {
         this.DATA = Array.isArray(worker) ? worker : [];
         this.dataSource.data = this.DATA;
-        console.log('Workers fetched successfully', worker);
+        //console.log('Workers fetched successfully', worker);
       },
       error: (err) => {
-        console.error('Workers fetch failed:', err);
-        alert('Workers fetch failed!');
+        //console.error('Workers fetch failed:', err);
+        this.fetchFailed = true;
       },
       complete: () => {
         // optional cleanup or navigation
@@ -130,12 +131,12 @@ export class AdminWorker implements AfterViewInit {
 
     const observer: Observer<any> = {
       next: (response) => {
-        console.log('Delete successful.', response);
+        //console.log('Delete successful.', response);
         this.getWorkers();
       },
       error: (error) => {
-        console.error('Delete error.', error);
-        alert('Delete error!');
+        //console.error('Delete error.', error);
+        alert('Sletning fejlede!');
       },
       complete: () => {
         // optional cleanup or navigation
@@ -164,7 +165,7 @@ export class AdminWorker implements AfterViewInit {
           this.getWorkers();
         },
         error: (error) => {
-          console.error('Create error.', error);
+          //console.error('Create error.', error);
           alert('Redigereing fejlede!');
         },
         complete: () => {
@@ -189,8 +190,8 @@ export class AdminWorker implements AfterViewInit {
     const workerEdit = this.DATA.find(w => w.id === id);
 
     if (!workerEdit) {
-      console.error('Worker not found for edit:', id);
-      alert('Worker not found!');
+      //console.error('Worker not found for edit:', id);
+      alert('Medarbejder ikke fundet!');
       return;
     }
 

@@ -31,6 +31,13 @@ h2 {
     /* prevents horizontal overflow */
 }
 
+.fetch-error {
+  text-align: center;
+  color: #d32f2f; /* Material red tone for errors */
+  font-weight: 500;
+  padding: 20px;
+}
+
 button {
     margin: 10px 5px;
     padding: 5px 10px;
