@@ -61,3 +61,10 @@ td {
     border-right: 1px solid black;
     border-bottom: 1px solid black !important;
 }
+
+.fetch-error {
+  text-align: center;
+  color: #d32f2f; /* Material red tone for errors */
+  font-weight: 500;
+  padding: 20px;
+}

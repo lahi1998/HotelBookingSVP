@@ -14,6 +14,7 @@ import { CleaningScheduleDto } from '../../../interfaces/cleaningScheduleDto';
 export class StaffCleaning {
   displayedColumns: string[] = ['roomNumber', 'roomFloor', 'cleaningDate', 'buttons'];
   filterValue: string = '';
+  fetchFailed: boolean = false
   DATA: CleaningScheduleDto[] = [];
   dataSource = new MatTableDataSource<CleaningScheduleDto>(this.DATA);
 
@@ -52,11 +53,12 @@ export class StaffCleaning {
       next: (cleaningSchedule) => {
         this.DATA = Array.isArray(cleaningSchedule) ? cleaningSchedule : [];
         this.dataSource.data = this.DATA;
-        console.log('Cleaning schedule fetched successfully', cleaningSchedule);
+        //console.log('Cleaning schedule fetched successfully', cleaningSchedule);
       },
       error: (err) => {
-        console.error('Cleaning schedule fetch failed:', err);
-        alert('Cleaning schedule fetch failed!');
+        //console.error('Cleaning schedule fetch failed:', err);
+        //alert('Cleaning schedule fetch failed!');
+        this.fetchFailed = true;
       },
       complete: () => {
         // optional cleanup or navigation
@@ -70,12 +72,12 @@ export class StaffCleaning {
 
     const observer: Observer<any> = {
       next: (response) => {
-        console.log('patch successful.', response);
+        //console.log('patch successful.', response);
         this.getCleaningSchedule();
       },
       error: (error) => {
-        console.error('patch error.', error);
-        alert('patch error!');
+        //console.error('patch error.', error);
+        alert('Updatering fejlede!');
       },
       complete: () => {
         // optional cleanup or navigation

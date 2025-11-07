@@ -24,6 +24,7 @@ export class AdminRoom implements AfterViewInit {
   roomForm!: FormGroup;
   roomEditForm!: FormGroup;
   roomTypes: roomTypeDto[] = [];
+  fetchFailed: boolean = false
 
   constructor(
     private fb: FormBuilder,
@@ -74,11 +75,11 @@ export class AdminRoom implements AfterViewInit {
 
       const observer: Observer<any> = {
         next: (response) => {
-          console.log('Create successful.', response);
+          //console.log('Create successful.', response);
           alert('Værelse oprettet!');
         },
         error: (error) => {
-          console.error('Create error.', error);
+          //console.error('Create error.', error);
           alert('Kunne ikke oprette værelse');
         },
         complete: () => {
@@ -95,11 +96,11 @@ export class AdminRoom implements AfterViewInit {
       next: (rooms) => {
         this.DATA = Array.isArray(rooms) ? rooms : [];
         this.dataSource.data = this.DATA;
-        console.log('Rooms fetched successfully', rooms);
+        //console.log('Rooms fetched successfully', rooms);
       },
       error: (err) => {
-        console.error('Rooms fetch failed:', err);
-        alert('Kunne ikke hente værelserne');
+        //console.error('Rooms fetch failed:', err);
+        this.fetchFailed = true;
       },
       complete: () => {
         // optional cleanup or navigation
@@ -113,12 +114,12 @@ export class AdminRoom implements AfterViewInit {
     const observer: Observer<roomTypeDto[]> = {
       next: (roomTypes) => {
         this.roomTypes = roomTypes
-        console.log('Roomtypes fetched successfully', roomTypes);
+        //console.log('Roomtypes fetched successfully', roomTypes);
         debugger;
         this.roomForm.patchValue({roomTypeName: roomTypes[0].name})
       },
       error: (err) => {
-        console.error('Roomtypes fetch failed:', err);
+        //console.error('Roomtypes fetch failed:', err);
         alert('Kunne ikke hente værelsestyperne');
       },
       complete: () => {
@@ -133,7 +134,7 @@ export class AdminRoom implements AfterViewInit {
 
     const observer: Observer<roomDto> = {
       next: (response) => {
-        console.log('Room updated');
+        //console.log('Room updated');
         const index = this.dataSource.data.findIndex(r => r.id === response.id);
         if (index !== -1) {
           this.dataSource.data[index] = response;
@@ -143,7 +144,7 @@ export class AdminRoom implements AfterViewInit {
         alert("Værelse opdateret");
       },
       error: (err) => {
-        console.error('room update failed:', err);
+        //console.error('room update failed:', err);
         alert('Kunne ikke opdatere værelse');
       },
       complete: () => {
@@ -159,12 +160,12 @@ export class AdminRoom implements AfterViewInit {
 
     const observer: Observer<any> = {
       next: (response) => {
-        console.log('Delete successful.', response);
+        //console.log('Delete successful.', response);
         alert('Værelse slettet');
         this.getRooms();
       },
       error: (error) => {
-        console.error('Delete error.', error);
+        //console.error('Delete error.', error);
         alert('Kunne ikke slette værelset');
       },
       complete: () => {
