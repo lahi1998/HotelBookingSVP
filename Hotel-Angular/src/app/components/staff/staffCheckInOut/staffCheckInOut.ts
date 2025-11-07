@@ -51,6 +51,11 @@ export class StaffCheckInOut {
   today: String = "";
   endDateMin: string = "";
 
+  fetchFailed1: boolean = false
+  fetchFailed2: boolean = false
+  fetchFailed3: boolean = false
+  fetchFailed4: boolean = false
+
   constructor(
     private fb: FormBuilder,
     private staffService: StaffService,
@@ -110,6 +115,7 @@ export class StaffCheckInOut {
       },
       error: (err) => {
         // console.error('booking List Item fetch failed:', err);
+        this.fetchFailed1 = true;
       },
       complete: () => {
         // optional cleanup or navigation
@@ -123,11 +129,12 @@ export class StaffCheckInOut {
 
     const observer: Observer<any> = {
       next: (response) => {
-        console.log('Delete successful.', response);
+        //console.log('Delete successful.', response);
         this.getBookingListItems();
       },
       error: (error) => {
-        console.error('Delete error.', error);
+        //console.error('Delete error.', error);
+        alert("Sletning fejlede!")
       },
       complete: () => {
         // optional cleanup or navigation
@@ -156,13 +163,13 @@ export class StaffCheckInOut {
 
       const observer: Observer<any> = {
         next: (response) => {
-          console.log('update successful.', response);
+          //console.log('update successful.', response);
           this.getBookingListItems();
           this.editopen = false;
         },
         error: (error) => {
-          console.error('Create error.', error);
-          alert('update error!');
+          //console.error('Create error.', error);
+          alert('updatering fejlede!');
         },
         complete: () => {
           // optional cleanup or navigation
@@ -214,10 +221,12 @@ export class StaffCheckInOut {
 
         this.roomIdsArray = this.DATABookingDetailsRoom.map(room => room.id);
 
-        console.log('booking details fetched successfully', bookingDetail);
+        //console.log('booking details fetched successfully', bookingDetail);
       },
       error: (err) => {
-        console.error('booking details fetch failed:', err);
+        //console.error('booking details fetch failed:', err);
+        this.fetchFailed2 = true;
+        alert("Henting fejlede!");
       },
       complete: () => {
         // optional cleanup or navigation
@@ -239,7 +248,7 @@ export class StaffCheckInOut {
     this.dataSourceRooms.data = [...this.DATABookingDetailsRoom];
     this.CalcNewPrice();
 
-    console.log('Room deleted from booking:', id);
+    //console.log('Room deleted from booking:', id);
   }
 
   CheckInOut(id: number) {
@@ -247,11 +256,12 @@ export class StaffCheckInOut {
     console.log("here me lord", id)
     const observer: Observer<any> = {
       next: (response) => {
-        console.log('check successful.', response);
+        //console.log('check successful.', response);
         this.OpenEditRow(id);
       },
       error: (error) => {
-        console.error('check error.', error);
+        //console.error('check error.', error);
+        alert("Kunne ikke opdatere check ind/ud status.")
       },
       complete: () => {
         // optional cleanup or navigation
@@ -286,7 +296,7 @@ export class StaffCheckInOut {
 
     const roomToAdd = this.DATAAvailableRooom.find(room => room.id === newid);
     if (!roomToAdd) {
-      console.error('Room not found in DATAAvailableRooom for ID:', newid);
+      //console.error('Room not found in DATAAvailableRooom for ID:', newid);
       return;
     }
 
@@ -329,8 +339,9 @@ export class StaffCheckInOut {
           resolve();
         },
         error: (error) => {
-          console.error('Room error', error);
-          alert('Available rooms fetch failed');
+          //console.error('Room error', error);
+          //alert('Available rooms fetch failed');
+          this.fetchFailed3 = true;
           reject(error);
         },
         complete: () => {
@@ -363,13 +374,14 @@ export class StaffCheckInOut {
         pricePerDay = foundType.price;
       }
       else {
-        console.log("Could not find price.")
+        //console.log("Could not find price.")
+        alert("Kunne ikke finde pris");
       }
 
       this.totalPrice += pricePerDay * days;
     }
 
-    console.log(`Total price for ${days} days:`, this.totalPrice);
+    //console.log(`Total price for ${days} days:`, this.totalPrice);
   }
 
   /* get room types */
@@ -378,7 +390,8 @@ export class StaffCheckInOut {
       const observer: Observer<roomTypeDto[]> = {
         next: (response) => resolve(response || []),
         error: (err) => {
-          console.error('Failed to fetch room types', err);
+          //console.error('Failed to fetch room types', err);
+          alert("Kunne ikke hente værelses typer");
           reject();
         },
         complete: () => { },
@@ -409,7 +422,8 @@ export class StaffCheckInOut {
           resolve(response);
         },
         error: (err) => {
-          console.error('Failed to fetch cleaning schedule', err);
+          //console.error('Failed to fetch cleaning schedule', err);
+          this.fetchFailed4 = true;
           reject();
         },
         complete: () => {
@@ -426,10 +440,11 @@ export class StaffCheckInOut {
 
     const observer: Observer<any> = {
       next: (response) => {
-        console.log('Delete successful.', response);
+        //console.log('Delete successful.', response);
       },
       error: (error) => {
         console.error('Delete error.', error);
+        alert("Sletning fejlede!");
       },
       complete: () => {
         // optional cleanup or navigation
@@ -457,13 +472,13 @@ export class StaffCheckInOut {
 
       const observer: Observer<any> = {
         next: (response) => {
-          console.log('create successful.', response);
+          //console.log('create successful.', response);
           this.GetCleaningSchedule(bookingid);
 
         },
         error: (error) => {
-          console.error('Create error.', error);
-          alert('create error!');
+          //console.error('Create error.', error);
+          alert('Opretning fejæede!');
         },
         complete: () => {
           // optional cleanup or navigation
