@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Hotel_Hyggely_API.Controllers
 {
+	[Authorize(Roles = "Admin, Receptionist")]
 	[Route("api/[controller]")]
 	[ApiController]
 	public class RoomsController : ControllerBase
@@ -18,7 +19,6 @@ namespace Hotel_Hyggely_API.Controllers
 			this.roomService = roomService;
 		}
 
-		[Authorize]
 		[HttpGet]
 		public async Task<IActionResult> GetAllAsync()
 		{
@@ -27,6 +27,7 @@ namespace Hotel_Hyggely_API.Controllers
 			return Ok(room);
 		}
 
+		[AllowAnonymous]
 		[HttpGet("available")]
 		public async Task<IActionResult> GetAvailableRoomsAsync([FromQuery]DateTime fromDate, DateTime toDate)
 		{
@@ -34,7 +35,7 @@ namespace Hotel_Hyggely_API.Controllers
 
 			return Ok(availableRooms);
 		}
-		[Authorize]
+
 		[HttpGet("availabledetailed")]
 		public async Task<IActionResult> GetAvailableRoomsWithDetailsAsync([FromQuery] DateTime fromDate, DateTime toDate)
 		{
@@ -43,7 +44,6 @@ namespace Hotel_Hyggely_API.Controllers
 			return Ok(availableRooms);
 		}
 
-		[Authorize]
 		[HttpGet("{id}")]
 		public async Task<IActionResult> GetAsync(int id)
 		{
@@ -57,21 +57,16 @@ namespace Hotel_Hyggely_API.Controllers
 			return Ok(room);
 		}
 
-		[Authorize]
+		[Authorize(Roles = "Admin")]
 		[HttpPost]
 		public async Task<IActionResult> PostAsync([FromBody] CreateRoomRequest request)
 		{
-			if (!ModelState.IsValid)
-			{
-				return BadRequest(ModelState);
-			}
-
 			var room = await roomService.CreateAsync(request);
 
 			return CreatedAtAction(nameof(GetAsync), new { id = room.ID }, room);
 		}
 
-		[Authorize]
+		[Authorize(Roles = "Admin")]
 		[HttpPut]
 		public async Task<IActionResult> PutAsync([FromBody] UpdateRoomRequest request)
 		{
@@ -90,7 +85,7 @@ namespace Hotel_Hyggely_API.Controllers
 			return Ok(room);
 		}
 
-		[Authorize]
+		[Authorize(Roles = "Admin")]
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> DeleteAsync(int id)
 		{

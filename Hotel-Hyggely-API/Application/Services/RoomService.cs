@@ -14,11 +14,13 @@ namespace Application.Services
     {
         private readonly IRoomRepo roomRepo;
         private readonly IMapper mapper;
+        private readonly IRoomTypeRepo roomTypeRepo;
 
-        public RoomService(IRoomRepo roomRepo, IMapper mapper)
+        public RoomService(IRoomRepo roomRepo, IMapper mapper, IRoomTypeRepo roomTypeRepo)
         {
             this.roomRepo = roomRepo;
             this.mapper = mapper;
+            this.roomTypeRepo = roomTypeRepo;
         }
 
 		public async Task<IEnumerable<RoomDto>> GetAllAsync()
@@ -53,6 +55,9 @@ namespace Application.Services
 		{
 			var room = mapper.Map<Room>(request);
 
+			var roomType = await roomTypeRepo.GetByNameAsync(request.RoomTypeName);
+			room.RoomTypeId = roomType!.ID;
+
 			var createdRoom = await roomRepo.CreateAsync(room);
 
 			return mapper.Map<RoomDto>(createdRoom);
@@ -68,6 +73,9 @@ namespace Application.Services
 			}
 
 			mapper.Map(request, existingRoom);
+
+			var roomType = await roomTypeRepo.GetByNameAsync(request.RoomTypeName);
+			existingRoom.RoomTypeId = roomType!.ID;
 
 			var updatedRoom = await roomRepo.UpdateAsync(existingRoom);
 

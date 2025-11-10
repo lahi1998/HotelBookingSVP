@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11201.2 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hotel-Hyggely-API", "Hotel-Hyggely-API\Hotel-Hyggely-API.csproj", "{C5DCC8EF-B385-4921-BC0E-3341F21ECE39}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{4AE7EA70-DB40-42D0-AE85-D8DF47D58794}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{51C46849-637D-4E5C-BB09-1621FFB2AD9B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{70500AC0-EB1C-4C57-BACE-689B8F3071AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,8 +35,15 @@ Global
 		{51C46849-637D-4E5C-BB09-1621FFB2AD9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51C46849-637D-4E5C-BB09-1621FFB2AD9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51C46849-637D-4E5C-BB09-1621FFB2AD9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70500AC0-EB1C-4C57-BACE-689B8F3071AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70500AC0-EB1C-4C57-BACE-689B8F3071AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70500AC0-EB1C-4C57-BACE-689B8F3071AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70500AC0-EB1C-4C57-BACE-689B8F3071AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B496A896-D20E-40CC-8273-F352683B7BE9}
 	EndGlobalSection
 EndGlobal

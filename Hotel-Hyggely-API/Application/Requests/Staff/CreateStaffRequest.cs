@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Application.Requests.Staff
 {
@@ -8,7 +9,7 @@ namespace Application.Requests.Staff
         public required string Role { get; set; }
 		[Required]
 		public required string UserName { get; set; }
-		[Required]
+		[Required, MinLength(6, ErrorMessage = "Password should contatin at least 6 characters")]
 		public required string Password { get; set; }
 		[Required]
 		public required string FullName { get; set; }

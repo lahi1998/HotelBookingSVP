@@ -2,8 +2,8 @@
 
 namespace Application.Requests.Room
 {
-    public class UpdateRoomRequest
-    {
+    public class UpdateRoomRequest : IValidatableObject
+	{
         [Required]
         public int Id { get; set; }
 		[Required]
@@ -14,7 +14,27 @@ namespace Application.Requests.Room
 		public int Floor { get; set; }
 		[Required]
 		public int BedAmount { get; set; }
-		[Required]
-		public DateTime LastCleanedDate { get; set; }
-    }
+
+		public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+		{
+			if (Number <= 0)
+			{
+				yield return new ValidationResult(
+					"Room Number cannot be 0 or lower",
+					new[] { nameof(Number) });
+			}
+			if (Number <= 0)
+			{
+				yield return new ValidationResult(
+					"Floor Number cannot be 0 or lower",
+					new[] { nameof(Floor) });
+			}
+			if (Number <= 0)
+			{
+				yield return new ValidationResult(
+					"BedAmount cannot be 0 or lower",
+					new[] { nameof(BedAmount) });
+			}
+		}
+	}
 }

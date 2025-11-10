@@ -38,6 +38,10 @@ builder.Services.AddScoped<IStaffRepo, StaffRepo>();
 builder.Services.AddScoped<StaffService>();
 builder.Services.AddScoped<IRoomTypeImageRepo, RoomTypeImageRepo>();
 builder.Services.AddScoped<RoomTypeImageService>();
+builder.Services.AddScoped<ICleaningScheduleRepo, CleaningScheduleRepo>();
+builder.Services.AddScoped<CleaningScheduleService>();
+builder.Services.AddScoped<IEmailService, SendGridEmailService>();
+
 builder.Services.AddCors(options =>
 {
 	options.AddPolicy(name: "allowall",

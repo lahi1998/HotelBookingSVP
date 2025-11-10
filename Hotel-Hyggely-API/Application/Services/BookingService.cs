@@ -1,5 +1,8 @@
 ﻿using Application.Dtos;
 using Application.Dtos.Booking;
+using Application.Dtos.CleaningSchedule;
+using Application.Exeptions;
+using Application.Interfaces;
 using Application.Interfaces.Repositories;
 using Application.Requests.Booking;
 using AutoMapper;
@@ -11,30 +14,34 @@ namespace Application.Services
 	public class BookingService
 	{
 		private readonly IBookingRepo bookingRepo;
-        private readonly ICustomerRepo customerRepo;
-        private readonly IMapper mapper;
-        private readonly IRoomRepo roomRepo;
+		private readonly ICustomerRepo customerRepo;
+		private readonly IMapper mapper;
+		private readonly IRoomRepo roomRepo;
+		private readonly ICleaningScheduleRepo cleaningScheduleRepo;
+        private readonly IEmailService emailService;
 
-        public BookingService(IBookingRepo bookingRepo, ICustomerRepo customerRepo, IMapper mapper, IRoomRepo roomRepo)
+        public BookingService(IBookingRepo bookingRepo, ICustomerRepo customerRepo, IMapper mapper, IRoomRepo roomRepo, ICleaningScheduleRepo cleaningScheduleRepo, IEmailService emailService)
 		{
 			this.bookingRepo = bookingRepo;
-            this.customerRepo = customerRepo;
-            this.mapper = mapper;
-            this.roomRepo = roomRepo;
+			this.customerRepo = customerRepo;
+			this.mapper = mapper;
+			this.roomRepo = roomRepo;
+			this.cleaningScheduleRepo = cleaningScheduleRepo;
+            this.emailService = emailService;
         }
 
 		public async Task<IEnumerable<BookingListItemDto>> GetAllBookingsAsync()
 		{
 			var bookings = await bookingRepo.GetAllWithCustomerAndRoomsAsync();
 
-            return mapper.Map<IEnumerable<BookingListItemDto>>(bookings);
+			return mapper.Map<IEnumerable<BookingListItemDto>>(bookings);
 		}
 
 		public async Task CheckInAsync(int id)
 		{
 			var booking = await bookingRepo.GetById(id);
 
-			if(booking!.CheckInStatus == CheckInStatus.CheckedIn)
+			if (booking!.CheckInStatus == CheckInStatus.CheckedIn)
 			{
 				return; // Already checked in
 			}
@@ -62,65 +69,103 @@ namespace Application.Services
 		{
 			return await bookingRepo.GetById(id);
 		}
-
+		public async Task<Booking?> GetByIdWithRooms(int id)
+		{
+			return await bookingRepo.GetByIdWithRooms(id);
+		}
 		public async Task<BookingDetailsDto?> GetByIdWithDetailsAsync(int id)
 		{
 			var booking = await bookingRepo.GetByIdWithDetails(id);
 
-            return mapper.Map<BookingDetailsDto>(booking);
-        }
+			return mapper.Map<BookingDetailsDto>(booking);
+		}
 
 		public async Task<BookingDto> CreateBookingAsync(CreateBookingRequest request)
 		{
-            var existingCustomer = await customerRepo.GetByEmailAsync(request.Email);
+			var existingCustomer = await customerRepo.GetByEmailAsync(request.Email);
 
-            var booking = mapper.Map<Booking>(request);
+			var booking = mapper.Map<Booking>(request);
 
-            if (existingCustomer != null)
-            {
-                booking.CustomerId = existingCustomer.ID;
+			if (existingCustomer != null)
+			{
+				booking.CustomerId = existingCustomer.ID;
 				booking.Customer = null;
-            }
-            else
-            {
-                booking.Customer = new Customer
-                {
-                    FullName = request.FullName,
-                    Email = request.Email,
-                    PhoneNumber = request.PhoneNumber
-                };
-            }
+			}
+			else
+			{
+				booking.Customer = new Customer
+				{
+					FullName = request.FullName,
+					Email = request.Email,
+					PhoneNumber = request.PhoneNumber
+				};
+			}
 
-            var rooms = await roomRepo.GetByIdsWithRoomTypeAsync(request.RoomIds);
+			var rooms = await roomRepo.GetByIdsWithRoomTypeAsync(request.RoomIds);
 
-            booking.Rooms = rooms.ToList();
+			booking.Rooms = rooms.ToList();
 			booking.TotalPrice = CalculateTotalPrice(request.StartDate, request.EndDate, booking.Rooms);
 
 			var createdBooking = await bookingRepo.CreateAsync(booking);
 
-            return mapper.Map<BookingDto>(createdBooking);
-        }
+			await emailService.SendEmailAsync(createdBooking);
 
-        public async Task<Booking?> UpdateBookingAsync(UpdateBookingRequest request)
-		{
-			var booking = new Booking
+			// Schedule cleaning for each booked room on the booking end date
+			var cleaningDate = request.EndDate.Date;
+
+			foreach (var room in createdBooking.Rooms)
 			{
-				ID = request.Id,
-				CustomerId = request.CustomerId,
-				StartDate = request.StartDate,
-				EndDate = request.EndDate,
-				CheckInStatus = request.Status,
-				TotalPrice = request.Price,
-				PersonCount = request.PersonCount,
-				Comment = request.Comment
-			};
+				await cleaningScheduleRepo.CreateForRoomAsync(new CleaningSchedule
+				{
+					RoomId = room.ID,
+					CleaningDate = cleaningDate
+				});
+			}
 
-			return await bookingRepo.UpdateAsync(booking);
+			return mapper.Map<BookingDto>(createdBooking);
 		}
 
-		public async Task DeleteBookingAsync(int id)
+		public async Task<BookingDto?> UpdateBookingAsync(UpdateBookingRequest request)
 		{
-			await bookingRepo.DeleteAsync(id);
+			var existingBooking = await bookingRepo.GetByIdWithDetails(request.Id);
+
+			if (existingBooking == null)
+			{
+				return null;
+			}
+
+			mapper.Map(request, existingBooking);
+
+			if (existingBooking.Customer != null)
+			{
+				existingBooking.Customer.FullName = request.FullName;
+				existingBooking.Customer.Email = request.Email;
+				existingBooking.Customer.PhoneNumber = request.PhoneNumber;
+			}
+
+			var rooms = await roomRepo.GetByIdsWithRoomTypeAsync(request.RoomIds);
+			existingBooking.Rooms = rooms.ToList();
+
+			var updatedBooking = await bookingRepo.UpdateAsync(existingBooking);
+
+			return mapper.Map<BookingDto>(updatedBooking);
+		}
+
+		public async Task DeleteBookingAsync(Booking booking)
+		{
+			await bookingRepo.DeleteAsync(booking.ID);
+
+			// Remove schedule cleaning for each booked room
+			foreach (var room in booking.Rooms)
+			{
+				var schedules = room.CleaningSchedules.ToList();
+
+				foreach (var cleaningSchedule in schedules)
+				{
+					await cleaningScheduleRepo.DeleteAsync(cleaningSchedule.ID);
+				}
+			}
+
 		}
 
 		private decimal CalculateTotalPrice(DateTime startDate, DateTime endDate, IEnumerable<Room> rooms)

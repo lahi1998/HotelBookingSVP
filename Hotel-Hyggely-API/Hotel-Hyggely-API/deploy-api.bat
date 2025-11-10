@@ -14,7 +14,7 @@ REM Local project configuration
 SET SCRIPT_DIR=%~dp0
 SET PROJECT_DIR=%SCRIPT_DIR%
 SET PROJECT_FILE=%PROJECT_DIR%Hotel-Hyggely-API.csproj
-SET PUBLISH_DIR=%PROJECT_DIR%\..\..\publish
+SET PUBLISH_DIR=%PROJECT_DIR%\..\..\..\publish
 
 
 echo =====================================
@@ -29,6 +29,10 @@ IF %ERRORLEVEL% NEQ 0 (
     pause
     exit /b 1
 )
+
+REM Step 1.5: Copy appsettings files
+echo 🗂 Copying appsettings files...
+copy "%PROJECT_DIR%\appsettings*.json" "%PUBLISH_DIR%\" /Y
 
 REM Step 2: Copy published files to server
 echo 🚀 Uploading published files to %SERVER_HOST%:%REMOTE_PATH% ...

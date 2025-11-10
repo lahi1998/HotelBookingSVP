@@ -15,6 +15,6 @@ namespace Application.Dtos.Booking
         public int PersonCount { get; set; }
         public string? Comment { get; set; }
         public required CustomerDto Customer { get; set; }
-        public required IEnumerable<RoomDetailsDto> Rooms { get; set; }
+        public required IEnumerable<RoomDto> Rooms { get; set; }
     }
 }

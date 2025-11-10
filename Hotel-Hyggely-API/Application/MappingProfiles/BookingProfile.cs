@@ -28,6 +28,13 @@ namespace Infrastructure.MappingProfiles
                 .ForMember(dest => dest.Rooms, opt => opt.Ignore())
                 // Map primitive fields
                 .ForMember(dest => dest.CheckInStatus, opt => opt.MapFrom(src => CheckInStatus.NotCheckedIn));
-        }
+
+            CreateMap<UpdateBookingRequest, Booking>()
+                // Customer handled manually
+                .ForMember(dest => dest.Customer, opt => opt.Ignore())
+                .ForMember(dest => dest.CustomerId, opt => opt.Ignore())
+                // Rooms handled manually
+                .ForMember(dest => dest.Rooms, opt => opt.Ignore());
+		}
     }
 }
