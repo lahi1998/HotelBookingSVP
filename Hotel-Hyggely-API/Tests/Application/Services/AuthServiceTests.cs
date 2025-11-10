@@ -123,7 +123,7 @@ namespace Tests.Application.Services
 			};
 
 			// Act & Assert
-			await Assert.ThrowsAsync<Exception>(() => authService.AuthenticateAsync(loginRequest));
+			await Assert.ThrowsAsync<Exception>(async () => await authService.AuthenticateAsync(loginRequest));
 		}
 	}
 }
