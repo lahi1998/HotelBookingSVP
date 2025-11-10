@@ -1,5 +1,6 @@
 ﻿using Application.Dtos.Booking;
 using Application.Dtos.Staff;
+using Application.Exeptions;
 using Application.Interfaces;
 using Application.Interfaces.Repositories;
 using Application.Requests.Staff;
@@ -37,7 +38,15 @@ namespace Application.Services
 
 		public async Task<StaffDto> CreateAsync(CreateStaffRequest request)
 		{
-			var staff = mapper.Map<Domain.Entities.Staff>(request);
+            // Throw if username already exists
+            var existingStaff = await staffRepo.GetByUserNameAsync(request.UserName);
+
+			if (existingStaff is not null)
+			{
+				throw new UserNameTakenExeption("This username is already taken");
+            }
+
+            var staff = mapper.Map<Domain.Entities.Staff>(request);
 
 			staff.Password = passwordHasher.HashPassword(request.Password);
 

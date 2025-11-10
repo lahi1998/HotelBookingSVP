@@ -1,4 +1,5 @@
-﻿using Application.Requests.Staff;
+﻿using Application.Exeptions;
+using Application.Requests.Staff;
 using Application.Services;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -42,14 +43,16 @@ namespace Hotel_Hyggely_API.Controllers
         [HttpPost]
         public async Task<IActionResult> PostAsync([FromBody] CreateStaffRequest request)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
-			}
+                var staff = await staffService.CreateAsync(request);
 
-			var staff = await staffService.CreateAsync(request);
-
-			return CreatedAtAction(nameof(GetAsync), new { id = staff.Id }, staff);
+                return CreatedAtAction(nameof(GetAsync), new { id = staff.Id }, staff);
+            }
+            catch (UserNameTakenExeption ex)
+            {
+                return Conflict(new { ex.Message });
+            }
 		}
 
         [HttpPut]
