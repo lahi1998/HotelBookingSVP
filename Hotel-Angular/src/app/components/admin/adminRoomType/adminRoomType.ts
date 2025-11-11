@@ -73,6 +73,7 @@ export class AdminRoomType implements AfterViewInit {
           //console.log('Create successful.', response);
           alert('Værelsestype oprettet');
           this.uploadRoomImages(response.id);
+          this.roomTypeForm.reset();
         },
         error: (error) => {
           //console.error('Create error.', error);

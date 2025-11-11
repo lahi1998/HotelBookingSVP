@@ -77,13 +77,23 @@ export class AdminRoom implements AfterViewInit {
         next: (response) => {
           //console.log('Create successful.', response);
           alert('Værelse oprettet!');
+          this.roomForm.reset();
+
+          /* Reset form with default role */
+          this.roomForm.reset({
+            number: '', // 👈 your default value here
+            floor: '',
+            roomTypeName: 'Enkelt',
+            bedAmount: '',
+          });
+
         },
         error: (error) => {
           //console.error('Create error.', error);
           alert('Kunne ikke oprette værelse');
         },
         complete: () => {
-          
+
         },
       };
 
@@ -110,13 +120,13 @@ export class AdminRoom implements AfterViewInit {
     this.adminService.getRooms().subscribe(observer);
   }
 
-  getRoomTypes(){
+  getRoomTypes() {
     const observer: Observer<roomTypeDto[]> = {
       next: (roomTypes) => {
         this.roomTypes = roomTypes
         //console.log('Roomtypes fetched successfully', roomTypes);
         debugger;
-        this.roomForm.patchValue({roomTypeName: roomTypes[0].name})
+        this.roomForm.patchValue({ roomTypeName: roomTypes[0].name })
       },
       error: (err) => {
         //console.error('Roomtypes fetch failed:', err);
@@ -179,7 +189,7 @@ export class AdminRoom implements AfterViewInit {
   //Modal visibility functions
   openEditModal(room: any) {
     debugger;
-    this.roomEditForm.setValue({id: room.id, number: room.number, floor: room.floor, roomTypeName: room.roomTypeName, bedAmount: room.bedAmount})
+    this.roomEditForm.setValue({ id: room.id, number: room.number, floor: room.floor, roomTypeName: room.roomTypeName, bedAmount: room.bedAmount })
     this.toggleModal("editModal", true);
   }
 

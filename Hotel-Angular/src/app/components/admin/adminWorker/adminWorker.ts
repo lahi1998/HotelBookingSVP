@@ -94,6 +94,19 @@ export class AdminWorker implements AfterViewInit {
         next: (response) => {
           //console.log('Create successful.', response);
           this.getWorkers();
+          this.newWorkerForm.reset();
+
+        /* Reset form with default role */ 
+        this.newWorkerForm.reset({
+          role: '', // 👈 your default value here
+          userName: '',
+          password: '',
+          passwordConfirm: '',
+          fullName: '',
+        });
+
+        this.newWorkerForm.markAsPristine();
+        this.newWorkerForm.markAsUntouched();
         },
         error: (error) => {
           //console.error('Create error.', error);
