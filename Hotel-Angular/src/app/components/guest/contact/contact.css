@@ -1,0 +1,146 @@
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.contact-info {
+  background: linear-gradient(180deg, #fff 0%, #f7f7f9 100%);
+  padding: 1.6rem;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+}
+
+.contact-info h2 {
+  margin-top: 0;
+}
+
+.info-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.6rem 0 1rem 0;
+}
+
+.info-list li {
+  margin-bottom: 0.5rem;
+}
+
+.map-placeholder {
+  height: 160px;
+  border-radius: 8px;
+  background: repeating-linear-gradient(
+    45deg,
+    #eee,
+    #eee 10px,
+    #f8f8f8 10px,
+    #f8f8f8 20px
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #777;
+  margin-top: 1rem;
+}
+
+.socials {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.6rem;
+}
+
+.socials a {
+  text-decoration: none;
+  padding: 0.4rem 0.7rem;
+  border-radius: 6px;
+  background: #f0f0f2;
+}
+
+.contact-form-wrapper {
+  background: #ffffff;
+  padding: 1.6rem;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
+}
+
+.contact-form h3 {
+  margin-top: 0;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.95rem;
+}
+
+input,
+textarea {
+  padding: 0.65rem;
+  border-radius: 8px;
+  border: 1px solid #e3e3e6;
+  font-size: 1rem;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(15, 120, 255, 0.08);
+}
+
+.error {
+  color: #b00020;
+  font-size: 0.85rem;
+  margin-top: 0.35rem;
+}
+
+.actions {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.btn {
+  padding: 0.7rem 1rem;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.06);
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid #ddd;
+}
+
+.btn:not(.btn-secondary) {
+  background: #0f6bff;
+  color: #fff;
+}
+
+@media (max-width: 900px) {
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .row {
+    grid-template-columns: 1fr;
+  }
+}
