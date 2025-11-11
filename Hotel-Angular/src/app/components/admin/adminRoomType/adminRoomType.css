@@ -96,12 +96,13 @@ select {
     width: 70%;
 }
 
-.fetch-error {
-  text-align: center;
-  color: #d32f2f; /* Material red tone for errors */
-  font-weight: 500;
-  padding: 20px;
+#editForm {
+    height: auto;
 }
+
+
+
+
 
 /*Modal*/
 .modal {
@@ -137,6 +138,12 @@ select {
   max-width: 500px;
   transform: scale(1);
   transition: transform 0.25s ease;
+  display: flex;
+  flex-direction: row;
+}
+
+.bg-blue{
+    background-color: #4EA9E9;
 }
 
 
