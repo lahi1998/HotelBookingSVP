@@ -78,29 +78,29 @@ export class Booking implements OnInit {
     //TODO Get images
 
     this.bookingForm.get('startDate')?.valueChanges.subscribe(() => {
+      this.updateEndDateMinAndValue();
+    });
     this.updateEndDateMinAndValue();
-  });
-  this.updateEndDateMinAndValue();
   }
 
   updateEndDateMinAndValue() {
-  const start = this.bookingForm.get('startDate')?.value;
-  const endControl = this.bookingForm.get('endDate');
+    const start = this.bookingForm.get('startDate')?.value;
+    const endControl = this.bookingForm.get('endDate');
 
-  const baseDate = start ? new Date(start) : new Date();
-  baseDate.setDate(baseDate.getDate() + 1);
+    const baseDate = start ? new Date(start) : new Date();
+    baseDate.setDate(baseDate.getDate() + 1);
 
-  // Format to yyyy-MM-dd for the date input
-  const minDateString = baseDate.toISOString().split('T')[0];
-  this.endDateMin = minDateString;
+    // Format to yyyy-MM-dd for the date input
+    const minDateString = baseDate.toISOString().split('T')[0];
+    this.endDateMin = minDateString;
 
-  // Update endDate if it's null or before the new min date
-  const currentEnd = endControl?.value ? new Date(endControl.value) : null;
+    // Update endDate if it's null or before the new min date
+    const currentEnd = endControl?.value ? new Date(endControl.value) : null;
 
-  if (!currentEnd || currentEnd < baseDate) {
-    endControl?.setValue(minDateString);
+    if (!currentEnd || currentEnd < baseDate) {
+      endControl?.setValue(minDateString);
+    }
   }
-}
 
   calcTotalPrice() {
     this.totalPrice = 0;
@@ -167,17 +167,17 @@ export class Booking implements OnInit {
     this.bookingService.getRooms(startDate, endDate).subscribe(roomObserver);
   }
 
-  getImages(){
+  getImages() {
     const observer: Observer<RoomTypeImageDto[]> = {
       next: (response) => {
         this.allImages = response;
         this.currentImageIndex = 0;
-    if(this.allImages[this.selectedRoomType] != null){
-      this.imagesForCurrentRoomType = this.allImages[this.selectedRoomType]
-    }
-    else {
-      this.imagesForCurrentRoomType = [];
-    }
+        if (this.allImages[this.selectedRoomType] != null) {
+          this.imagesForCurrentRoomType = this.allImages[this.selectedRoomType]
+        }
+        else {
+          this.imagesForCurrentRoomType = [];
+        }
       },
       error: (error) => {
         console.error('Image error', error);
@@ -195,7 +195,7 @@ export class Booking implements OnInit {
     this.roomCount = this.roomsFromAPI[categoryAsNumber]?.length || 0;
     this.roomTypePrice = this.roomTypes.find(a => a.id == categoryAsNumber)?.price;
     this.currentImageIndex = 0;
-    if(this.allImages[categoryAsNumber] != null){
+    if (this.allImages[categoryAsNumber] != null) {
       this.imagesForCurrentRoomType = this.allImages[categoryAsNumber]
     }
     else {
@@ -212,7 +212,7 @@ export class Booking implements OnInit {
     this.createBooking();
   }
 
-  private createBooking(){
+  private createBooking() {
     const booking: BookingInterface = {
       fullName: this.bookingForm.value.fullName,
       email: this.bookingForm.value.email,
@@ -244,11 +244,11 @@ export class Booking implements OnInit {
     this.calcTotalPrice();
   }
 
-  addRoom() {
-    if (this.roomCount <= 0)
+  addRoom(roomTypeId: number) {
+    if (this.roomsFromAPI[roomTypeId].length <= 0)
       return;
 
-    const room = this.roomsFromAPI[this.selectedRoomType].shift();
+    const room = this.roomsFromAPI[roomTypeId].shift();
 
     if (room) {
       const roomType = this.roomTypes.find(rt => rt.id == room.roomTypeId)
@@ -259,15 +259,46 @@ export class Booking implements OnInit {
         existing.roomIds.push(room.id);
       } else {
         this.addedRooms.push({
-          roomTypeId: roomType.id,
+          roomTypeId,
           roomType,
           count: 1,
           roomIds: [room.id]
         });
       }
-      this.roomCount--;
+      if (roomTypeId == this.selectedRoomType) {
+        this.roomCount--;
+      }
     }
     this.calcTotalPrice();
+  }
+
+  removeRoom(roomTypeId: number) {
+    const existing = this.addedRooms.find(r => r.roomTypeId === roomTypeId);
+    if (!existing) return;
+
+    const removedRoomId = existing.roomIds.pop();
+
+    if (removedRoomId) {
+      const room = { id: removedRoomId, roomTypeId };
+      this.roomsFromAPI[roomTypeId].unshift(room);
+    }
+
+    existing.count--;
+
+    if (existing.count <= 0) {
+      this.addedRooms = this.addedRooms.filter(r => r.roomTypeId !== roomTypeId);
+    }
+
+    if (roomTypeId == this.selectedRoomType) {
+      this.roomCount++;
+    }
+
+    this.calcTotalPrice();
+  }
+
+  getRoomCount(roomTypeId: number): number {
+    const existing = this.addedRooms.find(r => r.roomTypeId === roomTypeId);
+    return existing ? existing.count : 0;
   }
 
   //Image carousel

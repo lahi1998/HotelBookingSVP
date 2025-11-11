@@ -63,7 +63,6 @@ export class AdminRoom implements AfterViewInit {
   }
 
   onSubmit(): void {
-    debugger;
     if (this.roomForm.valid) {
       const newRoom: CreateRoomRequest = {
         roomTypeName: this.roomForm.value.roomTypeName,
@@ -124,9 +123,7 @@ export class AdminRoom implements AfterViewInit {
     const observer: Observer<roomTypeDto[]> = {
       next: (roomTypes) => {
         this.roomTypes = roomTypes
-        //console.log('Roomtypes fetched successfully', roomTypes);
-        debugger;
-        this.roomForm.patchValue({ roomTypeName: roomTypes[0].name })
+        this.roomForm.patchValue({roomTypeName: roomTypes[0].name})
       },
       error: (err) => {
         //console.error('Roomtypes fetch failed:', err);
@@ -161,7 +158,6 @@ export class AdminRoom implements AfterViewInit {
         // optional cleanup or navigation
       },
     };
-    debugger;
     this.adminService.updateRoom(this.roomEditForm.value).subscribe(observer);
     this.closeEditModal();
   }
@@ -188,8 +184,7 @@ export class AdminRoom implements AfterViewInit {
 
   //Modal visibility functions
   openEditModal(room: any) {
-    debugger;
-    this.roomEditForm.setValue({ id: room.id, number: room.number, floor: room.floor, roomTypeName: room.roomTypeName, bedAmount: room.bedAmount })
+    this.roomEditForm.setValue({id: room.id, number: room.number, floor: room.floor, roomTypeName: room.roomTypeName, bedAmount: room.bedAmount})
     this.toggleModal("editModal", true);
   }
 

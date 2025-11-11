@@ -30,6 +30,11 @@ export class AdminRoomType implements AfterViewInit {
   images: ImageData[] = [];
   currentImageIndex = 0;
 
+  imagesToDelete: number[] = [];
+
+  imagesEditForm: any[] = [];
+  currentImageIndexEditForm = 0;
+
   constructor(
     private fb: FormBuilder,
     private adminService: AdminService,
@@ -61,7 +66,6 @@ export class AdminRoomType implements AfterViewInit {
   }
 
   onSubmit(): void {
-    console.log("Here");
     if (this.roomTypeForm.valid) {
       const newRoomtype: CreateRoomTypeRequest = {
         name: this.roomTypeForm.value.name,
@@ -180,11 +184,119 @@ export class AdminRoomType implements AfterViewInit {
     }
   }
 
+
+async onFilesSelectedEditForm(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files) {
+      for (const file of Array.from(input.files)) {
+        if (file.type.startsWith('image/')) {
+          const dataUrl = await this.readFileAsDataURL(file);
+          this.imagesEditForm.push({ file, dataUrl });
+        }
+      }
+    }
+  }
+
+prevImageEditForm() {
+    if (this.currentImageIndexEditForm > 0) {
+      this.currentImageIndexEditForm--;
+    }
+    else {
+      this.currentImageIndexEditForm = this.imagesEditForm.length - 1;
+    }
+  }
+
+  nextImageEditForm() {
+    if (this.currentImageIndexEditForm < this.imagesEditForm.length - 1) {
+      this.currentImageIndexEditForm++;
+    }
+    else {
+      this.currentImageIndexEditForm = 0;
+    }
+  }
+
+  selectImageEditForm(index: number) {
+    this.currentImageIndexEditForm = index;
+  }
+
+  deleteCurrentImageEditForm() {
+    if(this.imagesEditForm[this.currentImageIndexEditForm].hasOwnProperty('id')){
+      this.imagesToDelete.push(this.imagesEditForm[this.currentImageIndexEditForm].id);
+    }
+    this.imagesEditForm.splice(this.currentImageIndexEditForm, 1);
+    if (this.currentImageIndexEditForm >= this.imagesEditForm.length) {
+      this.currentImageIndexEditForm = Math.max(0, this.imagesEditForm.length - 1);
+    }
+  }
+
+  uploadRoomImagesEditForm(roomTypeId: string) {
+    if (this.imagesEditForm.length === 0) return;
+
+    const formData = new FormData();
+    this.imagesEditForm.forEach((image) => {
+      if(!image.hasOwnProperty("id")){
+        formData.append('images', image.file);
+      }
+    });
+    
+    if (!formData.has("images")) return;
+    formData.append('roomTypeId', roomTypeId);
+
+    const observer: Observer<any> = {
+      next: () => {
+        //console.log('Images uploaded successfully');
+      },
+      error: (err) => {
+        //console.error('Image upload failed:', err);
+        alert('Kunne ikke uploade billeder');
+      },
+      complete: () => {
+        // optional cleanup or navigation
+      },
+    };
+
+    this.adminService.uploadRoomImages(formData).subscribe(observer);
+  }
+
+  getImagesByRoomTypeId(roomTypeId: number){
+    const observer: Observer<any> = {
+      next: (images) => {
+        //console.log('Images uploaded successfully');
+        this.imagesEditForm = images;
+      },
+      error: (err) => {
+        //console.error('Image upload failed:', err);
+        alert('Kunne ikke hente billeder');
+      },
+      complete: () => {
+        // optional cleanup or navigation
+      },
+    };
+
+    this.adminService.getRoomTypeImages(roomTypeId).subscribe(observer);
+  }
+
+deleteRoomTypeImages(){
+  const observer: Observer<any> = {
+      next: () => {
+        //console.log('Images uploaded successfully');
+      },
+      error: (err) => {
+        //console.error('Image upload failed:', err);
+        alert('Kunne ikke slette billeder');
+      },
+      complete: () => {
+        // optional cleanup or navigation
+      },
+    };
+
+    this.adminService.deleteRoomTypeImages(this.imagesToDelete).subscribe(observer);
+}
+
   uploadRoomImages(roomTypeId: string) {
     if (this.images.length === 0) return;
 
     const formData = new FormData();
-    debugger;
     this.images.forEach((image) => {
 
       formData.append('images', image.file);
@@ -208,37 +320,42 @@ export class AdminRoomType implements AfterViewInit {
   }
 
   editRoomType(){
-
     const observer: Observer<roomTypeDto> = {
       next: (response) => {
         //console.log('RoomType updated');
         const index = this.dataSource.data.findIndex(r => r.id === response.id);
         if (index !== -1) this.dataSource.data[index] = response;
         this.dataSource._updateChangeSubscription(); 
-        
+        this.uploadRoomImagesEditForm(response.id.toString());
+        this.deleteRoomTypeImages();
         alert("Værelsestype opdateret");
+        
       },
       error: (err) => {
-        //console.error('roomtype update failed:', err);
         alert('Kunne ikke opdatere værelsestype');
       },
       complete: () => {
-        // optional cleanup or navigation
       },
     };
-    debugger;
+    // this.closeEditModal();
     this.adminService.updateRoomType(this.roomTypeEditForm.value).subscribe(observer);
-    this.closeEditModal();
+    
   }
 
   //Modal visibility functions
   openEditModal(roomType: any) {
-    debugger;
     this.roomTypeEditForm.setValue(roomType)
+    this.getImagesByRoomTypeId(roomType.id);
     this.toggleModal("editModal", true);
   }
 
+  private emptyImagesEditForm(){
+    this.imagesEditForm = [];
+    this.currentImageIndexEditForm = 0;
+  }
+
   closeEditModal() {
+    this.emptyImagesEditForm();
     this.toggleModal("editModal", false);
   }
 
