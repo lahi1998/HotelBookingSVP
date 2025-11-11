@@ -69,8 +69,7 @@
                     </select>
                     <p>Pris pr nat: {{roomTypePrice}}</p>
                     <p>Antal ledige værelser: {{roomCount}}</p>
-                    <button type="button" class="imgControlBtn" (click)="addRoom()"
-                        [disabled]="roomCount <= 0">Tilføj</button>
+                    <button type="button" class="imgControlBtn" (click)="addRoom(selectedRoomType)" [disabled]="roomCount <= 0">Tilføj</button>
                 </div>
 
                 <div class="carousel">
@@ -94,8 +93,12 @@
                     <div class="booked-rooms-container">
                         @for (room of addedRooms; track room.roomTypeId){
                         <div style="display:flex; flex-direction: row; justify-content: space-between;">
-                            <p>{{room.count}}x {{room.roomType.name}}</p>
-                            <p>{{room.roomType.price}} kr</p>
+                            <button (click)="removeRoom(room.roomTypeId)" class="room-button remove" [disabled]="getRoomCount(room.roomTypeId) === 0" type="button">−</button>
+                            <p>{{room.count}}x {{room.roomType.name}} {{room.roomType.price}} kr</p>
+                            <button (click)="addRoom(room.roomTypeId)" class="room-button add" [disabled]="roomsFromAPI[room.roomTypeId]?.length === 0" type="button">+</button>
+                            
+                            
+                            
                         </div>
                         }
                     </div>
