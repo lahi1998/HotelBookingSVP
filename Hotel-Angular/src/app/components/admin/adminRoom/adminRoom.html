@@ -95,7 +95,7 @@
 
 <div id="editModal" class="modal hidden" (click)="onBackdropClick($event)">
     <div class="modal-content">
-        <h3>Rediger værelsestype</h3>
+        <h3>Rediger værelse</h3>
         <form [formGroup]="roomEditForm" (ngSubmit)="editRoom()" id="editForm">
             <label>Nummer</label>
             <div class="form-group">
@@ -115,8 +115,8 @@
             <div class="form-group">
                 <input type="text" formControlName="bedAmount" />
             </div>
-            <button type="submit">Save</button>
-            <button type="button" (click)="closeEditModal()">Cancel</button>
+            <button type="submit">Gem</button>
+            <button type="button" (click)="closeEditModal()">Anuller</button>
         </form>
     </div>
 </div>
