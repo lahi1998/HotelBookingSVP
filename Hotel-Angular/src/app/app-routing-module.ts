@@ -107,7 +107,7 @@ const routes: Routes = [
     ],
   },
   // --- Default redirects ---
-  { path: '', redirectTo: 'booking', pathMatch: 'full' },
+  { path: '', redirectTo: 'frontpage', pathMatch: 'full' },
   { path: '**', redirectTo: 'login' },
 ];
 
