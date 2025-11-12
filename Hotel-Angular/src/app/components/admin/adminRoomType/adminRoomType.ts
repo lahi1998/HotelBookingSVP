@@ -75,9 +75,11 @@ export class AdminRoomType implements AfterViewInit {
       const observer: Observer<any> = {
         next: (response) => {
           //console.log('Create successful.', response);
-          alert('Værelsestype oprettet');
+          alert('Værelsestype oprettet!');
           this.uploadRoomImages(response.id);
           this.roomTypeForm.reset();
+          this.images = [];
+          this.getRoomtypes();
         },
         error: (error) => {
           //console.error('Create error.', error);
@@ -116,7 +118,7 @@ export class AdminRoomType implements AfterViewInit {
     const observer: Observer<any> = {
       next: (response) => {
         //console.log('Delete successful.', response);
-        alert('Værelsestype slettet');
+        //alert('Værelsestype slettet');
         this.getRoomtypes();
       },
       error: (error) => {

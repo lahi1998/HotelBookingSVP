@@ -68,14 +68,12 @@ export class Booking implements OnInit {
     this.bookingForm = this.fb.group({
       fullName: ['', Validators.required],
       email: ['', [Validators.required, customEmailValidator()]],
-      phoneNumber: ['', [Validators.required, Validators.min(8)]],
+      phoneNumber: ['', [Validators.required, Validators.pattern(/^[0-9+\-\s()]{5,20}$/)]],
       personCount: [2, [Validators.required, Validators.min(1)]],
       comment: [''],
       startDate: [todayString, Validators.required],
       endDate: [dayAfterTomorrowString, Validators.required]
     });
-
-    //TODO Get images
 
     this.bookingForm.get('startDate')?.valueChanges.subscribe(() => {
       this.updateEndDateMinAndValue();
@@ -227,6 +225,23 @@ export class Booking implements OnInit {
     const observer: Observer<any> = {
       next: (response) => {
         alert('Booking oprettet. Du vil snart modtage en bekræftelsesmail');
+
+        const resetToday = new Date();
+        const resetDayAfterTomorrow = new Date();
+        resetDayAfterTomorrow.setDate(resetToday.getDate() + 2);
+        const resetTodayString = resetToday.toISOString().split('T')[0];
+        const resetDayAfterTomorrowString = resetDayAfterTomorrow.toISOString().split('T')[0];
+
+        this.bookingForm.reset({
+          fullName: '',
+          email: '',
+          phoneNumber: '',
+          personCount: 2,
+          comment: '',
+          startDate: resetTodayString,
+          endDate: resetDayAfterTomorrowString,
+        });
+
       },
       error: (error) => {
         console.error('Booking error', error);

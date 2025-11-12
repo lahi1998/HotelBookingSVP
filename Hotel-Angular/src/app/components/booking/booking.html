@@ -21,11 +21,11 @@
                 </small>
             </div>
             <label class="required">Telefon nummer</label>
-            <input type="text" formControlName="phoneNumber" name="phoneNumber">
+            <input type="tel" formControlName="phoneNumber" name="phoneNumber">
             <div class="error"
                 *ngIf="bookingForm.get('phoneNumber')?.invalid && (bookingForm.get('phoneNumber')?.touched || bookingForm.get('phoneNumber')?.dirty)">
                 <small>
-                    Telefon nummer er påkrævet
+                    Telefon nummer er påkrævet / Indtast et gyldigt.
                 </small>
             </div>
             <label class="required">Antal personer</label>

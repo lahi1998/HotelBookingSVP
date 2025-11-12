@@ -93,20 +93,20 @@ export class AdminWorker implements AfterViewInit {
       const observer: Observer<any> = {
         next: (response) => {
           //console.log('Create successful.', response);
+          alert('Medarbejder oprettet!');
           this.getWorkers();
-          this.newWorkerForm.reset();
 
-        /* Reset form with default role */ 
-        this.newWorkerForm.reset({
-          role: '', // 👈 your default value here
-          userName: '',
-          password: '',
-          passwordConfirm: '',
-          fullName: '',
-        });
+          /* Reset form with default role */
+          this.newWorkerForm.reset({
+            role: '',
+            userName: '',
+            password: '',
+            passwordConfirm: '',
+            fullName: '',
+          });
 
-        this.newWorkerForm.markAsPristine();
-        this.newWorkerForm.markAsUntouched();
+          this.newWorkerForm.markAsPristine();
+          this.newWorkerForm.markAsUntouched();
         },
         error: (error) => {
           //console.error('Create error.', error);
@@ -175,6 +175,7 @@ export class AdminWorker implements AfterViewInit {
       const observer: Observer<any> = {
         next: (response) => {
           //console.log('Create successful.', response);
+          alert('Medarbejder opdateret!');
           this.getWorkers();
         },
         error: (error) => {
@@ -192,6 +193,7 @@ export class AdminWorker implements AfterViewInit {
 
 
   openEdit(id: number, userName: string) {
+    this.noEdit = false;
     /* Assuming you have a flag to toggle the edit form visibility */
     this.editopen = true;
     this.editId = id;
@@ -218,22 +220,23 @@ export class AdminWorker implements AfterViewInit {
       passwordConfirm: ''
     });
 
-          /* Disable ui input if noEdit is true */
-      if (this.noEdit) {
-        this.editWorkerForm.get('role')?.disable();
-        this.editWorkerForm.get('userName')?.disable();
-        this.editWorkerForm.get('fullName')?.disable();
-      } else {
-        this.editWorkerForm.get('role')?.enable();
-        this.editWorkerForm.get('userName')?.enable();
-        this.editWorkerForm.get('fullName')?.enable();
-      }
+    /* Disable ui input if noEdit is true */
+    if (this.noEdit) {
+      this.editWorkerForm.get('role')?.disable();
+      this.editWorkerForm.get('userName')?.disable();
+      this.editWorkerForm.get('fullName')?.disable();
+    } else {
+      this.editWorkerForm.get('role')?.enable();
+      this.editWorkerForm.get('userName')?.enable();
+      this.editWorkerForm.get('fullName')?.enable();
+    }
 
   }
 
   closeEdit() {
     this.editopen = false;
     this.editId = 0;
+    this.noEdit = false;
   }
 }
 

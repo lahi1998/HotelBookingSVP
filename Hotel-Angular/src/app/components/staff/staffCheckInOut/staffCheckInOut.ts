@@ -72,7 +72,7 @@ export class StaffCheckInOut {
     this.bookingDetailsForm = this.fb.group({
       fullName: ['', Validators.required],
       email: ['', Validators.required],
-      phoneNumber: ['', Validators.required],
+      phoneNumber: ['', Validators.required, Validators.pattern(/^[0-9+\-\s()]{5,20}$/)],
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
       comment: [],
@@ -478,7 +478,7 @@ export class StaffCheckInOut {
         },
         error: (error) => {
           //console.error('Create error.', error);
-          alert('Opretning fejæede!');
+          alert('Opretning fejlede!');
         },
         complete: () => {
           // optional cleanup or navigation

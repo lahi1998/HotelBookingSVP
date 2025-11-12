@@ -86,6 +86,8 @@ export class AdminRoom implements AfterViewInit {
             bedAmount: '',
           });
 
+          this.getRooms();
+
         },
         error: (error) => {
           //console.error('Create error.', error);
@@ -167,7 +169,7 @@ export class AdminRoom implements AfterViewInit {
     const observer: Observer<any> = {
       next: (response) => {
         //console.log('Delete successful.', response);
-        alert('Værelse slettet');
+        //alert('Værelse slettet');
         this.getRooms();
       },
       error: (error) => {

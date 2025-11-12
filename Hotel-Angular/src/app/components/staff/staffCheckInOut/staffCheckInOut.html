@@ -91,11 +91,11 @@
 
                 <label>Telefon nummer</label>
                 <div class="form-group">
-                    <input type="text" formControlName="phoneNumber" placeholder="Indtast telefon nummer"
+                    <input type="tel" formControlName="phoneNumber" placeholder="Indtast telefon nummer"
                         autocomplete="off" />
                     <div class="error"
                         *ngIf="bookingDetailsForm.get('phoneNumber')?.invalid && bookingDetailsForm.get('phoneNumber')?.touched">
-                        Telefon nummer er påkrævet
+                        Telefon nummer er påkrævet / Indtast et gyldigt.
                     </div>
                 </div>
 
