@@ -242,6 +242,8 @@ export class Booking implements OnInit {
           endDate: resetDayAfterTomorrowString,
         });
 
+        this.addedRooms = []
+
       },
       error: (error) => {
         console.error('Booking error', error);
