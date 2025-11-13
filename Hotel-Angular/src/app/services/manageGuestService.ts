@@ -25,7 +25,7 @@ export class ManageGuestService {
       'Content-Type': 'application/json'
     });
 
-    return this.httpClient.get<GuestDto[]>("https://hotel-hyggely.dk/api/guest", { headers }).pipe(
+    return this.httpClient.get<GuestDto[]>("https://hotel-hyggely.dk/api/guests", { headers }).pipe(
       tap((guests: GuestDto[]) => {
         console.log('Fetched guests:', guests);
       })
@@ -40,6 +40,6 @@ export class ManageGuestService {
       'Content-Type': 'application/json'
     });
 
-    return this.httpClient.delete<any>(`https://hotel-hyggely.dk/api/guest/${id}`, { headers });
+    return this.httpClient.delete<any>(`https://hotel-hyggely.dk/api/guests/${id}`, { headers });
   }
 }
