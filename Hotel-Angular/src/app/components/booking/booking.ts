@@ -243,6 +243,7 @@ export class Booking implements OnInit {
         });
 
         this.addedRooms = []
+        this.totalPrice = 0;
 
       },
       error: (error) => {

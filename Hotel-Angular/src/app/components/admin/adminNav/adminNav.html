@@ -2,6 +2,7 @@
   <div class="menu-icon" (click)="toggleMenu()">☰</div>
   <div class="nav-buttons" [class.show]="menuOpen">
     <button type="button" routerLink="/admin/room">Værelser</button>
+    <button type="button" routerLink="/admin/manageGuest">Administre gæst</button>
     <button type="button" routerLink="/admin/room-type">Værelses typer</button>
     <button type="button" routerLink="/admin/worker">Medarbejdere</button>
     <button type="button" class="logout-btn" (click)="logout()">Log ud</button>

@@ -1,0 +1,78 @@
+/* admin table room type */
+
+h2 {
+    margin: 20px 0;
+    font-weight: 400;
+    text-align: center;
+    
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* centers children horizontally */
+    align-items: flex-start;
+    gap: 5%;
+    padding: 2% 5%;
+}
+
+/* Table wrapper */
+.table-wrapper {
+    flex: 1 1 60%;
+    max-width: 60%;
+    margin: 0 auto; /* ensure wrapper is centered */
+    display: block;
+}
+
+.table-border {
+    border: solid 1px black;
+    border-radius: 15px;
+    overflow-x: auto;
+    /* prevents horizontal overflow */
+}
+
+button {
+    margin: 10px 5px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+input,
+select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 70%;
+}
+
+th {
+    background-color: #D9D9D9 !important;
+    border-right: 1px solid black;
+}
+
+td {
+    border-right: 1px solid black;
+    border-bottom: 1px solid black !important;
+}
+
+.fetch-error {
+  text-align: center;
+  color: #d32f2f; /* Material red tone for errors */
+  font-weight: 500;
+  padding: 20px;
+}
+
+.delete {
+    background-color: #FF4646;
+}
+
+.delete:hover {
+    background-color: #e93d3d;
+}

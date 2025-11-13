@@ -24,6 +24,7 @@ import { Contact } from './components/guest/contact/contact';
 import { Frontpage } from './components/guest/frontpage/frontpage';
 import { CommonModule } from '@angular/common';
 import { GuestBooking } from './components/guest/guest-booking/guest-booking';
+import { ManageGuest } from './components/manageGuest/manageGuest';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { GuestBooking } from './components/guest/guest-booking/guest-booking';
     GuestNav,
     Contact,
     Frontpage,
-    GuestBooking
+    GuestBooking,
+    ManageGuest
   ],
   imports: [
     BrowserModule,

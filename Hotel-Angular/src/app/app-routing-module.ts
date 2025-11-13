@@ -13,6 +13,7 @@ import { LoginService } from './services/loginService';
 import { Contact } from './components/guest/contact/contact';
 import { Frontpage } from './components/guest/frontpage/frontpage';
 import { GuestBooking } from './components/guest/guest-booking/guest-booking';
+import { ManageGuest } from './components/manageGuest/manageGuest';
 
 
 // --- Simple AuthService ---
@@ -85,6 +86,7 @@ const routes: Routes = [
       { path: 'room', component: AdminRoom },
       { path: 'room-type', component: AdminRoomType },
       { path: 'worker', component: AdminWorker },
+      { path: 'manageGuest', component: ManageGuest },
     ],
   },
 
@@ -97,6 +99,7 @@ const routes: Routes = [
       { path: 'check-in-out', component: StaffCheckInOut },
       { path: 'room-status', component: StaffRoomstatus },
       { path: 'nav', component: StaffNav },
+      { path: 'manageGuest', component: ManageGuest },
     ],
   },
   {
