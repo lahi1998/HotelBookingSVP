@@ -1,6 +1,7 @@
 /* Hero */
 .hero {
-  background: url('https://source.unsplash.com/1600x900/?hotel,city') center/cover no-repeat;
+  background: center/cover no-repeat;
+  background-image: url('/assets/beach.jpg');
   height: 75vh;
   display: flex;
   align-items: center;
