@@ -75,6 +75,16 @@ button {
     background-color: #e93d3d;
 }
 
+.update {
+    background-color: #62db52;
+    align-self: flex-end;
+    margin-top: 12px;
+}
+
+.update:hover {
+    background-color: #52b545;
+}
+
 /* Create-type-box (form) */
 .Create-type-box {
     flex: 1 1 35%;

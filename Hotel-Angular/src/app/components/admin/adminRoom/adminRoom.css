@@ -68,6 +68,16 @@ button {
     background-color: #e93d3d;
 }
 
+.update {
+    background-color: #62db52;
+    align-self: flex-end;
+    margin-top: 12px;
+}
+
+.update:hover {
+    background-color: #52b545;
+}
+
 /* Create-room-box (form) */
 .create-container {
     display: flex;
@@ -175,14 +185,6 @@ select {
   font-weight: 500;
   padding: 20px;
 }
-
-.bg-blue{
-    background-color: #4EA9E9;
-}
-
-
-
-
 
 /*Modal*/
 .modal {

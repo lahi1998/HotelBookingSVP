@@ -135,6 +135,10 @@ input:focus {
     cursor: pointer;
 }
 
+.imgControlBtn:hover {
+  background-color: #2e8cd6;
+}
+
 .thumbnails {
     display: flex;
     gap: 6px;
@@ -165,8 +169,12 @@ button {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.bg-blue {
+.bg-blue  {
     background-color: #4EA9E9;
+}
+
+.bg-blue:hover {
+  background-color: #2e8cd6;
 }
 
 button:disabled {
