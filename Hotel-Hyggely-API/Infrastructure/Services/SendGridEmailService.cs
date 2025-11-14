@@ -19,7 +19,7 @@ namespace Infrastructure.Services
         {
 			var client = new SendGridClient(configuration["SendGrid:API_KEY"]);
 			var from = new EmailAddress(configuration["SendGrid:email"], "Hotel Hyggely");
-			var to = new EmailAddress(booking.Customer!.Email);
+			var to = new EmailAddress(booking.Guest!.Email);
             var subject = "Din Booking hos Hotel Hyggely er bekræftet";
 
 			var roomSummary = booking.Rooms
@@ -28,7 +28,7 @@ namespace Infrastructure.Services
 	            .ToList();
 			var roomListText = string.Join("\n- ", roomSummary);
 
-			var plainTextContent = $@"Kære {booking.Customer!.FullName},
+			var plainTextContent = $@"Kære {booking.Guest!.FullName},
 
                 Tak for din reservation hos Hotel Hyggely!
 
@@ -54,7 +54,7 @@ namespace Infrastructure.Services
                 <html>
                   <body style='font-family:Arial,sans-serif;'>
                     <h2>Din booking hos Hotel Hyggely</h2>
-                    <p>Kære {booking.Customer!.FullName},</p>
+                    <p>Kære {booking.Guest!.FullName},</p>
                     <p>Tak for din reservation hos <strong>Hotel Hyggely</strong>!</p>
                     <p><strong>Her er dine bookingoplysninger:</strong></p>
                     <p><strong>Dato:</strong> {booking.StartDate:dd.MM.yyyy} – {booking.EndDate:dd.MM.yyyy}</p>

@@ -18,7 +18,7 @@ namespace Tests.Application.Services
 
         private readonly Mock<IBookingRepo> bookingRepoMock;
         private readonly Mock<IRoomRepo> roomRepoMock;
-        private readonly Mock<ICustomerRepo> customerRepoMock;
+        private readonly Mock<IGuestRepo> guestRepoMock;
         private readonly Mock<IMapper> mapperMock;
         private readonly Mock<ICleaningScheduleRepo> cleaningScheduleMock;
         private readonly Mock<IEmailService> emailServiceMock;
@@ -26,14 +26,14 @@ namespace Tests.Application.Services
         {
             bookingRepoMock = new Mock<IBookingRepo>();
             roomRepoMock = new Mock<IRoomRepo>();
-            customerRepoMock = new Mock<ICustomerRepo>();
+            guestRepoMock = new Mock<IGuestRepo>();
             mapperMock = new Mock<IMapper>();
             cleaningScheduleMock = new Mock<ICleaningScheduleRepo>();
             emailServiceMock = new Mock<IEmailService>();
 
             bookingService = new BookingService(
                 bookingRepoMock.Object,
-                customerRepoMock.Object,
+                guestRepoMock.Object,
                 mapperMock.Object,
                 roomRepoMock.Object,
                 cleaningScheduleMock.Object,
@@ -44,7 +44,7 @@ namespace Tests.Application.Services
         public async Task GetAllBookingsAsync_ReturnsMappedBookingDtos()
         {
             // Arrange
-            var customerDto = new CustomerDto
+            var customerDto = new GuestDto
             {
                 FullName = "John",
                 Email = "",
@@ -255,7 +255,7 @@ namespace Tests.Application.Services
             {
                 Id = bookingId,
                 CheckInStatus = CheckInStatus.NotCheckedIn.ToString(),
-                Customer = new CustomerDto() { Email = "", FullName = "", PhoneNumber = "" },
+                Customer = new GuestDto() { Email = "", FullName = "", PhoneNumber = "" },
                 Rooms = new List<RoomDto>() { new RoomDto { RoomStatus = "", RoomTypeName = "" } }
             };
 
@@ -377,7 +377,7 @@ namespace Tests.Application.Services
             var returnedBookingDto = new BookingDto
             {
                 Id = 1,
-                Customer = new CustomerDto { Email = "", FullName = "", PhoneNumber = "" },
+                Customer = new GuestDto { Email = "", FullName = "", PhoneNumber = "" },
                 RoomIds = new List<int> { 101, 102 }
             };
 
@@ -445,7 +445,7 @@ namespace Tests.Application.Services
             var returnedBookingDto = new BookingDto
             {
                 Id = 1,
-                Customer = new CustomerDto { Email = "", FullName = "", PhoneNumber = "" },
+                Customer = new GuestDto { Email = "", FullName = "", PhoneNumber = "" },
                 RoomIds = new List<int> { 101, 102 }
             };
 
@@ -482,7 +482,7 @@ namespace Tests.Application.Services
             var returnedBookingDto = new BookingDto
             {
                 Id = 1,
-                Customer = new CustomerDto { Email = "", FullName = "", PhoneNumber = "" },
+                Customer = new GuestDto { Email = "", FullName = "", PhoneNumber = "" },
                 RoomIds = new List<int> { 101, 102 }
             };
 

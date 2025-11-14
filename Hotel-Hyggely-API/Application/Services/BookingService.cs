@@ -14,16 +14,16 @@ namespace Application.Services
 	public class BookingService
 	{
 		private readonly IBookingRepo bookingRepo;
-		private readonly ICustomerRepo customerRepo;
+		private readonly IGuestRepo guestRepo;
 		private readonly IMapper mapper;
 		private readonly IRoomRepo roomRepo;
 		private readonly ICleaningScheduleRepo cleaningScheduleRepo;
         private readonly IEmailService emailService;
 
-        public BookingService(IBookingRepo bookingRepo, ICustomerRepo customerRepo, IMapper mapper, IRoomRepo roomRepo, ICleaningScheduleRepo cleaningScheduleRepo, IEmailService emailService)
+        public BookingService(IBookingRepo bookingRepo, IGuestRepo customerRepo, IMapper mapper, IRoomRepo roomRepo, ICleaningScheduleRepo cleaningScheduleRepo, IEmailService emailService)
 		{
 			this.bookingRepo = bookingRepo;
-			this.customerRepo = customerRepo;
+			this.guestRepo = customerRepo;
 			this.mapper = mapper;
 			this.roomRepo = roomRepo;
 			this.cleaningScheduleRepo = cleaningScheduleRepo;
@@ -82,18 +82,18 @@ namespace Application.Services
 
 		public async Task<BookingDto> CreateBookingAsync(CreateBookingRequest request)
 		{
-			var existingCustomer = await customerRepo.GetByEmailAsync(request.Email);
+			var existingCustomer = await guestRepo.GetByEmailAsync(request.Email);
 
 			var booking = mapper.Map<Booking>(request);
 
 			if (existingCustomer != null)
 			{
-				booking.CustomerId = existingCustomer.ID;
-				booking.Customer = null;
+				booking.GuestId = existingCustomer.ID;
+				booking.Guest = null;
 			}
 			else
 			{
-				booking.Customer = new Customer
+				booking.Guest = new Guest
 				{
 					FullName = request.FullName,
 					Email = request.Email,
@@ -136,11 +136,11 @@ namespace Application.Services
 
 			mapper.Map(request, existingBooking);
 
-			if (existingBooking.Customer != null)
+			if (existingBooking.Guest != null)
 			{
-				existingBooking.Customer.FullName = request.FullName;
-				existingBooking.Customer.Email = request.Email;
-				existingBooking.Customer.PhoneNumber = request.PhoneNumber;
+				existingBooking.Guest.FullName = request.FullName;
+				existingBooking.Guest.Email = request.Email;
+				existingBooking.Guest.PhoneNumber = request.PhoneNumber;
 			}
 
 			var rooms = await roomRepo.GetByIdsWithRoomTypeAsync(request.RoomIds);

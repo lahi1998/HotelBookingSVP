@@ -13,7 +13,7 @@ namespace Application.Dtos.Booking
 		public decimal TotalPrice { get; set; }
 		public int PersonCount { get; set; }
 		public string? Comment { get; set; }
-		public required CustomerDto Customer { get; set; }
+		public required GuestDto Customer { get; set; }
 		public required IEnumerable<int> RoomIds { get; set; } = new List<int>();
 	}
 }

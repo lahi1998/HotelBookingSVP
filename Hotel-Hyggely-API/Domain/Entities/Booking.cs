@@ -5,8 +5,8 @@ namespace Domain.Entities
     public class Booking
     {
         public int ID { get; set; }
-        public int CustomerId { get; set; }
-        public Customer? Customer { get; set; }
+        public int GuestId { get; set; }
+        public Guest? Guest { get; set; }
 
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }

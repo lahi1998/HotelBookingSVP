@@ -12,18 +12,22 @@ namespace Infrastructure.MappingProfiles
         public BookingProfile()
         {
             CreateMap<Booking, BookingListItemDto>()
-                .ForMember(dest => dest.RoomCount, opt => opt.MapFrom(src => src.Rooms.Count));
-
-            CreateMap<Booking, BookingDetailsDto>();
-
-            CreateMap<Booking, BookingDto>()
-                .ForMember(dest => dest.RoomIds, opt => opt.MapFrom(src => src.Rooms.Select(r => r.ID).ToList()));
+                .ForMember(dest => dest.RoomCount, opt => opt.MapFrom(src => src.Rooms.Count))
+                .ForMember(dest => dest.Customer, opt => opt.MapFrom(src => src.Guest));
 
 
-            CreateMap<CreateBookingRequest, Booking>()
+			CreateMap<Booking, BookingDetailsDto>()
+				.ForMember(dest => dest.Customer, opt => opt.MapFrom(src => src.Guest));
+
+			CreateMap<Booking, BookingDto>()
+                .ForMember(dest => dest.RoomIds, opt => opt.MapFrom(src => src.Rooms.Select(r => r.ID).ToList()))
+				.ForMember(dest => dest.Customer, opt => opt.MapFrom(src => src.Guest));
+
+
+			CreateMap<CreateBookingRequest, Booking>()
                 // Customer handled manually
-                .ForMember(dest => dest.Customer, opt => opt.Ignore())
-                .ForMember(dest => dest.CustomerId, opt => opt.Ignore())
+                .ForMember(dest => dest.Guest, opt => opt.Ignore())
+                .ForMember(dest => dest.GuestId, opt => opt.Ignore())
                 // Rooms handled manually
                 .ForMember(dest => dest.Rooms, opt => opt.Ignore())
                 // Map primitive fields
@@ -31,8 +35,8 @@ namespace Infrastructure.MappingProfiles
 
             CreateMap<UpdateBookingRequest, Booking>()
                 // Customer handled manually
-                .ForMember(dest => dest.Customer, opt => opt.Ignore())
-                .ForMember(dest => dest.CustomerId, opt => opt.Ignore())
+                .ForMember(dest => dest.Guest, opt => opt.Ignore())
+                .ForMember(dest => dest.GuestId, opt => opt.Ignore())
                 // Rooms handled manually
                 .ForMember(dest => dest.Rooms, opt => opt.Ignore());
 		}

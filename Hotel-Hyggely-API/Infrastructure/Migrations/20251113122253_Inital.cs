@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class Inital : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,7 +16,7 @@ namespace Infrastructure.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Customers",
+                name: "Guests",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
@@ -30,7 +30,7 @@ namespace Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Customers", x => x.ID);
+                    table.PrimaryKey("PK_Guests", x => x.ID);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -76,7 +76,7 @@ namespace Infrastructure.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    CustomerId = table.Column<int>(type: "int", nullable: false),
+                    GuestId = table.Column<int>(type: "int", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     CheckInStatus = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
@@ -90,9 +90,9 @@ namespace Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Bookings", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Bookings_Customers_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "Customers",
+                        name: "FK_Bookings_Guests_GuestId",
+                        column: x => x.GuestId,
+                        principalTable: "Guests",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -115,6 +115,31 @@ namespace Infrastructure.Migrations
                     table.PrimaryKey("PK_Rooms", x => x.ID);
                     table.ForeignKey(
                         name: "FK_Rooms_RoomTypes_RoomTypeId",
+                        column: x => x.RoomTypeId,
+                        principalTable: "RoomTypes",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "RoomTypeImages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    RoomTypeId = table.Column<int>(type: "int", nullable: false),
+                    FilePath = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    FileType = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    UploadedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RoomTypeImages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RoomTypeImages_RoomTypes_RoomTypeId",
                         column: x => x.RoomTypeId,
                         principalTable: "RoomTypes",
                         principalColumn: "ID",
@@ -170,22 +195,22 @@ namespace Infrastructure.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "RoomStatuses",
+                name: "RoomMaintenances",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     RoomId = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
                     StartDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    EndDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Reason = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RoomStatuses", x => x.ID);
+                    table.PrimaryKey("PK_RoomMaintenances", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RoomStatuses_Rooms_RoomId",
+                        name: "FK_RoomMaintenances_Rooms_RoomId",
                         column: x => x.RoomId,
                         principalTable: "Rooms",
                         principalColumn: "ID",
@@ -199,13 +224,18 @@ namespace Infrastructure.Migrations
                 column: "RoomsID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Bookings_CustomerId",
+                name: "IX_Bookings_GuestId",
                 table: "Bookings",
-                column: "CustomerId");
+                column: "GuestId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CleaningSchedules_RoomId",
                 table: "CleaningSchedules",
+                column: "RoomId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RoomMaintenances_RoomId",
+                table: "RoomMaintenances",
                 column: "RoomId");
 
             migrationBuilder.CreateIndex(
@@ -214,9 +244,21 @@ namespace Infrastructure.Migrations
                 column: "RoomTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RoomStatuses_RoomId",
-                table: "RoomStatuses",
-                column: "RoomId");
+                name: "IX_RoomTypeImages_RoomTypeId",
+                table: "RoomTypeImages",
+                column: "RoomTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RoomTypes_Name",
+                table: "RoomTypes",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Staff_UserName",
+                table: "Staff",
+                column: "UserName",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -229,7 +271,10 @@ namespace Infrastructure.Migrations
                 name: "CleaningSchedules");
 
             migrationBuilder.DropTable(
-                name: "RoomStatuses");
+                name: "RoomMaintenances");
+
+            migrationBuilder.DropTable(
+                name: "RoomTypeImages");
 
             migrationBuilder.DropTable(
                 name: "Staff");
@@ -241,7 +286,7 @@ namespace Infrastructure.Migrations
                 name: "Rooms");
 
             migrationBuilder.DropTable(
-                name: "Customers");
+                name: "Guests");
 
             migrationBuilder.DropTable(
                 name: "RoomTypes");
