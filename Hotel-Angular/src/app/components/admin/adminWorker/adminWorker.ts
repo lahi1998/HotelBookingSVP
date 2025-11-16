@@ -194,8 +194,8 @@ export class AdminWorker implements AfterViewInit {
 
   openEdit(id: number, userName: string) {
     this.noEdit = false;
-    /* Assuming you have a flag to toggle the edit form visibility */
-    this.editopen = true;
+    // /* Assuming you have a flag to toggle the edit form visibility */
+    // this.editopen = true;
     this.editId = id;
     if (userName === "admin") {
       this.noEdit = true
@@ -238,6 +238,31 @@ export class AdminWorker implements AfterViewInit {
     this.editId = 0;
     this.noEdit = false;
   }
+
+
+//Modal visibility functions
+  openEditModal(id: number, userName: string) {
+    this.openEdit(id, userName);
+    this.toggleModal("editModal", true);
+  }
+
+  closeEditModal() {
+    this.toggleModal("editModal", false);
+  }
+
+  toggleModal(id: string, show: boolean) {
+    document.getElementById(id)?.classList.toggle('hidden', !show);
+  }
+
+  //Closes the modal if the user presses outside the modal
+  onBackdropClick(event: MouseEvent) {
+    const clickedElement = event.target as HTMLElement;
+
+    if (clickedElement.classList.contains('modal')) {
+      this.closeEditModal();
+    }
+  }
+
 }
 
 

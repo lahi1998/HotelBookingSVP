@@ -29,8 +29,9 @@
                 <ng-container matColumnDef="buttons">
                     <th style="border-right: none;" mat-header-cell *matHeaderCellDef></th>
                     <td style="border-right: none;" mat-cell *matCellDef="let worker">
-                        <button class="edit" (click)="openEdit(worker.id, worker.userName)">Rediger</button>
-                        <button class="delete" (click)="DeleteRow(worker.id)" *ngIf="worker.userName != 'admin'">Slet</button>
+                        <button class="edit" (click)="openEditModal(worker.id, worker.userName)">Rediger</button>
+                        <button class="delete" (click)="DeleteRow(worker.id)"
+                            *ngIf="worker.userName != 'admin'">Slet</button>
                     </td>
                 </ng-container>
 
@@ -96,69 +97,77 @@
         </div>
 
         <!-- Disable button until form valid -->
-         <div class="button-row">
-        <button class="create" type="submit" [disabled]="newWorkerForm.invalid">Opret</button>
+        <div class="button-row">
+            <div></div>
+            <button class="create" type="submit" [disabled]="newWorkerForm.invalid">Opret</button>
         </div>
     </form>
 
     <!-- Rediger form -->
-    <form [formGroup]="editWorkerForm" (ngSubmit)="editSubmit()" class="editform" *ngIf="editopen">
-        <h2>Rediger medarbejder</h2>
-        <label>Fulde navn</label>
-        <div class="form-group">
-            <input type="text" formControlName="fullName" placeholder="Indtast fuldt navn" autocomplete="off" />
-            <div class="error"
-                *ngIf="editWorkerForm.get('fullName')?.invalid && editWorkerForm.get('fullName')?.touched">
-                Fuldt navn er påkrævet
-            </div>
-        </div>
 
-        <label>Role</label>
-        <div class="form-group">
-            <select id="role2" formControlName="role">
-                <option value="" selected disabled hidden>Vælg her</option>
-                <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
-            </select>
-            <div class="error" *ngIf="editWorkerForm.get('role')?.invalid && editWorkerForm.get('role')?.touched">
-                Rolle er påkrævet
-            </div>
-        </div>
+</div>
 
-        <label>Brugernavn</label>
-        <div class="form-group">
-            <input type="text" formControlName="userName" placeholder="Indtast brugernavn" autocomplete="off" />
-            <div class="error"
-                *ngIf="editWorkerForm.get('userName')?.invalid && editWorkerForm.get('userName')?.touched">
-                Brugernavn er påkrævet
+<div id="editModal" class="modal hidden" (click)="onBackdropClick($event)">
+    <div class="modal-content">
+        <form [formGroup]="editWorkerForm" (ngSubmit)="editSubmit()" class="editform">
+            <h2>Rediger medarbejder</h2>
+            <label>Fulde navn</label>
+            <div class="form-group">
+                <input type="text" formControlName="fullName" placeholder="Indtast fuldt navn" autocomplete="off" />
+                <div class="error"
+                    *ngIf="editWorkerForm.get('fullName')?.invalid && editWorkerForm.get('fullName')?.touched">
+                    Fuldt navn er påkrævet
+                </div>
             </div>
-        </div>
 
-        <label>Kodeord</label>
-        <div class="form-group">
-            <input type="password" formControlName="password" placeholder="Indtast kodeord" autocomplete="off" />
-            <div class="error"
-                *ngIf="editWorkerForm.get('password')?.invalid && editWorkerForm.get('password')?.touched">
-                Kodeord er påkrævet
+            <label>Role</label>
+            <div class="form-group">
+                <select id="role2" formControlName="role">
+                    <option value="" selected disabled hidden>Vælg her</option>
+                    <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
+                </select>
+                <div class="error" *ngIf="editWorkerForm.get('role')?.invalid && editWorkerForm.get('role')?.touched">
+                    Rolle er påkrævet
+                </div>
             </div>
-        </div>
 
-        <label>Gentag kodeord</label>
-        <div class="form-group">
-            <input type="password" formControlName="passwordConfirm" placeholder="Gentag kodeord" autocomplete="off" />
-            <div class="error"
-                *ngIf="editWorkerForm.get('passwordConfirm')?.hasError('required') && editWorkerForm.get('passwordConfirm')?.touched">
-                Kodeord er påkrævet
+            <label>Brugernavn</label>
+            <div class="form-group">
+                <input type="text" formControlName="userName" placeholder="Indtast brugernavn" autocomplete="off" />
+                <div class="error"
+                    *ngIf="editWorkerForm.get('userName')?.invalid && editWorkerForm.get('userName')?.touched">
+                    Brugernavn er påkrævet
+                </div>
             </div>
-            <div class="error"
-                *ngIf="editWorkerForm.get('passwordConfirm')?.hasError('mismatch') && editWorkerForm.get('passwordConfirm')?.touched">
-                Kodeordene matcher ikke.
-            </div>
-        </div>
 
-        <!-- Disable button until form valid -->
-        <div class="button-row">
-            <button class="cancel" type="button" (click)="closeEdit()">Anuller</button>
-            <button class="update" type="submit" [disabled]="editWorkerForm.invalid">Gem</button>
-        </div>
-    </form>
+            <label>Kodeord</label>
+            <div class="form-group">
+                <input type="password" formControlName="password" placeholder="Indtast kodeord" autocomplete="off" />
+                <div class="error"
+                    *ngIf="editWorkerForm.get('password')?.invalid && editWorkerForm.get('password')?.touched">
+                    Kodeord er påkrævet
+                </div>
+            </div>
+
+            <label>Gentag kodeord</label>
+            <div class="form-group">
+                <input type="password" formControlName="passwordConfirm" placeholder="Gentag kodeord"
+                    autocomplete="off" />
+                <div class="error"
+                    *ngIf="editWorkerForm.get('passwordConfirm')?.hasError('required') && editWorkerForm.get('passwordConfirm')?.touched">
+                    Kodeord er påkrævet
+                </div>
+                <div class="error"
+                    *ngIf="editWorkerForm.get('passwordConfirm')?.hasError('mismatch') && editWorkerForm.get('passwordConfirm')?.touched">
+                    Kodeordene matcher ikke.
+                </div>
+            </div>
+
+            <!-- Disable button until form valid -->
+            <div class="button-row">
+                <button type="button" (click)="closeEditModal()" class="edit">Annuller</button>
+                <button class="update" type="submit" [disabled]="editWorkerForm.invalid">Gem</button>
+            </div>
+        </form>
+    </div>
 </div>
