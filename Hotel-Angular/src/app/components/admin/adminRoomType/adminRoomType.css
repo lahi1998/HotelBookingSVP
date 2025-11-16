@@ -89,7 +89,7 @@ button {
 .Create-type-box {
     flex: 1 1 35%;
     min-width: 280px;
-    max-width: 400px;
+    /* max-width: 400px; */
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -144,8 +144,7 @@ select {
   padding: 1.5rem 2rem;
   border-radius: 0.75rem;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-  width: 90%;
-  max-width: 500px;
+  width: fit-content;
   transform: scale(1);
   transition: transform 0.25s ease;
   display: flex;
@@ -160,7 +159,10 @@ select {
 
 
 
-
+.button-container {
+    display: flex;
+    justify-content: space-between;
+}
 
 .create {
     background-color: #4EA9E9;

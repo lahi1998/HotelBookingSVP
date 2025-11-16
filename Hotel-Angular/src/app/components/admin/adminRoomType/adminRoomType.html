@@ -45,93 +45,109 @@
 
     <div class="create-container">
         <form [formGroup]="roomTypeForm" (ngSubmit)="onSubmit()" class="Create-type-box" style="flex:1;">
-            <label>Name</label>
-            <div class="form-group">
-                <input type="text" formControlName="name" placeholder="Indtast navn" autocomplete="off" />
-                <div class="error" *ngIf="roomTypeForm.get('name')?.invalid && roomTypeForm.get('name')?.touched">
-                    Navn er påkrævet
+            <div style="display: flex; flex-direction: row;">
+                <div>
+                    <label>Name</label>
+                    <div class="form-group">
+                        <input type="text" formControlName="name" placeholder="Indtast navn" autocomplete="off" />
+                        <div class="error"
+                            *ngIf="roomTypeForm.get('name')?.invalid && roomTypeForm.get('name')?.touched">
+                            Navn er påkrævet
+                        </div>
+                    </div>
+
+                    <label>Pris</label>
+                    <div class="form-group">
+                        <input type="number" formControlName="price" placeholder="Indtast pris" autocomplete="off" />
+                        <div class="error"
+                            *ngIf="roomTypeForm.get('price')?.invalid && roomTypeForm.get('price')?.touched">
+                            Pris er påkrævet
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="image-upload">
+                    <div class="carousel" *ngIf="images.length > 0">
+                        <div class="carousel-main">
+                            <button class="imgControlBtn" type="button" (click)="prevImage()"
+                                [disabled]="images.length <= 1">‹</button>
+                            <img class="imgprew" [src]="images[currentImageIndex]?.dataUrl" alt="Preview">
+                            <button class="imgControlBtn" type="button" (click)="nextImage()"
+                                [disabled]="images.length <= 1">›</button>
+                        </div>
+
+                        <div class="carousel-controls">
+                            <small>{{ currentImageIndex + 1 }} / {{ images.length }}</small>
+                            <button type="button" (click)="deleteCurrentImage()" class="delete">Slet</button>
+                        </div>
+
+                        <div class="thumbnails">
+                            <img *ngFor="let img of images; let i = index" [src]="img.dataUrl" (click)="selectImage(i)"
+                                [style.border]="i === currentImageIndex ? '2px solid #3f51b5' : '1px solid #ddd'">
+                        </div>
+                    </div>
+
+                    <label for="roomImages">Billeder</label>
+                    <input id="roomImages" type="file" accept="image/*" (change)="onFilesSelected($event)" multiple>
                 </div>
             </div>
-
-            <label>Pris</label>
-            <div class="form-group">
-                <input type="number" formControlName="price" placeholder="Indtast pris" autocomplete="off" />
-                <div class="error" *ngIf="roomTypeForm.get('price')?.invalid && roomTypeForm.get('price')?.touched">
-                    Pris er påkrævet
-                </div>
-            </div>
-
             <button class="create" type="submit" style="align-self:flex-end; margin-top:12px;">Opret</button>
         </form>
-        <div class="image-upload">
-            <div class="carousel" *ngIf="images.length > 0">
-                <div class="carousel-main">
-                    <button class="imgControlBtn" type="button" (click)="prevImage()"
-                        [disabled]="images.length <= 1">‹</button>
-                    <img class="imgprew" [src]="images[currentImageIndex]?.dataUrl" alt="Preview">
-                    <button class="imgControlBtn" type="button" (click)="nextImage()"
-                        [disabled]="images.length <= 1">›</button>
-                </div>
-
-                <div class="carousel-controls">
-                    <small>{{ currentImageIndex + 1 }} / {{ images.length }}</small>
-                    <button type="button" (click)="deleteCurrentImage()" class="delete">Slet</button>
-                </div>
-
-                <div class="thumbnails">
-                    <img *ngFor="let img of images; let i = index" [src]="img.dataUrl" (click)="selectImage(i)"
-                        [style.border]="i === currentImageIndex ? '2px solid #3f51b5' : '1px solid #ddd'">
-                </div>
-            </div>
-
-            <label for="roomImages">Billeder</label>
-            <input id="roomImages" type="file" accept="image/*" (change)="onFilesSelected($event)" multiple>
-        </div>
     </div>
 
 </div>
 
 <div id="editModal" class="modal hidden" (click)="onBackdropClick($event)">
     <div class="modal-content">
-        <div class="details-container">
-            <h3>Rediger værelsestype</h3>
-            <form [formGroup]="roomTypeEditForm" (ngSubmit)="editRoomType()" id="editForm">
-                <label>Navn</label>
-                <div class="form-group">
-                    <input type="text" formControlName="name" />
-                </div>
-                <label>Pris</label>
-                <div class="form-group">
-                    <input type="text" formControlName="price" />
-                </div>
-                <button type="submit" class="update">Save</button>
-                <button type="button" (click)="closeEditModal()" class="edit">Cancel</button>
-            </form>
-        </div>
-        <div class="image-upload">
-            <div class="carousel" *ngIf="imagesEditForm.length > 0">
-                <div class="carousel-main">
-                    <button class="imgControlBtn" type="button" (click)="prevImageEditForm()"
-                        [disabled]="imagesEditForm.length <= 1">‹</button>
-                    <img class="imgprew" [src]="imagesEditForm[currentImageIndexEditForm]?.filePath" alt="Preview">
-                    <button class="imgControlBtn" type="button" (click)="nextImageEditForm()"
-                        [disabled]="imagesEditForm.length <= 1">›</button>
-                </div>
+        <form [formGroup]="roomTypeEditForm" (ngSubmit)="editRoomType()" id="editForm">
+            <div style="display: flex; flex-direction: row;">
+                <div class="details-container">
+                    <h3>Rediger værelsestype</h3>
 
-                <div class="carousel-controls">
-                    <small>{{ currentImageIndexEditForm + 1 }} / {{ imagesEditForm.length }}</small>
-                    <button type="button" (click)="deleteCurrentImageEditForm()" class="delete">Slet</button>
-                </div>
+                    <label>Navn</label>
+                    <div class="form-group">
+                        <input type="text" formControlName="name" />
+                    </div>
+                    <label>Pris</label>
+                    <div class="form-group">
+                        <input type="text" formControlName="price" />
+                    </div>
 
-                <div class="thumbnails">
-                    <img *ngFor="let img of imagesEditForm; let i = index" [src]="img.filePath"
-                        (click)="selectImageEditForm(i)"
-                        [style.border]="i === currentImageIndexEditForm ? '2px solid #3f51b5' : '1px solid #ddd'">
+
+                </div>
+                <div class="image-upload">
+                    <div class="carousel" *ngIf="imagesEditForm.length > 0">
+                        <div class="carousel-main">
+                            <button class="imgControlBtn" type="button" (click)="prevImageEditForm()"
+                                [disabled]="imagesEditForm.length <= 1">‹</button>
+                            <img class="imgprew" [src]="imagesEditForm[currentImageIndexEditForm]?.filePath"
+                                alt="Preview">
+                            <button class="imgControlBtn" type="button" (click)="nextImageEditForm()"
+                                [disabled]="imagesEditForm.length <= 1">›</button>
+                        </div>
+
+                        <div class="carousel-controls">
+                            <small>{{ currentImageIndexEditForm + 1 }} / {{ imagesEditForm.length }}</small>
+                            <button type="button" (click)="deleteCurrentImageEditForm()" class="delete">Slet</button>
+                        </div>
+
+                        <div class="thumbnails">
+                            <img *ngFor="let img of imagesEditForm; let i = index" [src]="img.filePath"
+                                (click)="selectImageEditForm(i)"
+                                [style.border]="i === currentImageIndexEditForm ? '2px solid #3f51b5' : '1px solid #ddd'">
+                        </div>
+                    </div>
+
+                    <label for="roomImages">Billeder</label>
+                    <input id="roomImages" type="file" accept="image/*" (change)="onFilesSelectedEditForm($event)"
+                        multiple>
                 </div>
             </div>
-
-            <label for="roomImages">Billeder</label>
-            <input id="roomImages" type="file" accept="image/*" (change)="onFilesSelectedEditForm($event)" multiple>
-        </div>
+            <div class="button-container">
+                <button type="button" (click)="closeEditModal()" class="edit">Annuller</button>
+                <button type="submit" class="update">Gem</button>
+            </div>
+        </form>
     </div>
 </div>
