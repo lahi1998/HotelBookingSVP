@@ -69,7 +69,7 @@
 
         <label>Brugernavn</label>
         <div class="form-group">
-            <input type="text" formControlName="userName" placeholder="Indtast brugernavn" autocomplete="off" />
+            <input type="text" formControlName="userName" placeholder="Indtast brugernavn"/>
             <div class="error" *ngIf="newWorkerForm.get('userName')?.invalid && newWorkerForm.get('userName')?.touched">
                 Brugernavn er påkrævet
             </div>
@@ -77,7 +77,7 @@
 
         <label>Kodeord</label>
         <div class="form-group">
-            <input type="password" formControlName="password" placeholder="Indtast kodeord" autocomplete="off" />
+            <input type="password" formControlName="password" placeholder="Indtast kodeord" autocomplete="new-password" />
             <div class="error" *ngIf="newWorkerForm.get('password')?.invalid && newWorkerForm.get('password')?.touched">
                 Kodeord er påkrævet
             </div>
@@ -85,7 +85,7 @@
 
         <label>Gentag kodeord</label>
         <div class="form-group">
-            <input type="password" formControlName="passwordConfirm" placeholder="Gentag kodeord" autocomplete="off" />
+            <input type="password" formControlName="passwordConfirm" placeholder="Gentag kodeord" autocomplete="new-password" />
             <div class="error"
                 *ngIf="newWorkerForm.get('passwordConfirm')?.hasError('required') && newWorkerForm.get('passwordConfirm')?.touched">
                 Kodeord er påkrævet
