@@ -166,11 +166,11 @@ export class StaffCheckInOut {
           //console.log('update successful.', response);
           this.getBookingListItems();
           this.editopen = false;
-          alert("Updateret!")
+          alert("Opdateret!")
         },
         error: (error) => {
           //console.error('Create error.', error);
-          alert('updatering fejlede!');
+          alert('Opdatering fejlede!');
         },
         complete: () => {
           // optional cleanup or navigation
@@ -282,15 +282,12 @@ export class StaffCheckInOut {
 
     const startDateString = startDateObj.toISOString().split('T')[0];
     const endDateString = endDateObj.toISOString().split('T')[0];
-    console.log(startDateString, " ", endDateString)
 
     await this.GetAvailableRooms(startDateString, endDateString);
   }
 
   /* adds id to roomids array */
   AddRoom(newid: number) {
-    console.log(newid)
-    console.log(this.DATAAvailableRooom)
     /* add the room ID to the array of selected rooms */
     this.roomIdsArray.push(newid);
 
@@ -310,8 +307,6 @@ export class StaffCheckInOut {
     this.dataSourceAvailableRooom.data = [...this.DATAAvailableRooom];
     this.dataSourceRooms.data = [...this.DATABookingDetailsRoom];
     this.CalcNewPrice();
-
-    console.log(this.roomIdsArray);
   }
 
   /* gets a array of available rooms (id and roomtypeid)*/
@@ -458,9 +453,6 @@ export class StaffCheckInOut {
 
     /* update the Material Table datasource */
     this.dataSourceCleaningSchedule.data = [...this.DATACleaningSchedule];
-    
-
-    console.log('Cleaning Schedule deleted :', id);
   }
 
   CreateCleaningSchedule(bookingid: number): void {
@@ -478,7 +470,7 @@ export class StaffCheckInOut {
         },
         error: (error) => {
           //console.error('Create error.', error);
-          alert('Opretning fejlede!');
+          alert('Oprettelse fejlede!');
         },
         complete: () => {
           // optional cleanup or navigation
