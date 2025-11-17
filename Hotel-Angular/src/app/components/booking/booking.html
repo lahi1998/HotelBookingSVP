@@ -32,8 +32,11 @@
             <input type="number" formControlName="personCount">
             <div class="error"
                 *ngIf="bookingForm.get('personCount')?.invalid && (bookingForm.get('personCount')?.touched || bookingForm.get('personCount')?.dirty)">
-                <small>
+                <small *ngIf="bookingForm.get('personCount')?.errors?.['required']">
                     Antal personer er påkrævet
+                </small>
+                <small class="text-red-500" *ngIf="bookingForm.get('personCount')?.errors?.['max']">
+                    Du kan maks vælge 10 personer
                 </small>
             </div>
             <label>Ønsker og bemærkninger</label>

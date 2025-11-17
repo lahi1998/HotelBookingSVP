@@ -69,7 +69,7 @@ export class Booking implements OnInit {
       fullName: ['', Validators.required],
       email: ['', [Validators.required, customEmailValidator()]],
       phoneNumber: ['', [Validators.required, Validators.pattern(/^[0-9+\-\s()]{5,20}$/)]],
-      personCount: [2, [Validators.required, Validators.min(1)]],
+      personCount: [2, [Validators.required, Validators.min(1), Validators.max(10)]],
       comment: [''],
       startDate: [todayString, Validators.required],
       endDate: [dayAfterTomorrowString, Validators.required]

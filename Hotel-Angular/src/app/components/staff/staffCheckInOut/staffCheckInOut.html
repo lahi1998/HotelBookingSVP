@@ -123,7 +123,11 @@
                 <div class="form-group">
                     <input type="number" formControlName="personCount" autocomplete="off" />
                     <div class="error"
-                        *ngIf="bookingDetailsForm.get('personCount')?.invalid && bookingDetailsForm.get('personCount')?.touched">
+                        *ngIf="bookingDetailsForm.get('personCount')?.invalid && bookingDetailsForm.get('personCount')?.touched  && !bookingDetailsForm.get('personCount')?.errors?.['max']">
+                        Antal personer er påkrævet
+                    </div>
+                    <div class="error"
+                        *ngIf="bookingDetailsForm.get('personCount')?.invalid && bookingDetailsForm.get('personCount')?.touched  && bookingDetailsForm.get('personCount')?.errors?.['max']">
                         Antal personer er påkrævet
                     </div>
                 </div>
