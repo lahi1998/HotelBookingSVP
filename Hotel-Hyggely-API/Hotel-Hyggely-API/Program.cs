@@ -43,19 +43,6 @@ builder.Services.AddScoped<IEmailService, SendGridEmailService>();
 builder.Services.AddScoped<IGuestRepo, GuestRepo>();
 builder.Services.AddScoped<GuestService>();
 
-builder.Services.AddCors(options =>
-{
-	options.AddPolicy(name: "allowall",
-					  policy =>
-					  {
-                          policy.AllowAnyOrigin();
-                          policy.AllowAnyHeader();
-                          policy.AllowAnyMethod();
-					  });
-});
-
-//builder.Services.AddAuthentication().AddJwtBearer();
-//Console.WriteLine(builder.Services.AddAuthentication().AddJwtBearer("Bearer"));
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 builder.Services.AddAuthentication()
 .AddJwtBearer(options =>
@@ -95,7 +82,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors("allowall"); // TODO: REMOVE CORS
+
 app.UseAuthentication();
 app.UseAuthorization();
 
