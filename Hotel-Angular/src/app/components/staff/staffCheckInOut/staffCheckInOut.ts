@@ -76,7 +76,7 @@ export class StaffCheckInOut {
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
       comment: [],
-      personCount: ['', Validators.required],
+      personCount: ['', Validators.required, Validators.min(1), Validators.max(10)],
     })
 
     this.CleaningForm = this.fb.group({
