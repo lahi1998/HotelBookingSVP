@@ -166,6 +166,7 @@ export class StaffCheckInOut {
           //console.log('update successful.', response);
           this.getBookingListItems();
           this.editopen = false;
+          alert("Updateret!")
         },
         error: (error) => {
           //console.error('Create error.', error);
