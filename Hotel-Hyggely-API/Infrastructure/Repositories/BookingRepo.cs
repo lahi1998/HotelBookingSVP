@@ -32,7 +32,7 @@ namespace Infrastructure.Repositories
 		public async Task<Booking?> GetByIdWithDetails(int id)
 		{
 			return await dbContext.Bookings
-                .Include(b => b.Customer)
+                .Include(b => b.Guest)
 				.Include(b => b.Rooms)
                     .ThenInclude(r => r.RoomType)
 				.SingleOrDefaultAsync(b => b.ID == id);
@@ -79,7 +79,7 @@ namespace Infrastructure.Repositories
         public async Task<IEnumerable<Booking>> GetAllWithCustomerAndRoomsAsync()
         {
             return await dbContext.Bookings
-                .Include(b => b.Customer)
+                .Include(b => b.Guest)
                 .Include(b => b.Rooms)
                 .ToListAsync();
         }

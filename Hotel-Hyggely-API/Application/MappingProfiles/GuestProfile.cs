@@ -4,11 +4,11 @@ using Domain.Entities;
 
 namespace Application.MappingProfiles
 {
-    public class CustomerProfile : Profile
+    public class GuestProfile : Profile
     {
-        public CustomerProfile()
+        public GuestProfile()
         {
-            CreateMap<Customer, CustomerDto>();
+            CreateMap<Guest, GuestDto>();
         }
     }
 }

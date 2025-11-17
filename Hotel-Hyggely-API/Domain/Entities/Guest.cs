@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities
 {
-    public class Customer
+    public class Guest
     {
         public int ID { get; set; }
         public required string FullName { get; set; }

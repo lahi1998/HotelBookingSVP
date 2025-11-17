@@ -28,7 +28,6 @@ builder.Services.AddScoped<IStaffRepo, StaffRepo>();
 builder.Services.AddScoped<IPasswordHasher, BcryptPasswordHasher>();
 builder.Services.AddScoped<IBookingRepo, BookingRepo>();
 builder.Services.AddScoped<BookingService>();
-builder.Services.AddScoped<ICustomerRepo, CustomerRepo>();
 builder.Services.AddScoped<IRoomTypeRepo, RoomTypeRepo>();
 builder.Services.AddScoped<RoomTypeService>();
 builder.Services.AddScoped<IRoomRepo, RoomRepo>();
@@ -41,20 +40,9 @@ builder.Services.AddScoped<RoomTypeImageService>();
 builder.Services.AddScoped<ICleaningScheduleRepo, CleaningScheduleRepo>();
 builder.Services.AddScoped<CleaningScheduleService>();
 builder.Services.AddScoped<IEmailService, SendGridEmailService>();
+builder.Services.AddScoped<IGuestRepo, GuestRepo>();
+builder.Services.AddScoped<GuestService>();
 
-builder.Services.AddCors(options =>
-{
-	options.AddPolicy(name: "allowall",
-					  policy =>
-					  {
-                          policy.AllowAnyOrigin();
-                          policy.AllowAnyHeader();
-                          policy.AllowAnyMethod();
-					  });
-});
-
-//builder.Services.AddAuthentication().AddJwtBearer();
-//Console.WriteLine(builder.Services.AddAuthentication().AddJwtBearer("Bearer"));
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 builder.Services.AddAuthentication()
 .AddJwtBearer(options =>
@@ -94,7 +82,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors("allowall"); // TODO: REMOVE CORS
+
 app.UseAuthentication();
 app.UseAuthorization();
 

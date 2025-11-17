@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251104153756_ChangedRoomStatusToMaintenance")]
-    partial class ChangedRoomStatusToMaintenance
+    [Migration("20251113122253_Inital")]
+    partial class Inital
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -57,11 +57,11 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("varchar(1000)");
 
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<int>("GuestId")
+                        .HasColumnType("int");
 
                     b.Property<int>("PersonCount")
                         .HasColumnType("int");
@@ -74,7 +74,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("GuestId");
 
                     b.ToTable("Bookings");
                 });
@@ -103,7 +103,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("CleaningSchedules");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Customer", b =>
+            modelBuilder.Entity("Domain.Entities.Guest", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -128,7 +128,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Customers");
+                    b.ToTable("Guests");
                 });
 
             modelBuilder.Entity("Domain.Entities.Room", b =>
@@ -208,6 +208,9 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("ID");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
                     b.ToTable("RoomTypes");
                 });
 
@@ -270,6 +273,9 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("ID");
 
+                    b.HasIndex("UserName")
+                        .IsUnique();
+
                     b.ToTable("Staff");
                 });
 
@@ -290,13 +296,13 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Booking", b =>
                 {
-                    b.HasOne("Domain.Entities.Customer", "Customer")
+                    b.HasOne("Domain.Entities.Guest", "Guest")
                         .WithMany("Bookings")
-                        .HasForeignKey("CustomerId")
+                        .HasForeignKey("GuestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Customer");
+                    b.Navigation("Guest");
                 });
 
             modelBuilder.Entity("Domain.Entities.CleaningSchedule", b =>
@@ -343,7 +349,7 @@ namespace Infrastructure.Migrations
                     b.Navigation("RoomType");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Customer", b =>
+            modelBuilder.Entity("Domain.Entities.Guest", b =>
                 {
                     b.Navigation("Bookings");
                 });

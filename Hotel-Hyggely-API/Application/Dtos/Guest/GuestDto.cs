@@ -1,6 +1,6 @@
 ﻿namespace Application.Dtos.Customer
 {
-    public class CustomerDto
+    public class GuestDto
     {
         public int Id { get; set; }
         public required string FullName { get; set; }
