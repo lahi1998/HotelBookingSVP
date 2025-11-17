@@ -254,7 +254,6 @@ export class StaffCheckInOut {
 
   CheckInOut(id: number) {
 
-    console.log("here me lord", id)
     const observer: Observer<any> = {
       next: (response) => {
         //console.log('check successful.', response);
