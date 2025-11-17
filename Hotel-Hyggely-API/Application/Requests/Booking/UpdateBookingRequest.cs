@@ -27,12 +27,6 @@ namespace Application.Requests.Booking
 
 		public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
 		{
-			if (StartDate < DateTime.Today)
-			{
-				yield return new ValidationResult(
-					"StartDate cannot be older than current date",
-					new[] { nameof(StartDate) });
-			}
 			if (EndDate <= StartDate)
 			{
 				yield return new ValidationResult(
