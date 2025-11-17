@@ -166,6 +166,7 @@ export class StaffCheckInOut {
           //console.log('update successful.', response);
           this.getBookingListItems();
           this.editopen = false;
+          alert("Updateret!")
         },
         error: (error) => {
           //console.error('Create error.', error);
@@ -253,7 +254,6 @@ export class StaffCheckInOut {
 
   CheckInOut(id: number) {
 
-    console.log("here me lord", id)
     const observer: Observer<any> = {
       next: (response) => {
         //console.log('check successful.', response);

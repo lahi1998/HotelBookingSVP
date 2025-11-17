@@ -101,7 +101,7 @@
 
                 <label>Start dato</label>
                 <div class="form-group">
-                    <input type="date" formControlName="startDate" [min]="today"
+                    <input type="date" formControlName="startDate"
                         (change)="OnDateChanged(bookingDetailsForm.get('startDate')?.value, bookingDetailsForm.get('endDate')?.value)">
                     <div class="error"
                         *ngIf="bookingDetailsForm.get('startDate')?.invalid && bookingDetailsForm.get('startDate')?.touched">
@@ -111,7 +111,7 @@
 
                 <label>Slut dato</label>
                 <div class="form-group">
-                    <input type="date" formControlName="endDate" [min]="endDateMin"
+                    <input type="date" formControlName="endDate"
                         (change)="OnDateChanged(bookingDetailsForm.get('startDate')?.value, bookingDetailsForm.get('endDate')?.value)">
                     <div class="error"
                         *ngIf="bookingDetailsForm.get('endDate')?.invalid && bookingDetailsForm.get('endDate')?.touched">
@@ -123,7 +123,11 @@
                 <div class="form-group">
                     <input type="number" formControlName="personCount" autocomplete="off" />
                     <div class="error"
-                        *ngIf="bookingDetailsForm.get('personCount')?.invalid && bookingDetailsForm.get('personCount')?.touched">
+                        *ngIf="bookingDetailsForm.get('personCount')?.invalid && bookingDetailsForm.get('personCount')?.touched  && !bookingDetailsForm.get('personCount')?.errors?.['max']">
+                        Antal personer er påkrævet
+                    </div>
+                    <div class="error"
+                        *ngIf="bookingDetailsForm.get('personCount')?.invalid && bookingDetailsForm.get('personCount')?.touched  && bookingDetailsForm.get('personCount')?.errors?.['max']">
                         Antal personer er påkrævet
                     </div>
                 </div>
